@@ -10,6 +10,8 @@ Recently I have installed the manjaro linux.
 
 However it could not detect my sound card automatically.
 
+<!--more-->
+
 Here some logs showing in dmesg:
 
 ```

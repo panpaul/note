@@ -2,7 +2,9 @@
 title: Hello World
 tags: hello
 ---
-This is my very first post.
+This is my first post.
+
+<!--more-->
 
 I am too lazy to migrate my data in the old wordpress system.
 

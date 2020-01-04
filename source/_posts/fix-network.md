@@ -1,5 +1,5 @@
 ---
-title: fix-network
+title: fix binding port error on Windows
 date: 2020-01-03 22:14:36
 tags:
 - windows
@@ -12,6 +12,8 @@ After installed Hyper-V on my machine, I found that I couldn't start up tomcat.
 It warns me that port 1099 is in use.
 
 And here is my debugging note.
+
+<!--more-->
 
 1. First of all, check whether there are some programs occupying the port.
 
