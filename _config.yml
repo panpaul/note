@@ -100,3 +100,6 @@ theme: next
 deploy:
   type: git
   repo: https://github.com/panpaul/note.git
+
+sitemap:
+    path: sitemap.xml
