@@ -7,7 +7,7 @@ tags:
 - network
 ---
 
-After installed Hyper-V on my machine, I found that I couldn't start up tomcat.
+Having installed Hyper-V on my machine, I found that I couldn't start up Tomcat.
 
 It warns me that port 1099 is in use.
 
@@ -23,7 +23,7 @@ And here is my debugging note.
 
    Unfortunately, I found nothing.
 
-2. Second, check the dynamic port range
+2. Secondly, check the dynamic port range
 
    ```shell
    netsh int ipv4 show dynamicport tcp
@@ -38,13 +38,13 @@ And here is my debugging note.
    端口数          : 13977
    ```
 
-   It seems that installing Hyper-V will change it and you could change this back to the default value by excuting the command below
+   It seems that installing Hyper-V will change the value and you could change this back to the default value by executing the command below
 
    ```shell
    netsh int ipv4 set dynamicportrange tcp start=49152 num=16384
    ```
 
-   However, it seems that there are on effects.
+   However, it seems that there are no effects.
 
 3. Third, check whether the port is reserved by Hyper-V
 
@@ -73,4 +73,4 @@ And here is my debugging note.
    * - 管理的端口排除。
    ```
 
-   And we can see that port 1099 is in the excluded list and we can only change tomcat's port or disable Hyper-V.
+   And we can see that port 1099 is in the excluded list and we can only change tomcat's port or disable Hyper-V to solve this problem.

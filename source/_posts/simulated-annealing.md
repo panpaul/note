@@ -1,7 +1,7 @@
 ---
 title: 模拟退火算法
 date: 2020-01-04 20：58：11
-tags: luogu
+tags: algorithm
 mathjax: true
 ---
 

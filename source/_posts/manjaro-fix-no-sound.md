@@ -6,13 +6,13 @@ tags:
 - sound
 ---
 
-Recently I have installed the manjaro linux.
+Recently I installed the *manjaro* linux.
 
-However it could not detect my sound card automatically.
+However it could not detect my *Intel* sound card automatically.
 
 <!--more-->
 
-Here some logs showing in dmesg:
+Here some logs showing in *dmesg*:
 
 ```
 kernel: sof-audio-pci 0000:00:1f.3: warning: No matching ASoC machine driver found
@@ -27,7 +27,7 @@ kernel: sof-audio-pci 0000:00:1f.3: error: failed to load DSP firmware -2
 kernel: sof-audio-pci 0000:00:1f.3: error: sof_probe_work failed err: -2
 ```
 
-After searching online, I found a [same issue](https://bugs.archlinux.org/task/64720) in the bugs list of Arch Linux.
+After searching online, I found a [same issue](https://bugs.archlinux.org/task/64720) in the bug list of *Arch Linux*.
 
 It gives us a solution.
 
