@@ -19,6 +19,82 @@ mathjax: true
   
   ~~不会做，先留一个坑~~
   
+  思路：先想办法求出最多的取出次数，然后遍历输出结果。具体看注释吧！
+  
+  ```c++
+  #include <cstdio>
+  #include <algorithm>
+  using namespace std;
+  struct A
+  {
+      int i, v = 0; // i记录数字，v记录出现的次数
+  } bucket[200005];
+  bool cmp(A t1, A t2) // 按出现次数从大到小排序
+  {
+      return t1.v > t2.v;
+  }
+  int main()
+  {
+      int n, k, a;
+      scanf("%d%d", &n, &k);
+      for (int i = 0; i < n; i++)
+      {
+          scanf("%d", &a);
+          bucket[a].v++;   // 次数累加
+          bucket[a].i = a; // 记录数字
+      }
+  
+      sort(bucket, bucket + 200005, cmp); // 从大到小排序
+  
+      // 二分查找最大的取出次数，最小的情况刚好是排好的第k个的重复次数，最大的是第一个的重复次数
+      // an 记录最后的最大结果
+      int l = bucket[k - 1].v, r = bucket[0].v, mid, cnt = 0, an;
+      while (l <= r)
+      {
+          cnt = 0;
+          mid = (l + r) >> 1;
+          for (int i = 0; i < k; i++) // 遍历前k个数
+          {
+              cnt += bucket[i].v / mid; // 该数字可以取得的次数
+          }
+          if (cnt >= k) // 有解
+          {
+              // 使次数尽可能多
+              l = mid + 1;
+              an = mid;
+          }
+          else
+          {
+              // 减小次数
+              r = mid - 1;
+          }
+      }
+  
+      int tot = 0, ans[(int)2e5 + 5]; // 开一个数组记录答案
+      for (int i = 0; i < k; i++)     // 最坏的情况是前k个各取一个
+      {
+          for (int j = 0; j < bucket[i].v / an; j++) // 考虑一个数可以取多次的情况
+          {
+              ans[tot++] = bucket[i].i; // 记录答案
+              if (tot == k)             // 到达k次后结束
+              {
+                  goto print; // 其实可以直接在这里输出并结束程序
+              }
+          }
+      }
+  
+  print:
+      while (k--)
+      {
+          printf("%d ", ans[k]);
+      }
+  
+      return 0;
+  }
+  ```
+  
+  
+  
 - **B - Vasya and Books** [CodeForces 1073B](https://codeforces.com/problemset/problem/1073/B)
 
   题意：Vasya有$n$本书，每本书给定一个唯一的编号（从$1$到$n$）。这些书按顺序放成一堆，最上面的书编号为$a_1$，最下面的编号为$a_i$。现在Vasya要把书拿走，每次选定一个编号$b_i$，当他要取走这本书时，要将叠放在这本书上的所有书一起取到背包中，若那本书已经在背包中则不用再取。现问他每次拿走书的数量。
