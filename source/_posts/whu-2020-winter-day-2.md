@@ -7,8 +7,6 @@ tags:
 mathjax: true
 ---
 
-总体来说，这次测试感觉不太好，有两道题没有什么思路。
-
 比赛地址：[vjudge](https://vjudge.net/contest/355097)
 
 <!--more-->
