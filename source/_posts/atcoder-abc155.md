@@ -1,5 +1,5 @@
 ---
-title: AtCoder abc155 解题报告
+title: AtCoder Beginner Contest 155 解题报告
 date: 2020-02-17 16:44:40
 tags:
 - algorithm
