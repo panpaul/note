@@ -8,7 +8,7 @@ subtitle: "Paul's notes"
 description: "thoughts,stories,experiences"
 keywords:
 author: Paul
-language: zh
+language: zh-CN
 timezone: 'Asia/Shanghai'
 
 # URL
@@ -103,3 +103,13 @@ deploy:
 
 sitemap:
     path: sitemap.xml
+
+symbols_count_time:
+  symbols: true
+  time: true
+  total_symbols: true
+  total_time: true
+  exclude_codeblock: true
+  awl: 2
+  wpm: 300
+  suffix: "mins."
