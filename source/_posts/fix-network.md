@@ -1,6 +1,7 @@
 ---
 title: fix binding port error on Windows
 date: 2020-01-03 22:14:36
+updated: 2020-03-15 19:45:00
 tags:
 - windows
 - hyper-v
@@ -73,4 +74,15 @@ And here is my debugging note.
    * - 管理的端口排除。
    ```
 
-   And we can see that port 1099 is in the excluded list and we can only change tomcat's port or disable Hyper-V to solve this problem.
+   ~~And we can see that port 1099 is in the excluded list and we can only change tomcat's port or disable Hyper-V to solve this problem.~~
+   
+   After searching online, I have founded an undocumented reg key which can prevent Hyper-V from occupying those ports.
+   
+   Just run the following code and then reboot.
+   
+   ```shell
+   reg add HKLM\SYSTEM\CurrentControlSet\Services\hns\State /v EnableExcludedPortRange /d 0 /f
+   netsh int ipv4 set dynamicport tcp start=49152 num=16384
+   ```
+   
+   
