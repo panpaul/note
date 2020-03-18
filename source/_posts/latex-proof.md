@@ -1,12 +1,14 @@
 ---
 title: 使用latex写证明树
 date: 2020-03-15 19:50:53
+updated: 2020-03-17 19:45:00
 tags:
 - latex
 - prooftree
+mathjax: true
 ---
 
-最近离散数学课的作业要求用latex写证明树和推导序列，故研究了相关内容，以此记录。
+最近离散数学课的作业要求用$\LaTeX$写证明树和推导序列，故研究了相关内容，以此记录。
 
 <!--more-->
 
@@ -26,7 +28,7 @@ tags:
    \end{prooftree}
    ```
 
-   最终的效果是：<img src="/images/latex-proof-1.png" width="50%" alt="latex-proof-tree-1">
+   最终的效果是：<img src="/images/latex-proof-1.png" width="80%" alt="latex-proof-tree-1">
 
    从代码中看，构造的这个证明树有几个元素：
 
@@ -58,13 +60,13 @@ tags:
 
    这里我们无需关心`bussproof`如何完成公式的渲染，对于复杂的证明树，我们只需要按照“堆栈”的思想去编写证明树代码即可。
 
-   效果如图：<img src="/images/latex-proof-2.png" width="50%" alt="latex-proof-tree-2">
+   效果如图：<img src="/images/latex-proof-2.png" width="80%" alt="latex-proof-tree-2">
 
 3. 绘制带框的证明树
 
    这里采用`\fbox`与`\parbox`的配合完成加框。总体效果如下：
 
-   <img src="/images/latex-proof-3.png" width="50%" alt="latex-proof-tree-3">
+   <img src="/images/latex-proof-3.png" width="80%" alt="latex-proof-tree-3">
 
    ```latex
    \usepackage{calc}
@@ -110,13 +112,13 @@ tags:
    \end{prooftree}
    ```
 
-   <img src="/images/latex-proof-4.png" width="50%" alt="latex-proof-tree-4">
+   <img src="/images/latex-proof-4.png" width="80%" alt="latex-proof-tree-4">
 
 5. 证明序列的编写
 
    这里需要强调的是，我目前的方法十分局限并且复杂。它不适用于需要换页的情况，并且当框的数目多起来后要编写许多冗余的代码。
 
-   效果如图：<img src="/images/latex-proof-5.png" width="50%" alt="latex-proof-tree-5">
+   效果如图：<img src="/images/latex-proof-5.png" width="80%" alt="latex-proof-tree-5">
 
    ```latex
    \usepackage{tikz}
