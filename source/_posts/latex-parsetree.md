@@ -1,5 +1,5 @@
 ---
-title: 使用latex写证明树
+title: 使用latex写分析树
 date: 2020-03-18 19:27:42
 tags:
 - latex
