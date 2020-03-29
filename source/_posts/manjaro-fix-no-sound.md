@@ -1,6 +1,7 @@
 ---
 title: fix "no sound" issue under manjaro
 date: 2019-12-31 21:11:33
+updated: 2020-03-29 15:44:51
 tags:
 - linux
 - sound
@@ -38,3 +39,7 @@ options snd_hda_intel dmic_detect=0
 ```
 
 And then reboot your computer.
+
+Or
+
+Simply switch your kernel to `4.19` will solve this problem.
