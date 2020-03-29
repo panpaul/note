@@ -100,6 +100,7 @@ theme: next
 deploy:
   type: git
   repo: git@github.com:panpaul/note.git
+  branch: deploy
 
 sitemap:
     path: sitemap.xml
