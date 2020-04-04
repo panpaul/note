@@ -1,6 +1,7 @@
 ---
 title: Bomblab 记录
 date: 2020-03-31 20:12:15
+updated: 2020-04-04 17:28:00
 tags:
 - debugging
 - bomblab
@@ -16,7 +17,7 @@ tags:
 
   首先，出题者给我们提供了bomb的原型，通过`bomb.c`，大致可以了解这个`bomb`的执行流程：从键盘读入一行，然后执行`phase_(x)`然后解除炸弹。总共有`6`？个`phase`等待我们取解开。
 
-  <img src="/images/bomb_3.png" alt="bomblab_bomb.c">
+  <img src="/images/bomb_3.webp" alt="bomblab_bomb.c">
 
 - ### 环境准备 ###
 
@@ -24,17 +25,17 @@ tags:
 
   首先，执行`r2 -A bomb`加载二进制文件并执行分析。
 
-  <img src="/images/bomb_1.png" alt="bomblab_prepare">
+  <img src="/images/bomb_1.webp" alt="bomblab_prepare">
 
   然后，执行`afl`看一下函数列表，我们发现了几个包含`phase`的函数，也就是我们要重点关注的东西了。同时也注意到列表里包含`sym.secret_phase`，估计这是个`bonus`。
 
-  <img src="/images/bomb_2.png" alt="bomblab_functions">
+  <img src="/images/bomb_2.webp" alt="bomblab_functions">
 
 - ### Phase_1 ###
 
   先执行`s sym.phase_1`跳转到`phase_1`，然后执行`pdf`查看反汇编代码。
 
-  <img src="/images/bomb_4.png" alt="bomblab_phase1">
+  <img src="/images/bomb_4.webp" alt="bomblab_phase1">
 
   `phase_1`的汇编代码比较简洁。
 
@@ -46,7 +47,7 @@ tags:
 
   一样的跳转到`phase_2`然后查看反汇编代码。
 
-  <img src="/images/bomb_5.png" alt="bomblab_phase2">
+  <img src="/images/bomb_5.webp" alt="bomblab_phase2">
 
   可以看到，在`phase_2`中程序读入了6个数字，然后判断第一个数字是否为1，不为1则爆照。
 
@@ -62,7 +63,7 @@ tags:
 
   同样的，跳转到`phase_3`然后查看反汇编代码。
 
-  <img src="/images/bomb_6.png" alt="bomblab_phase3">
+  <img src="/images/bomb_6.webp" alt="bomblab_phase3">
 
   这里先调用`sscanf`读取读取两个数（`"%d %d"`），然后判断返回值是否大于1。查阅资料后得知`sscanf`的返回值的含义应该是：
 
@@ -74,7 +75,7 @@ tags:
 
   然后进入了一个`switch-case`语句。首先是`jmp qword [rax*8 + 0x402470]`，这里可以想到应该是通过`switch-case`的跳转表确定结果。由于前面已经推出第一个数只可能是0到7共8个值，故执行`px/8xg 0x402470`查看那8个`case`的跳转表。
 
-  <img src="/images/bomb_7.png" alt="bomblab_phase3">
+  <img src="/images/bomb_7.webp" alt="bomblab_phase3">
 
   所以设第一个数为`x`，那么`x`的跳转表如下：
 
@@ -112,13 +113,13 @@ tags:
 
   `phase_4`和`phase_3`开头很像，同样是读入了两个数（设为`x`和`y`）。
 
-  <img src="/images/bomb_8.png" alt="bomblab_phase4">
+  <img src="/images/bomb_8.webp" alt="bomblab_phase4">
 
   完成输入后，在`0x0040102e`对`x`进行比较，其中`x<=14`。
 
   接着将`edx`赋值为14，将`esi`赋值为0，`edi`赋值为x，再进入`fun4`。
 
-  <img src="/images/bomb_9.png" alt="bomblab_phase4">
+  <img src="/images/bomb_9.webp" alt="bomblab_phase4">
 
   这里是一个递归调用，我们尝试逆向出C语言代码：
 
@@ -202,7 +203,7 @@ tags:
 
   同样的，跳转到`phase_5`然后查看反汇编代码。
 
-  <img src="/images/bomb_10.png" alt="bomblab_phase5">
+  <img src="/images/bomb_10.webp" alt="bomblab_phase5">
 
   其实这段汇编有些内容我还不清楚，但是不影响解题。
 
@@ -227,19 +228,19 @@ tags:
 
   同样的，跳转到`phase_6`然后查看反汇编代码。
 
-  <img src="/images/bomb_11.png" alt="bomblab_phase6">
+  <img src="/images/bomb_11.webp" alt="bomblab_phase6">
 
   这一题汇编代码比较长。一开始就分配了20个4字的栈空间。
 
   这道题静态分析不好整（~~我太菜了~~），所以使用`IDA`进行动态调试。
 
-  <img src="/images/bomb_11_3.png" alt="bomblab_phase6">
+  <img src="/images/bomb_11_3.webp" alt="bomblab_phase6">
 
   首先定位到`phase_6`
 
   其中左半边的比较好研究，先看左半边。
 
-  <img src="/images/bomb_11_4.png" alt="bomblab_phase6">
+  <img src="/images/bomb_11_4.webp" alt="bomblab_phase6">
 
   左半边有两重循环，其中左半边的逻辑大至如下：
 
@@ -253,19 +254,19 @@ tags:
 
   执行完以上步骤之后又是一个循环：
 
-  <img src="/images/bomb_11_5.png" alt="bomblab_phase6">
+  <img src="/images/bomb_11_5.webp" alt="bomblab_phase6">
 
   在这个循环内，用7减去输入的每个数字。
 
   接着，到了最为复杂的部分。
 
-  <img src="/images/bomb_11_6.png" alt="bomblab_phase6">
+  <img src="/images/bomb_11_6.webp" alt="bomblab_phase6">
 
   首先是一个神秘常数`node1`（应该是`IDA`自动命名的）。因为一些神神秘秘的原因，我无法直接获取它的值，所以我在动态调试时使用`python`脚本来获取。
 
-  <img src="/images/bomb_11_1.png" alt="bomblab_phase6">
+  <img src="/images/bomb_11_1.webp" alt="bomblab_phase6">
 
-  <img src="/images/bomb_11_2.png" alt="bomblab_phase6">
+  <img src="/images/bomb_11_2.webp" alt="bomblab_phase6">
 
   最后我们拿到了六个数所对应的神秘数值：
 
@@ -282,7 +283,7 @@ tags:
 
   接着程序按照我们输入的值将`node`的值对应按顺序存入`RBX`中，最后检查`RBX`中的值是否是递减的。
 
-  <img src="/images/bomb_11_7.png" alt="bomblab_phase6">
+  <img src="/images/bomb_11_7.webp" alt="bomblab_phase6">
 
   所以我们手动给这几个数排序，也就是`924>691>477>443>332>168`对应成我们要输入的数就是`4 3 2 1 6 5`
 
@@ -291,4 +292,92 @@ tags:
   其实还有一个`secret_phase`没分析，就等下一次填坑吧！
 
   总结一下，这6个`phase`从简单到难，的确是很考验基础知识的。
+  
+  UPDATE：来填坑了
+
+- ### secret_phase ###
+
+  关于这个`secret_phase`如不是题目明确指明，我或许都不会去想有这一关。
+
+  开启`secret_phase`的机关在`phase_defused`中：
+
+  <img src="/images/bomb_s_2.webp" alt="bomblab_secret_phase">
+
+  在这个函数里，先判断是否完成了六次输入，如果完成了就会判断是否触发隐藏关。
+
+  在这里调用了`sscanf`来进行输入，而需要转换的源字符串是什么，这里通过动态调试，得知在执行到这儿后，第四次输入的内容将被传送到这。
+
+  所以触发隐藏关就是在第四次输入后多加一个`DrEvil`。
+
+  下面就来看`secret_phase`：
+
+  <img src="/images/bomb_s_1.webp" alt="bomblab_secret_phase">
+
+  在`secret_phase`中首先读入了一个十进制的数字字符串，然后通过`strtol`函数把它转化为整数。
+
+  如果这个数小于等于1001则可以继续，反之引爆炸弹。
+
+  接着，调用函数`fun7`，传入两个参数，一个是"$"(?)一个是转换后的那个数，如果返回值为2则顺利通关。
+
+  接着分析`fun7`：
+
+  <img src="/images/bomb_s_3.webp" alt="bomblab_secret_phase">
+
+  这里尝试还原成C语言代码：
+
+  ```C
+  int fun7(long long *edi, long long esi)
+  {
+      if (!edi)
+      {
+          return 0xffffffff;
+      }
+      if (*edi <= esi)
+      {
+          if (*edi == esi)
+          {
+              return 0;
+          }
+          else
+          {
+              edi += 16;
+              return 2 * fun7(edi, edi) + 1;
+          }
+      }
+      else
+      {
+          edi += 8;
+          return 2 * fun7(edi, esi);
+      }
+  }
+  ```
+
+  稍微整理一下代码：
+
+  ```c
+  int fun7(long long *x, long long y)
+  {
+      if (!x)
+          return 0xffffffff;
+      if (*x > y)
+          return 2 * fun7(x + 8, y);
+      if (*x == y)
+          return 0;
+      if (*x < y)
+          return 2 * fun7(x + 16, y) + 1;
+  }
+  ```
+
+  然后回到最初传入的那个地址，执行`px/8xg 0x6030f0`查看一下存放的值：
+
+  <img src="/images/bomb_s_4.webp" alt="bomblab_secret_phase">
+
+  然后再反向推这个`fun7`，得到结果`2`的步骤应该是`0->2*0+1->2*(2*0+1)`。
+
+  1. 那么第一次输入要先满足`*x>y`，而第一次输入时`*x=36`故`y<36`。
+  2. 然后取`x`的下一个数，也就是`0x603110`指向的内容，即`8`。此时要满足`*x<y`，即`y>8`。
+  3. 接着取`x`的下两个数，也就是`0x603150`指向的内容，即`22`。此时要满足`*x==y`，即`y=22`。
+
+  所以`secret_phase`的答案是`22`。
+
 
