@@ -99,7 +99,7 @@ theme: next
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repo: git@github.com:panpaul/note.git
+  repo: https://github.com/panpaul/note.git
   branch: deploy
 
 sitemap:
