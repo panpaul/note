@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="baidu-site-verification" content="GMF6OfSkkv">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.ofortune.xyz","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="如果问为什么要写这个？（其实是离散数学的作业）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用Coq实现β-reduction">
+<meta property="og:url" content="https://blog.ofortune.xyz/2020/03/29/beta-reduction/index.html">
+<meta property="og:site_name" content="Silent World">
+<meta property="og:description" content="如果问为什么要写这个？（其实是离散数学的作业）">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-03-29T07:44:51.000Z">
+<meta property="article:modified_time" content="2020-03-29T07:44:51.000Z">
+<meta property="article:author" content="Paul">
+<meta property="article:tag" content="Coq">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://blog.ofortune.xyz/2020/03/29/beta-reduction/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>使用Coq实现β-reduction | Silent World</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-91325067-5"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-91325067-5');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?838eea07a477dca863f82689af68d775";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Silent World</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Paul's notes</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.ofortune.xyz/2020/03/29/beta-reduction/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Paul">
+      <meta itemprop="description" content="thoughts,stories,experiences">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Silent World">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          使用Coq实现β-reduction
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-03-29 15:44:51" itemprop="dateCreated datePublished" datetime="2020-03-29T15:44:51+08:00">2020-03-29</time>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>440</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>1 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>如果问为什么要写这个？（<del>其实是离散数学的作业</del>）</p>
+<a id="more"></a>
+<p>先做一些准备工作，把有关<code>λ演算</code>（<del>我上课学过这个吗？</del>）的东西定义出来。</p>
+<figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">Require</span> <span class="keyword">Import</span> String.</span><br><span class="line"></span><br><span class="line"><span class="keyword">Open</span> <span class="keyword">Scope</span> string_scope.</span><br><span class="line"></span><br><span class="line"><span class="keyword">Check</span> <span class="string">"x"</span>.</span><br><span class="line"></span><br><span class="line"><span class="keyword">Inductive</span> lambda : <span class="keyword">Set</span> :=</span><br><span class="line">| <span class="type">Var</span> : string -&gt; lambda</span><br><span class="line">| <span class="type">App</span> : lambda -&gt; lambda -&gt; lambda</span><br><span class="line">| <span class="type">Abs</span> : string -&gt; lambda -&gt; lambda</span><br><span class="line">.</span><br><span class="line"></span><br><span class="line"><span class="keyword">Delimit</span> <span class="keyword">Scope</span> lambda_scope <span class="built_in">with</span> lambda.</span><br><span class="line"><span class="keyword">Open</span> <span class="keyword">Scope</span> lambda_scope.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">Notation</span> <span class="string">"x ':' c2"</span> := (Abs x c2)</span><br><span class="line">  (<span class="built_in">at</span> level <span class="number">20</span>, <span class="built_in">right</span> associativity) : lambda_scope.</span><br><span class="line"><span class="keyword">Notation</span> <span class="string">"c1 ';' c2"</span> := (App c1 c2)</span><br><span class="line">  (<span class="built_in">at</span> level <span class="number">10</span>, <span class="built_in">left</span> associativity) : lambda_scope.</span><br><span class="line"></span><br><span class="line"><span class="keyword">Notation</span> <span class="string">"# x"</span> := (Var x)</span><br><span class="line">  (<span class="built_in">at</span> level <span class="number">5</span>, no associativity) : lambda_scope.</span><br><span class="line"></span><br><span class="line"><span class="keyword">Check</span> # <span class="string">"x"</span>; # <span class="string">"y"</span>.</span><br><span class="line"></span><br><span class="line"><span class="keyword">Check</span> (<span class="string">"x"</span> : #<span class="string">"x"</span>; #<span class="string">"y"</span>).</span><br></pre></td></tr></table></figure>
+<p>然后是构建几个辅助用的函数。这里<code>bound</code>用于找出受约束的变量，<code>fv</code>用于找出不受约束的变量，<code>s_is_free_for_x</code>是对<code>fv</code>的简单包装。</p>
+<figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">Require</span> <span class="keyword">Export</span> List.</span><br><span class="line"><span class="keyword">Import</span> ListNotations.</span><br><span class="line"></span><br><span class="line"><span class="keyword">Fixpoint</span> bound term :=</span><br><span class="line">  <span class="keyword">match</span> term <span class="built_in">with</span> </span><br><span class="line">  | <span class="type"># _</span> =&gt; []</span><br><span class="line">  | <span class="type">x</span> : t1 =&gt; x :: bound t1</span><br><span class="line">  | <span class="type">t1</span> ; t2 =&gt;  (bound t1) ++ (bound t2)</span><br><span class="line">  <span class="keyword">end</span>.</span><br><span class="line"></span><br><span class="line"><span class="keyword">Fixpoint</span> fv term :=</span><br><span class="line">  <span class="keyword">match</span> term <span class="built_in">with</span> </span><br><span class="line">  | <span class="type"># x</span> =&gt; [x]</span><br><span class="line">  | <span class="type">x</span> : t1 =&gt; remove string_dec x (fv t1)</span><br><span class="line">  | <span class="type">t1</span> ; t2 =&gt;  (fv t1) ++ (fv t2)</span><br><span class="line">  <span class="keyword">end</span>.</span><br><span class="line"></span><br><span class="line"><span class="keyword">Compute</span> fv (<span class="string">"x"</span> : (#<span class="string">"x"</span>); (#<span class="string">"y"</span>)).</span><br><span class="line"></span><br><span class="line"><span class="keyword">Definition</span> find_x l x :=</span><br><span class="line">  <span class="keyword">let</span> f y := <span class="keyword">if</span> (string_dec x y) <span class="keyword">then</span> true <span class="keyword">else</span> false <span class="built_in">in</span></span><br><span class="line">           find f l.</span><br><span class="line"></span><br><span class="line"><span class="comment">(* for the substitution (λx.(...y...))[s/y], to avoid</span></span><br><span class="line"><span class="comment">   side effect, s must have no free occurrence of x *)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Definition</span> s_is_free_for_x s x :=</span><br><span class="line">  <span class="keyword">let</span> fv_in_s := fv s <span class="built_in">in</span>  </span><br><span class="line">  <span class="keyword">if</span> find_x fv_in_s x <span class="keyword">then</span> true <span class="keyword">else</span> false.</span><br><span class="line"></span><br><span class="line"><span class="keyword">Compute</span> s_is_free_for_x  (<span class="string">"x"</span> : (#<span class="string">"x"</span>); (#<span class="string">"y"</span>)) <span class="string">"y"</span>.</span><br></pre></td></tr></table></figure>
+<p>接着是用于执行替换的函数。这里需要说明，在执行替换时可能需要进行<code>α-conversion</code>给变量重命名，但是由于<code>Coq</code>的一些原因，使得生成一个新的未出现过的变量较为复杂（与老师讨论后没有得到什么好的方案），故<del>忽略了</del>（犯下了）可能替换重名的错误。</p>
+<figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">(* substition t[s/x] : no occurrence check! *)</span></span><br><span class="line"><span class="keyword">Fixpoint</span> substitution t x s :=</span><br><span class="line">  <span class="keyword">match</span> t <span class="built_in">with</span> </span><br><span class="line">  | <span class="type"># v</span> =&gt; <span class="keyword">if</span> string_dec v x <span class="keyword">then</span> s <span class="keyword">else</span> t </span><br><span class="line">  | <span class="type">v</span> : t1 =&gt; <span class="keyword">if</span> string_dec v x <span class="keyword">then</span> t</span><br><span class="line">             <span class="keyword">else</span> <span class="comment">(* if s_is_free_for_x s v then</span></span><br><span class="line"><span class="comment">                     # "side effect: must do alpha conversion"</span></span><br><span class="line"><span class="comment">                   else *)</span></span><br><span class="line">                    v : substitution t1 x s</span><br><span class="line">  | <span class="type">t1</span> ; t2 =&gt; (substitution t1 x s) ; (substitution t2 x s)</span><br><span class="line">  <span class="keyword">end</span>.</span><br><span class="line">  </span><br><span class="line"><span class="keyword">Compute</span> substitution (<span class="string">"y"</span> : (#<span class="string">"x"</span>); (#<span class="string">"y"</span>)) <span class="string">"x"</span> (<span class="string">"x"</span>: #<span class="string">"x"</span>) .</span><br></pre></td></tr></table></figure>
+<p>再者，就是<code>β-reduction</code>的主体了。（有两种实现方式，其中那个<code>normal_step</code>就是作业要求补全的内容）</p>
+<figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">(* reduction Innermost rightmost *)</span></span><br><span class="line"><span class="keyword">Fixpoint</span> inright_step t :=</span><br><span class="line">  <span class="keyword">match</span> t <span class="built_in">with</span></span><br><span class="line">  | <span class="type"># v</span> =&gt; None</span><br><span class="line">  | <span class="type">v</span> : t1 =&gt; <span class="keyword">let</span> t1' := inright_step t1 <span class="built_in">in</span></span><br><span class="line">             <span class="keyword">match</span> t1' <span class="built_in">with</span></span><br><span class="line">             | <span class="type">None</span> =&gt; None</span><br><span class="line">             | <span class="type">Some</span> t1'' =&gt; Some  (v : t1'') </span><br><span class="line">             <span class="keyword">end</span></span><br><span class="line">  | <span class="type">t1</span> ; t2 =&gt; <span class="keyword">let</span> t2' := inright_step t2 <span class="built_in">in</span></span><br><span class="line">              <span class="keyword">match</span> t2' <span class="built_in">with</span></span><br><span class="line">              | <span class="type">None</span> =&gt; <span class="keyword">let</span> t1' := inright_step t1 <span class="built_in">in</span></span><br><span class="line">                       <span class="comment">(* high risk of capture error *)</span></span><br><span class="line">                       <span class="keyword">match</span> t1' <span class="built_in">with</span></span><br><span class="line">                       | <span class="type">None</span> =&gt; <span class="keyword">match</span> t1 <span class="built_in">with</span></span><br><span class="line">                                | <span class="type">x</span> : t1'' =&gt; Some (substitution' t1'' x t2)</span><br><span class="line">                                | <span class="type">_</span> =&gt; None</span><br><span class="line">                                <span class="keyword">end</span></span><br><span class="line">                       | <span class="type">Some</span> t1'' =&gt; Some (t1''; t2)</span><br><span class="line">                       <span class="keyword">end</span></span><br><span class="line">              | <span class="type">Some</span> t2'' =&gt; Some (t1; t2'')</span><br><span class="line">              <span class="keyword">end</span></span><br><span class="line">  <span class="keyword">end</span>.</span><br><span class="line"></span><br><span class="line"><span class="comment">(* reduction call_by _value *)</span></span><br><span class="line"><span class="keyword">Fixpoint</span> <span class="built_in">cbv</span> t :=</span><br><span class="line">  <span class="keyword">match</span> t <span class="built_in">with</span></span><br><span class="line">  | <span class="type"># v</span> =&gt; None</span><br><span class="line">  | <span class="type">v</span> : t1 =&gt; <span class="keyword">let</span> t1' := <span class="built_in">cbv</span> t1 <span class="built_in">in</span></span><br><span class="line">             <span class="keyword">match</span> t1' <span class="built_in">with</span></span><br><span class="line">             | <span class="type">None</span> =&gt; None</span><br><span class="line">             | <span class="type">Some</span> t1'' =&gt; Some  (v : t1'') </span><br><span class="line">             <span class="keyword">end</span></span><br><span class="line">  | <span class="type">t1</span> ; t2 =&gt; <span class="keyword">let</span> t2' := <span class="built_in">cbv</span> t2 <span class="built_in">in</span></span><br><span class="line">              <span class="keyword">match</span> t2' <span class="built_in">with</span></span><br><span class="line">              | <span class="type">None</span> =&gt; <span class="keyword">match</span> t1 <span class="built_in">with</span></span><br><span class="line">                       | <span class="type">v</span> : t1' =&gt;  Some (substitution t1' v t2)</span><br><span class="line">                       | <span class="type">_</span> =&gt; <span class="keyword">match</span> <span class="built_in">cbv</span> t1 <span class="built_in">with</span></span><br><span class="line">                             | <span class="type">None</span>  =&gt; None</span><br><span class="line">                             | <span class="type">Some</span> t1'  =&gt; Some (t1'; t2)</span><br><span class="line">                             <span class="keyword">end</span></span><br><span class="line">                       <span class="keyword">end</span></span><br><span class="line">              | <span class="type">Some</span> t2'' =&gt; Some (t1; t2'')</span><br><span class="line">              <span class="keyword">end</span></span><br><span class="line">  <span class="keyword">end</span>.</span><br><span class="line"></span><br><span class="line"><span class="comment">(* normal reduction: Outmost leftmost (call by name) </span></span><br><span class="line"><span class="comment">   search the subterm of form ...((λx.M) ; N)... </span></span><br><span class="line"><span class="comment">   (called a redex), then do the substitution M[N/x], </span></span><br><span class="line"><span class="comment">   so called beta-reduction, then returns</span></span><br><span class="line"><span class="comment">   Some (...(M[N/x]...); if no redex, returns None.</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">   Outmost leftmost strategy is:</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">   recursive call normal_step t with:</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">   if term t is of form</span></span><br><span class="line"><span class="comment">   1/ (λx.M) N: return Some (M[N/y])</span></span><br><span class="line"><span class="comment">   2/ M N : M is not an abstraction</span></span><br><span class="line"><span class="comment">            if normal_step M return Some M',</span></span><br><span class="line"><span class="comment">            then return Some (M' N)</span></span><br><span class="line"><span class="comment">            else if normal_step N return Some N'</span></span><br><span class="line"><span class="comment">                 then return Some (M N')</span></span><br><span class="line"><span class="comment">                 else return None</span></span><br><span class="line"><span class="comment">   3/ (λx.M) : if normal_step M return Some M'</span></span><br><span class="line"><span class="comment">               then return Some (λx.M')</span></span><br><span class="line"><span class="comment">               else return None</span></span><br><span class="line"><span class="comment">   3/ x : return None</span></span><br><span class="line"><span class="comment"> *)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Fixpoint</span> normal_step t:=</span><br><span class="line">  <span class="keyword">match</span> t <span class="built_in">with</span></span><br><span class="line">  | <span class="type">t1</span> ; t2 =&gt; <span class="keyword">match</span> t1 <span class="built_in">with</span></span><br><span class="line">    | <span class="type">x</span> : t1' =&gt; Some (substitution t1' x t2)</span><br><span class="line">    | <span class="type">_</span> =&gt; <span class="keyword">let</span> t1' := normal_step t1 <span class="built_in">in</span></span><br><span class="line">      <span class="keyword">match</span> t1' <span class="built_in">with</span></span><br><span class="line">      | <span class="type">Some</span> t1'' =&gt; Some (t1'' ; t2)</span><br><span class="line">      | <span class="type">None</span> =&gt; <span class="keyword">let</span> t2' := normal_step t2 <span class="built_in">in</span></span><br><span class="line">        <span class="keyword">match</span> t2' <span class="built_in">with</span></span><br><span class="line">        | <span class="type">None</span> =&gt; None</span><br><span class="line">        | <span class="type">Some</span> t2'' =&gt; Some (t1 ; t2'')</span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">      <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">  | <span class="type"># v</span> =&gt; None</span><br><span class="line">  | <span class="type">v</span> : t1 =&gt; <span class="keyword">let</span> t1' := normal_step t1 <span class="built_in">in</span></span><br><span class="line">    <span class="keyword">match</span> t1' <span class="built_in">with</span></span><br><span class="line">    | <span class="type">Some</span> t1'' =&gt; Some (v : t1'')</span><br><span class="line">    | <span class="type">None</span> =&gt; None</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">  <span class="keyword">end</span>.</span><br></pre></td></tr></table></figure>
+<p>最后使用定义好的东西，执行<code>λ演算</code>试一下。（由于<code>Coq</code>不允许无限递归，所以我们老师引入<code>step</code>的机制控制递归调用的次数）</p>
+<figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">(* define the variable used in Church Numerals *)</span></span><br><span class="line"><span class="keyword">Definition</span> x := # <span class="string">"x"</span>.</span><br><span class="line"><span class="keyword">Definition</span> y := # <span class="string">"y"</span>.</span><br><span class="line"><span class="keyword">Definition</span> z := # <span class="string">"z"</span>.</span><br><span class="line"><span class="keyword">Definition</span> a := # <span class="string">"a"</span>.</span><br><span class="line"><span class="keyword">Definition</span> b := # <span class="string">"b"</span>.</span><br><span class="line"><span class="keyword">Definition</span> c := # <span class="string">"c"</span>.</span><br><span class="line"><span class="keyword">Definition</span> m := # <span class="string">"m"</span>.</span><br><span class="line"><span class="keyword">Definition</span> n := # <span class="string">"n"</span>.</span><br><span class="line"><span class="keyword">Definition</span> f := # <span class="string">"f"</span>.</span><br><span class="line"><span class="keyword">Definition</span> p := # <span class="string">"p"</span>.</span><br><span class="line"></span><br><span class="line"><span class="comment">(* λfx.x *)</span></span><br><span class="line"><span class="keyword">Definition</span> ZERO := <span class="string">"f"</span>: <span class="string">"x"</span>: x.</span><br><span class="line"></span><br><span class="line"><span class="comment">(* λn.λfx.f(nfx) *)</span></span><br><span class="line"><span class="keyword">Definition</span> SUCC := <span class="string">"n"</span>: <span class="string">"f"</span>: <span class="string">"x"</span>: f; (n; f; x).</span><br><span class="line"></span><br><span class="line"><span class="keyword">Compute</span> SUCC.</span><br><span class="line"></span><br><span class="line"><span class="keyword">Fixpoint</span> steps (strategy: lambda -&gt; option lambda) n count t :=</span><br><span class="line">  <span class="keyword">match</span> n <span class="built_in">with</span></span><br><span class="line">  | <span class="type">0</span> =&gt; (t, count) </span><br><span class="line">  | <span class="type">S</span> n' =&gt; <span class="keyword">let</span> t' := strategy t <span class="built_in">in</span></span><br><span class="line">           <span class="keyword">match</span> t' <span class="built_in">with</span></span><br><span class="line">           | <span class="type">None</span> =&gt; (t, count)</span><br><span class="line">           | <span class="type">Some</span> t'' =&gt; steps strategy n' (S count) t''</span><br><span class="line">           <span class="keyword">end</span></span><br><span class="line">  <span class="keyword">end</span>.</span><br><span class="line"></span><br><span class="line"><span class="keyword">Definition</span> normal_steps n t := steps normal_step n <span class="number">0</span> t.</span><br><span class="line"></span><br><span class="line"><span class="keyword">Definition</span> inright_steps n t := steps inright_step n <span class="number">0</span> t. </span><br><span class="line"></span><br><span class="line"><span class="keyword">Definition</span> cbv_steps n t := steps <span class="built_in">cbv</span> n <span class="number">0</span> t.</span><br><span class="line"></span><br><span class="line"><span class="keyword">Compute</span> cbv_steps <span class="number">10</span>  (SUCC; ZERO).</span><br><span class="line"></span><br><span class="line"><span class="keyword">Theorem</span>  church_rosser_ex01 : fst (cbv_steps <span class="number">10</span> (SUCC; ZERO))</span><br><span class="line">                              = fst (normal_steps <span class="number">10</span> (SUCC; ZERO)).</span><br><span class="line"><span class="keyword">Proof</span>.</span><br><span class="line">  <span class="built_in">simpl</span>.</span><br><span class="line">  <span class="built_in">reflexivity</span>.</span><br><span class="line"><span class="keyword">Qed</span>.  </span><br><span class="line"></span><br><span class="line"><span class="keyword">Definition</span> ONE := SUCC; ZERO.</span><br><span class="line"></span><br><span class="line"><span class="keyword">Definition</span> TWO := SUCC; ONE.</span><br><span class="line"></span><br><span class="line"><span class="keyword">Definition</span> THREE := SUCC; TWO.</span><br><span class="line"></span><br><span class="line"><span class="keyword">Definition</span> FOUR := SUCC; THREE.</span><br><span class="line"></span><br><span class="line"><span class="keyword">Definition</span> FIVE := SUCC; FOUR.</span><br><span class="line"></span><br><span class="line"><span class="comment">(* ADD = λab.a SUCC b *)</span> </span><br><span class="line"><span class="keyword">Definition</span> ADD := <span class="string">"a"</span>: <span class="string">"b"</span>: (a; SUCC); b.</span><br><span class="line"></span><br><span class="line"><span class="comment">(* ADD' = λab.λfx.af(bfx) *)</span></span><br><span class="line"><span class="keyword">Definition</span> ADD' := <span class="string">"a"</span>: <span class="string">"b"</span>: <span class="string">"f"</span> :<span class="string">"x"</span>: a; f; (b; f; x).</span><br><span class="line"></span><br><span class="line"><span class="comment">(* MULT = λab.a (ADD b) ZERO *)</span></span><br><span class="line"><span class="keyword">Definition</span> MULT := <span class="string">"a"</span>: <span class="string">"b"</span>: a; (ADD; b); ZERO.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">Theorem</span>  church_rosser_ex02 :</span><br><span class="line">   fst (cbv_steps <span class="number">100</span> (MULT; TWO; TWO))</span><br><span class="line"> = fst (normal_steps <span class="number">150</span> (MULT; TWO; TWO)).</span><br><span class="line"><span class="keyword">Proof</span>.</span><br><span class="line">  <span class="built_in">simpl</span>.</span><br><span class="line">  <span class="built_in">reflexivity</span>.</span><br><span class="line"><span class="keyword">Qed</span>.  </span><br><span class="line"></span><br><span class="line"><span class="keyword">Compute</span> (cbv_steps <span class="number">200</span> (MULT; FOUR; FOUR)).</span><br><span class="line"><span class="comment">(* 53 steps *)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">Compute</span> steps inright_step <span class="number">200</span> <span class="number">0</span> (MULT; FOUR; FOUR).</span><br><span class="line"><span class="comment">(* side effect occurs *)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">(* TRUE = λxy.x *)</span></span><br><span class="line"><span class="keyword">Definition</span> TRUE := <span class="string">"x"</span>: <span class="string">"y"</span>: x.</span><br><span class="line"></span><br><span class="line"><span class="comment">(* FALSE = λxy.y *)</span></span><br><span class="line"><span class="keyword">Definition</span> FALSE := <span class="string">"x"</span>: <span class="string">"y"</span>: y.</span><br><span class="line"></span><br><span class="line"><span class="comment">(* LIF = λabc.abc *)</span></span><br><span class="line"><span class="keyword">Definition</span> LIF := <span class="string">"a"</span>: <span class="string">"b"</span>: <span class="string">"c"</span>:  a; b; c.</span><br><span class="line"></span><br><span class="line"><span class="comment">(* OR = λab.LIF a TRUE b *)</span></span><br><span class="line"><span class="keyword">Definition</span> OR := <span class="string">"a"</span>: <span class="string">"b"</span>: LIF; a; TRUE; b.</span><br><span class="line"></span><br><span class="line"><span class="comment">(* AND = λab.LIF a b FALSE *)</span></span><br><span class="line"><span class="keyword">Definition</span> AND := <span class="string">"a"</span>: <span class="string">"b"</span>: LIF; a; FALSE; b.</span><br><span class="line"></span><br><span class="line"><span class="comment">(* NOT = λa.LIF a FALSE TRUE *)</span></span><br><span class="line"><span class="keyword">Definition</span> NOT := <span class="string">"a"</span>: <span class="string">"b"</span>: LIF; a; FALSE; TRUE.</span><br><span class="line"></span><br><span class="line"><span class="comment">(* PAIR = λab.λx.IF x a b *)</span></span><br><span class="line"><span class="keyword">Definition</span> PAIR := <span class="string">"a"</span>: <span class="string">"b"</span>: <span class="string">"x"</span>: LIF; x; a; b.</span><br><span class="line"></span><br><span class="line"><span class="comment">(* FST = λa.a TRUE *)</span></span><br><span class="line"><span class="keyword">Definition</span> FST := <span class="string">"a"</span>: a; TRUE.</span><br><span class="line"></span><br><span class="line"><span class="comment">(* SND = λa.a FALSE *)</span></span><br><span class="line"><span class="keyword">Definition</span> SND := <span class="string">"a"</span>: a; FALSE.</span><br><span class="line"></span><br><span class="line"><span class="comment">(* PRED = λnfx.SND (n(λp.PAIR (f (FST p)) (FST p)) (PAIR x x)) *)</span></span><br><span class="line"><span class="keyword">Definition</span> PRED := <span class="string">"n"</span>: <span class="string">"f"</span>: <span class="string">"x"</span>: SND; (n;</span><br><span class="line">                   (<span class="string">"p"</span>: PAIR; (f; (FST; p)); (FST; p))</span><br><span class="line">                  ; (PAIR; x; x)).</span><br><span class="line"></span><br><span class="line"><span class="comment">(* ISZERO = λn.n (λx.FALSE) TRUE *)</span></span><br><span class="line"><span class="keyword">Definition</span> ISZERO := <span class="string">"n"</span>: n; (<span class="string">"x"</span>: FALSE); TRUE.</span><br><span class="line"></span><br><span class="line"><span class="comment">(* Y combinator:</span></span><br><span class="line"><span class="comment">   https://en.wikipedia.org/wiki/Fixed-point_combinator *)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">(* FIX = λf.(λx.f(xx))(λx.f(xx)) *)</span></span><br><span class="line"><span class="keyword">Definition</span> FIX := <span class="string">"f"</span>: (<span class="string">"x"</span>: f; (x; x));  (<span class="string">"x"</span>: f; (x; x)).</span><br><span class="line"></span><br><span class="line"><span class="keyword">Compute</span> normal_steps <span class="number">10</span> FIX.</span><br><span class="line"><span class="keyword">Compute</span> normal_steps <span class="number">20</span> FIX.</span><br><span class="line"></span><br><span class="line"><span class="comment">(* diverge *)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">(* SUM = FIX (λfn.LIF (ISZERO n) ZERO (ADD n (f (PRED n)))) *)</span></span><br><span class="line"><span class="keyword">Definition</span> SUM := FIX; (<span class="string">"f"</span>: <span class="string">"n"</span>: LIF; (ISZERO; n); ZERO;</span><br><span class="line">                          (ADD; n; (f; (PRED; n)))).</span><br><span class="line">   </span><br><span class="line"></span><br><span class="line"><span class="keyword">Compute</span> normal_steps <span class="number">1000</span>  (SUM; FOUR).</span><br><span class="line"><span class="comment">(* 786 steps to converge *)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">(* FACT = FIX (λfn.LIF (ISZERO n) ONE (MULT n (f (PRED n)))) *)</span></span><br><span class="line"><span class="keyword">Definition</span> FACT := FIX; (<span class="string">"f"</span>: <span class="string">"n"</span>: LIF; (ISZERO; n); ONE;</span><br><span class="line">                           (MULT; n; (f; (PRED; n)))).</span><br><span class="line"></span><br><span class="line"><span class="keyword">Compute</span> normal_steps <span class="number">3000</span>  (FACT; THREE).</span><br><span class="line"><span class="comment">(* 2109 to converge *)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">(* cbv will diverge! *)</span></span><br><span class="line"><span class="keyword">Compute</span> cbv_steps <span class="number">10</span>  (SUM; ZERO).</span><br><span class="line"><span class="keyword">Compute</span> cbv_steps <span class="number">100</span>  (SUM; ZERO).</span><br><span class="line"></span><br><span class="line"><span class="keyword">Compute</span> normal_steps <span class="number">20</span>  (SUM; ZERO).</span><br><span class="line"><span class="comment">(* converge in 12 steps *)</span></span><br></pre></td></tr></table></figure>
+<p>最后不得不说，这次作业，虽然说是完成了，但是感觉知识上相差的还是太多。对于<code>λ演算</code>以及<code>丘奇计数</code>的了解太少。以后等有时间再学习并写一些关于这两者的笔记吧！</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Coq/" rel="tag"># Coq</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/03/19/matlab-update-error/" rel="prev" title="记一次matlab升级错误">
+      <i class="fa fa-chevron-left"></i> 记一次matlab升级错误
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/03/31/bomblab-writeup/" rel="next" title="Bomblab 记录">
+      Bomblab 记录 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Paul</p>
+  <div class="site-description" itemprop="description">thoughts,stories,experiences</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Paul</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">18k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">30 分钟</span>
+</div>
+  <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZw==">NexT.Gemini</span> 强力驱动
+  </div>
+
+        
+
+
+  <div style="display: none;">
+    <script src="//s95.cnzz.com/z_stat.php?id=1278724440&web_id=1278724440"></script>
+  </div>
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/disqusjs@1/dist/disqusjs.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/disqusjs@1/dist/disqus.js', () => {
+    window.dsqjs = new DisqusJS({
+      api       : 'https://disqus.skk.moe/disqus/' || 'https://disqus.com/api/',
+      apikey    : 'pwCicQgBQmc1ZEUP8fbsECJ1H1U5HWHEuUKbFFR0whF6VjLgL5CneiwMFOtQwwAv',
+      shortname : 'silent-world',
+      url       : "https://blog.ofortune.xyz/2020/03/29/beta-reduction/",
+      identifier: "2020/03/29/beta-reduction/",
+      title     : "使用Coq实现β-reduction",
+    });
+  }, window.DisqusJS);
+});
+</script>
+
+</body>
+</html>

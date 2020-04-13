@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="baidu-site-verification" content="GMF6OfSkkv">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.ofortune.xyz","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="最近计算机系统基础课程要求完成这项作业，故记录一下完成过程。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Bomblab 记录">
+<meta property="og:url" content="https://blog.ofortune.xyz/2020/03/31/bomblab-writeup/index.html">
+<meta property="og:site_name" content="Silent World">
+<meta property="og:description" content="最近计算机系统基础课程要求完成这项作业，故记录一下完成过程。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/bomb_3.webp">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/bomb_1.webp">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/bomb_2.webp">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/bomb_4.webp">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/bomb_5.webp">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/bomb_6.webp">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/bomb_7.webp">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/bomb_8.webp">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/bomb_9.webp">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/bomb_10.webp">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/bomb_11.webp">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/bomb_11_3.webp">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/bomb_11_4.webp">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/bomb_11_5.webp">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/bomb_11_6.webp">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/bomb_11_1.webp">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/bomb_11_2.webp">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/bomb_11_7.webp">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/bomb_s_2.webp">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/bomb_s_1.webp">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/bomb_s_3.webp">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/bomb_s_4.webp">
+<meta property="article:published_time" content="2020-03-31T12:12:15.000Z">
+<meta property="article:modified_time" content="2020-04-04T09:28:00.000Z">
+<meta property="article:author" content="Paul">
+<meta property="article:tag" content="debugging">
+<meta property="article:tag" content="bomblab">
+<meta property="article:tag" content="csapp">
+<meta property="article:tag" content="assembly">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.ofortune.xyz/images/bomb_3.webp">
+
+<link rel="canonical" href="https://blog.ofortune.xyz/2020/03/31/bomblab-writeup/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Bomblab 记录 | Silent World</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-91325067-5"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-91325067-5');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?838eea07a477dca863f82689af68d775";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Silent World</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Paul's notes</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.ofortune.xyz/2020/03/31/bomblab-writeup/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Paul">
+      <meta itemprop="description" content="thoughts,stories,experiences">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Silent World">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Bomblab 记录
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-03-31 20:12:15" itemprop="dateCreated datePublished" datetime="2020-03-31T20:12:15+08:00">2020-03-31</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-04 17:28:00" itemprop="dateModified" datetime="2020-04-04T17:28:00+08:00">2020-04-04</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.8k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>6 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>最近计算机系统基础课程要求完成这项作业，故记录一下完成过程。</p>
+<a id="more"></a>
+<ul>
+<li><h3 id="bomb-c"><a href="#bomb-c" class="headerlink" title="bomb.c"></a>bomb.c</h3><p>首先，出题者给我们提供了bomb的原型，通过<code>bomb.c</code>，大致可以了解这个<code>bomb</code>的执行流程：从键盘读入一行，然后执行<code>phase_(x)</code>然后解除炸弹。总共有<code>6</code>？个<code>phase</code>等待我们取解开。</p>
+<p><img src="/images/bomb_3.webp" alt="bomblab_bomb.c"></p>
+</li>
+<li><h3 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h3><p>这里，我是用了<span class="exturl" data-url="aHR0cHM6Ly93d3cucmFkYXJlLm9yZy8=">radare2<i class="fa fa-external-link-alt"></i></span> 作为分析工具。(然而第6题太给力，用了<code>IDA</code>)</p>
+<p>首先，执行<code>r2 -A bomb</code>加载二进制文件并执行分析。</p>
+<p><img src="/images/bomb_1.webp" alt="bomblab_prepare"></p>
+<p>然后，执行<code>afl</code>看一下函数列表，我们发现了几个包含<code>phase</code>的函数，也就是我们要重点关注的东西了。同时也注意到列表里包含<code>sym.secret_phase</code>，估计这是个<code>bonus</code>。</p>
+<p><img src="/images/bomb_2.webp" alt="bomblab_functions"></p>
+</li>
+<li><h3 id="Phase-1"><a href="#Phase-1" class="headerlink" title="Phase_1"></a>Phase_1</h3><p>先执行<code>s sym.phase_1</code>跳转到<code>phase_1</code>，然后执行<code>pdf</code>查看反汇编代码。</p>
+<p><img src="/images/bomb_4.webp" alt="bomblab_phase1"></p>
+<p><code>phase_1</code>的汇编代码比较简洁。</p>
+<p>我们的输入存放在<code>rdi</code>中，然后<code>phase_1</code>中将<code>Border relations with Canada have never been better.</code>这句话放入<code>esi</code>中作为参数调用<code>strings_not_equal</code>。<code>strings_not_equal</code>函数负责判断两个字符串是否相等。接下来是<code>test</code>指令判断<code>eax</code>的值是否为0，不为0则引爆炸弹。</p>
+<p>所以<code>phase_1</code>的答案就是<code>Border relations with Canada have never been better.</code></p>
+</li>
+<li><h3 id="Phase-2"><a href="#Phase-2" class="headerlink" title="Phase_2"></a>Phase_2</h3><p>一样的跳转到<code>phase_2</code>然后查看反汇编代码。</p>
+<p><img src="/images/bomb_5.webp" alt="bomblab_phase2"></p>
+<p>可以看到，在<code>phase_2</code>中程序读入了6个数字，然后判断第一个数字是否为1，不为1则爆照。</p>
+<p>若为1则跳转到<code>0x00400f30</code>处，这里<code>radare2</code>用<code>qword [local_4h]</code>表示<code>rsp+4</code>，也就说<code>local_4h</code>到<code>local_18h</code>刚好是第二个数到第六个数和“第七个数”（用于判断循环结束）（也刚好应证了开头<code>sub rsp, 0x28</code>开辟的7个空间）。将一头一尾分别保存到<code>rbx</code>，<code>rbp</code>后，一个<code>JMP</code>直接跳到了<code>0x00400f17</code>开始执行循环。</p>
+<p>在循环体中，程序先取出前一个值(<code>rbx-4</code>)，然后将这个值乘2，在与当前值比较(<code>rbx</code>)。如果相等那么将<code>rbx+4</code>也就是循环迭代下一个值，如果刚好到最后一个值了那么就跳出循环。</p>
+<p>所以这个循环就是判断这六个数是否是以1为首项，2为公比的等比数列。</p>
+<p>故<code>phase_2</code>的答案是<code>1 2 4 8 16 32</code>。</p>
+</li>
+<li><h3 id="Phase-3"><a href="#Phase-3" class="headerlink" title="Phase_3"></a>Phase_3</h3><p>同样的，跳转到<code>phase_3</code>然后查看反汇编代码。</p>
+<p><img src="/images/bomb_6.webp" alt="bomblab_phase3"></p>
+<p>这里先调用<code>sscanf</code>读取读取两个数（<code>&quot;%d %d&quot;</code>），然后判断返回值是否大于1。查阅资料后得知<code>sscanf</code>的返回值的含义应该是：</p>
+<blockquote>
+<p>如果成功，该函数返回成功匹配和赋值的个数。如果到达文件末尾或发生读错误，则返回 EOF。</p>
+</blockquote>
+<p>然后我们根据调用的约定可以得出<code>local_ch</code>存放第二个数，<code>local_8h</code>存放第一个数。</p>
+<p>然后有个<code>CMP</code>比较（<code>0x00400f6a</code>），可以得出第一个数不能大于7，同时又由接下来的<code>ja</code>得出第一个数应该是无符号的，也就第一个数还需大于0。</p>
+<p>然后进入了一个<code>switch-case</code>语句。首先是<code>jmp qword [rax*8 + 0x402470]</code>，这里可以想到应该是通过<code>switch-case</code>的跳转表确定结果。由于前面已经推出第一个数只可能是0到7共8个值，故执行<code>px/8xg 0x402470</code>查看那8个<code>case</code>的跳转表。</p>
+<p><img src="/images/bomb_7.webp" alt="bomblab_phase3"></p>
+<p>所以设第一个数为<code>x</code>，那么<code>x</code>的跳转表如下：</p>
+</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">地址</th>
+<th style="text-align:center">x</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">0x00400f7c</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">0x00400fb9</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">0x00400f83</td>
+<td style="text-align:center">2</td>
+</tr>
+<tr>
+<td style="text-align:center">0x00400f8a</td>
+<td style="text-align:center">3</td>
+</tr>
+<tr>
+<td style="text-align:center">0x00400f91</td>
+<td style="text-align:center">4</td>
+</tr>
+<tr>
+<td style="text-align:center">0x00400f98</td>
+<td style="text-align:center">5</td>
+</tr>
+<tr>
+<td style="text-align:center">0x00400f9f</td>
+<td style="text-align:center">6</td>
+</tr>
+<tr>
+<td style="text-align:center">0x00400fa6</td>
+<td style="text-align:center">7</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>  对于每一个<code>case</code>都修改了<code>eax</code>的值，然后跳转到<code>0x00400fbe</code>与第二个数的值进行比较，如果相等就成功拆弹，否则就失败。故本题答案有多组，设第二个数位<code>y</code>，本题答案如下：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">x</th>
+<th style="text-align:center">y</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">207(0xcf)</td>
+</tr>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">311(0x137)</td>
+</tr>
+<tr>
+<td style="text-align:center">2</td>
+<td style="text-align:center">707(0x2c3)</td>
+</tr>
+<tr>
+<td style="text-align:center">3</td>
+<td style="text-align:center">256(0x100)</td>
+</tr>
+<tr>
+<td style="text-align:center">4</td>
+<td style="text-align:center">389(0x185)</td>
+</tr>
+<tr>
+<td style="text-align:center">5</td>
+<td style="text-align:center">206(0xce)</td>
+</tr>
+<tr>
+<td style="text-align:center">6</td>
+<td style="text-align:center">682(0x2aa)</td>
+</tr>
+<tr>
+<td style="text-align:center">7</td>
+<td style="text-align:center">327(0x147)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li><h3 id="Phase-4"><a href="#Phase-4" class="headerlink" title="Phase_4"></a>Phase_4</h3><p>同样的，跳转到<code>phase_4</code>然后查看反汇编代码。</p>
+<p><code>phase_4</code>和<code>phase_3</code>开头很像，同样是读入了两个数（设为<code>x</code>和<code>y</code>）。</p>
+<p><img src="/images/bomb_8.webp" alt="bomblab_phase4"></p>
+<p>完成输入后，在<code>0x0040102e</code>对<code>x</code>进行比较，其中<code>x&lt;=14</code>。</p>
+<p>接着将<code>edx</code>赋值为14，将<code>esi</code>赋值为0，<code>edi</code>赋值为x，再进入<code>fun4</code>。</p>
+<p><img src="/images/bomb_9.webp" alt="bomblab_phase4"></p>
+<p>这里是一个递归调用，我们尝试逆向出C语言代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">func4</span><span class="params">(<span class="keyword">int</span> edx,<span class="keyword">int</span> esi,<span class="keyword">int</span> edi)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> eax = edx - esi;</span><br><span class="line">    <span class="keyword">int</span> ecx = eax &gt;&gt; <span class="number">31</span>; <span class="comment">// 符号位</span></span><br><span class="line">    eax += ecx;</span><br><span class="line">    eax /= <span class="number">2</span>;</span><br><span class="line">    ecx = eax + esi;</span><br><span class="line">    <span class="keyword">if</span>(ecx&lt;=edi) &#123;</span><br><span class="line">        <span class="keyword">if</span>(ecx&gt;=edi) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            esi = eax+<span class="number">1</span>;</span><br><span class="line">            eax = func4(edx,esi,edi);</span><br><span class="line">            <span class="keyword">return</span> <span class="number">2</span>*eax+<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        edx = ecx<span class="number">-1</span>;</span><br><span class="line">        eax = func4(edx,esi,edi);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">2</span>*eax;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里可以大致看出是一个二分算法，稍微修改一下代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">func4</span><span class="params">(<span class="keyword">int</span> r, <span class="keyword">int</span> l, <span class="keyword">int</span> t)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> mid = (r + l) &gt;&gt; <span class="number">1</span>; <span class="comment">// ecx,同时假定r&gt;l</span></span><br><span class="line">    <span class="keyword">if</span> (mid == t)</span><br><span class="line">    &#123; <span class="comment">// 找到目标</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (mid &lt; t)</span><br><span class="line">    &#123; <span class="comment">// mid &lt; t 中值小于目标x，扩大左边界</span></span><br><span class="line">        l = ((r - l) &gt;&gt; <span class="number">1</span>) + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">return</span> func4(r, l, t) * <span class="number">2</span> + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123; <span class="comment">// mid &gt; t 中值大于目标x，缩小右边界至mid-1</span></span><br><span class="line">        r = mid - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">return</span> func4(r, l, t) * <span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>  在<code>phase_4</code>中执行了<code>func4(14,0,x)</code>其返回值要求为0，同时第二个输入也必须为0(??)才能过关。</p>
+<p>  关于<code>func4</code>不妨写一个程序遍历一遍（x取值在0到14之间），得到的结果如下：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">x</th>
+<th style="text-align:center">func4</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">2</td>
+<td style="text-align:center">4</td>
+</tr>
+<tr>
+<td style="text-align:center">3</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">4</td>
+<td style="text-align:center">2</td>
+</tr>
+<tr>
+<td style="text-align:center">5</td>
+<td style="text-align:center">2</td>
+</tr>
+<tr>
+<td style="text-align:center">6</td>
+<td style="text-align:center">segmentation fault</td>
+</tr>
+<tr>
+<td style="text-align:center">7</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">8</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">9</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">10</td>
+<td style="text-align:center">segmentation fault</td>
+</tr>
+<tr>
+<td style="text-align:center">11</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">12</td>
+<td style="text-align:center">segmentation fault</td>
+</tr>
+<tr>
+<td style="text-align:center">13</td>
+<td style="text-align:center">segmentation fault</td>
+</tr>
+<tr>
+<td style="text-align:center">14</td>
+<td style="text-align:center">segmentation fault</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>  这里比较有意思的是<code>segmentation fault</code>，估计是模拟给出的C语言代码有些问题吧！同时实际测试发现<code>bomb</code>没有给出<code>segmentation fault</code>而是直接引爆了炸弹。</p>
+<p>  所以综上，本题答案为<code>0 0</code>或<code>1 0</code>或<code>3 0</code>或<code>7 0</code>。</p>
+<ul>
+<li><h3 id="Phase-5"><a href="#Phase-5" class="headerlink" title="Phase_5"></a>Phase_5</h3><p>同样的，跳转到<code>phase_5</code>然后查看反汇编代码。</p>
+<p><img src="/images/bomb_10.webp" alt="bomblab_phase5"></p>
+<p>其实这段汇编有些内容我还不清楚，但是不影响解题。</p>
+<p>这段代码的大意是：</p>
+<ol>
+<li>输入一个字符串，长度为6</li>
+<li>遍历输入的每个字符<code>c</code></li>
+<li>获取<code>c</code>的ASCII二进制码的后四位，将这个数作为索引从<code>maduiersnfotvbylSo_you_think_you_can_stop_the_bomb_with_ctrl_c__do_you</code>中取出字母拼接一个新的字符串。</li>
+<li>比较拼接出的字符串是否是<code>flyers</code></li>
+</ol>
+<p>这里由于是4位二进制串故我们只用考虑在前16位（<code>maduiersnfotvbyl</code>）中找字母就可以了。</p>
+<p>其中<code>f-9</code>，<code>l-15</code>，<code>y-14</code>，<code>e-5</code>，<code>r-6</code>，<code>s-7</code>。这里由于只考虑后4位二进制，所以可以直接<code>printf</code>出几个不可见字符或者找可见字符后四位满足要求的。比如：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">"%c%c%c%c%c%c"</span>,<span class="number">9</span>,<span class="number">15</span>,<span class="number">14</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"IONEFG"</span>);</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+</li>
+<li><h3 id="Phase-6"><a href="#Phase-6" class="headerlink" title="Phase_6"></a>Phase_6</h3><p>同样的，跳转到<code>phase_6</code>然后查看反汇编代码。</p>
+<p><img src="/images/bomb_11.webp" alt="bomblab_phase6"></p>
+<p>这一题汇编代码比较长。一开始就分配了20个4字的栈空间。</p>
+<p>这道题静态分析不好整（<del>我太菜了</del>），所以使用<code>IDA</code>进行动态调试。</p>
+<p><img src="/images/bomb_11_3.webp" alt="bomblab_phase6"></p>
+<p>首先定位到<code>phase_6</code></p>
+<p>其中左半边的比较好研究，先看左半边。</p>
+<p><img src="/images/bomb_11_4.webp" alt="bomblab_phase6"></p>
+<p>左半边有两重循环，其中左半边的逻辑大至如下：</p>
+<ol>
+<li>首先读入六个数字</li>
+<li>遍历这六个数字，记当前数字为<code>a</code></li>
+<li>如果<code>a</code>比6大则爆炸</li>
+<li>从<code>a</code>开始遍历以后的数字，如果存在与<code>a</code>相等的则爆炸</li>
+<li>完成第3，4步后迭代<code>a</code></li>
+</ol>
+<p>也就是说这1-5步就是确定这六个数字互不相等且都小于等于6（大于等于1）</p>
+<p>执行完以上步骤之后又是一个循环：</p>
+<p><img src="/images/bomb_11_5.webp" alt="bomblab_phase6"></p>
+<p>在这个循环内，用7减去输入的每个数字。</p>
+<p>接着，到了最为复杂的部分。</p>
+<p><img src="/images/bomb_11_6.webp" alt="bomblab_phase6"></p>
+<p>首先是一个神秘常数<code>node1</code>（应该是<code>IDA</code>自动命名的）。因为一些神神秘秘的原因，我无法直接获取它的值，所以我在动态调试时使用<code>python</code>脚本来获取。</p>
+<p><img src="/images/bomb_11_1.webp" alt="bomblab_phase6"></p>
+<p><img src="/images/bomb_11_2.webp" alt="bomblab_phase6"></p>
+<p>最后我们拿到了六个数所对应的神秘数值：</p>
+</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">node</th>
+<th style="text-align:center">7-x</th>
+<th style="text-align:center">x</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">332</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">6</td>
+</tr>
+<tr>
+<td style="text-align:center">168</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">5</td>
+</tr>
+<tr>
+<td style="text-align:center">924</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">4</td>
+</tr>
+<tr>
+<td style="text-align:center">691</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">3</td>
+</tr>
+<tr>
+<td style="text-align:center">477</td>
+<td style="text-align:center">5</td>
+<td style="text-align:center">2</td>
+</tr>
+<tr>
+<td style="text-align:center">443</td>
+<td style="text-align:center">6</td>
+<td style="text-align:center">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>  接着程序按照我们输入的值将<code>node</code>的值对应按顺序存入<code>RBX</code>中，最后检查<code>RBX</code>中的值是否是递减的。</p>
+<p>  <img src="/images/bomb_11_7.webp" alt="bomblab_phase6"></p>
+<p>  所以我们手动给这几个数排序，也就是<code>924&gt;691&gt;477&gt;443&gt;332&gt;168</code>对应成我们要输入的数就是<code>4 3 2 1 6 5</code></p>
+<ul>
+<li><h3 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h3><p>其实还有一个<code>secret_phase</code>没分析，就等下一次填坑吧！</p>
+<p>总结一下，这6个<code>phase</code>从简单到难，的确是很考验基础知识的。</p>
+<p>UPDATE：来填坑了</p>
+</li>
+<li><h3 id="secret-phase"><a href="#secret-phase" class="headerlink" title="secret_phase"></a>secret_phase</h3><p>关于这个<code>secret_phase</code>如不是题目明确指明，我或许都不会去想有这一关。</p>
+<p>开启<code>secret_phase</code>的机关在<code>phase_defused</code>中：</p>
+<p><img src="/images/bomb_s_2.webp" alt="bomblab_secret_phase"></p>
+<p>在这个函数里，先判断是否完成了六次输入，如果完成了就会判断是否触发隐藏关。</p>
+<p>在这里调用了<code>sscanf</code>来进行输入，而需要转换的源字符串是什么，这里通过动态调试，得知在执行到这儿后，第四次输入的内容将被传送到这。</p>
+<p>所以触发隐藏关就是在第四次输入后多加一个<code>DrEvil</code>。</p>
+<p>下面就来看<code>secret_phase</code>：</p>
+<p><img src="/images/bomb_s_1.webp" alt="bomblab_secret_phase"></p>
+<p>在<code>secret_phase</code>中首先读入了一个十进制的数字字符串，然后通过<code>strtol</code>函数把它转化为整数。</p>
+<p>如果这个数小于等于1001则可以继续，反之引爆炸弹。</p>
+<p>接着，调用函数<code>fun7</code>，传入两个参数，一个是”$”(?)一个是转换后的那个数，如果返回值为2则顺利通关。</p>
+<p>接着分析<code>fun7</code>：</p>
+<p><img src="/images/bomb_s_3.webp" alt="bomblab_secret_phase"></p>
+<p>这里尝试还原成C语言代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fun7</span><span class="params">(<span class="keyword">long</span> <span class="keyword">long</span> *edi, <span class="keyword">long</span> <span class="keyword">long</span> esi)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!edi)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0xffffffff</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (*edi &lt;= esi)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (*edi == esi)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            edi += <span class="number">16</span>;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">2</span> * fun7(edi, edi) + <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        edi += <span class="number">8</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">2</span> * fun7(edi, esi);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>稍微整理一下代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fun7</span><span class="params">(<span class="keyword">long</span> <span class="keyword">long</span> *x, <span class="keyword">long</span> <span class="keyword">long</span> y)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!x)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0xffffffff</span>;</span><br><span class="line">    <span class="keyword">if</span> (*x &gt; y)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">2</span> * fun7(x + <span class="number">8</span>, y);</span><br><span class="line">    <span class="keyword">if</span> (*x == y)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">if</span> (*x &lt; y)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">2</span> * fun7(x + <span class="number">16</span>, y) + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后回到最初传入的那个地址，执行<code>px/8xg 0x6030f0</code>查看一下存放的值：</p>
+<p><img src="/images/bomb_s_4.webp" alt="bomblab_secret_phase"></p>
+<p>然后再反向推这个<code>fun7</code>，得到结果<code>2</code>的步骤应该是<code>0-&gt;2*0+1-&gt;2*(2*0+1)</code>。</p>
+<ol>
+<li>那么第一次输入要先满足<code>*x&gt;y</code>，而第一次输入时<code>*x=36</code>故<code>y&lt;36</code>。</li>
+<li>然后取<code>x</code>的下一个数，也就是<code>0x603110</code>指向的内容，即<code>8</code>。此时要满足<code>*x&lt;y</code>，即<code>y&gt;8</code>。</li>
+<li>接着取<code>x</code>的下两个数，也就是<code>0x603150</code>指向的内容，即<code>22</code>。此时要满足<code>*x==y</code>，即<code>y=22</code>。</li>
+</ol>
+<p>所以<code>secret_phase</code>的答案是<code>22</code>。</p>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/debugging/" rel="tag"># debugging</a>
+              <a href="/tags/bomblab/" rel="tag"># bomblab</a>
+              <a href="/tags/csapp/" rel="tag"># csapp</a>
+              <a href="/tags/assembly/" rel="tag"># assembly</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/03/29/beta-reduction/" rel="prev" title="使用Coq实现β-reduction">
+      <i class="fa fa-chevron-left"></i> 使用Coq实现β-reduction
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/04/12/coq-powerset/" rel="next" title="使用Coq求一个集合的所有子集">
+      使用Coq求一个集合的所有子集 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#bomb-c"><span class="nav-number">1.</span> <span class="nav-text">bomb.c</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#环境准备"><span class="nav-number">2.</span> <span class="nav-text">环境准备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Phase-1"><span class="nav-number">3.</span> <span class="nav-text">Phase_1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Phase-2"><span class="nav-number">4.</span> <span class="nav-text">Phase_2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Phase-3"><span class="nav-number">5.</span> <span class="nav-text">Phase_3</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Phase-4"><span class="nav-number">6.</span> <span class="nav-text">Phase_4</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Phase-5"><span class="nav-number">7.</span> <span class="nav-text">Phase_5</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Phase-6"><span class="nav-number">8.</span> <span class="nav-text">Phase_6</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最后"><span class="nav-number">9.</span> <span class="nav-text">最后</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#secret-phase"><span class="nav-number">10.</span> <span class="nav-text">secret_phase</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Paul</p>
+  <div class="site-description" itemprop="description">thoughts,stories,experiences</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Paul</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">18k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">30 分钟</span>
+</div>
+  <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZw==">NexT.Gemini</span> 强力驱动
+  </div>
+
+        
+
+
+  <div style="display: none;">
+    <script src="//s95.cnzz.com/z_stat.php?id=1278724440&web_id=1278724440"></script>
+  </div>
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/disqusjs@1/dist/disqusjs.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/disqusjs@1/dist/disqus.js', () => {
+    window.dsqjs = new DisqusJS({
+      api       : 'https://disqus.skk.moe/disqus/' || 'https://disqus.com/api/',
+      apikey    : 'pwCicQgBQmc1ZEUP8fbsECJ1H1U5HWHEuUKbFFR0whF6VjLgL5CneiwMFOtQwwAv',
+      shortname : 'silent-world',
+      url       : "https://blog.ofortune.xyz/2020/03/31/bomblab-writeup/",
+      identifier: "2020/03/31/bomblab-writeup/",
+      title     : "Bomblab 记录",
+    });
+  }, window.DisqusJS);
+});
+</script>
+
+</body>
+</html>
