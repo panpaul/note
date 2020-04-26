@@ -21,21 +21,24 @@
     var CONFIG = {"hostname":"blog.ofortune.xyz","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="不得不说Linux系统在DPI缩放方面实在是不如Windows或MacOS优化的好。 我用的是KDE桌面环境，如果设置全局DPI缩放为非整数倍时，许多Qt程序的字体渲染出现问题，比如说Yakuake总是会出现条纹。所以只能调整每个应用单独的配置来实现缩放。">
+  <meta name="description" content="最近想把原来装在机械硬盘的Linux系统移动到固态硬盘中。原来把Windows装在了固态硬盘，现在如果要把Linux和Windows在一个硬盘上共存会破坏Recovery分区，于是研究了一下如何手动重建Recovery分区。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Linux版Chromium调整DPI缩放">
-<meta property="og:url" content="https://blog.ofortune.xyz/2020/02/23/chromium-scale/index.html">
+<meta property="og:title" content="重建Windows Recovery分区">
+<meta property="og:url" content="https://blog.ofortune.xyz/2020/04/26/windows-recovery/index.html">
 <meta property="og:site_name" content="Silent World">
-<meta property="og:description" content="不得不说Linux系统在DPI缩放方面实在是不如Windows或MacOS优化的好。 我用的是KDE桌面环境，如果设置全局DPI缩放为非整数倍时，许多Qt程序的字体渲染出现问题，比如说Yakuake总是会出现条纹。所以只能调整每个应用单独的配置来实现缩放。">
+<meta property="og:description" content="最近想把原来装在机械硬盘的Linux系统移动到固态硬盘中。原来把Windows装在了固态硬盘，现在如果要把Linux和Windows在一个硬盘上共存会破坏Recovery分区，于是研究了一下如何手动重建Recovery分区。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-02-23T07:48:21.000Z">
-<meta property="article:modified_time" content="2020-02-23T07:48:21.000Z">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/recovery-1.webp">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/recovery-3.webp">
+<meta property="article:published_time" content="2020-04-26T07:24:02.000Z">
+<meta property="article:modified_time" content="2020-04-26T07:24:02.000Z">
 <meta property="article:author" content="Paul">
-<meta property="article:tag" content="chromium">
-<meta property="article:tag" content="linux">
+<meta property="article:tag" content="windows">
+<meta property="article:tag" content="recovery">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.ofortune.xyz/images/recovery-1.webp">
 
-<link rel="canonical" href="https://blog.ofortune.xyz/2020/02/23/chromium-scale/">
+<link rel="canonical" href="https://blog.ofortune.xyz/2020/04/26/windows-recovery/">
 
 
 <script id="page-configurations">
@@ -48,7 +51,7 @@
   };
 </script>
 
-  <title>Linux版Chromium调整DPI缩放 | Silent World</title>
+  <title>重建Windows Recovery分区 | Silent World</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-91325067-5"></script>
     <script>
@@ -183,7 +186,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blog.ofortune.xyz/2020/02/23/chromium-scale/">
+    <link itemprop="mainEntityOfPage" href="https://blog.ofortune.xyz/2020/04/26/windows-recovery/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -196,7 +199,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Linux版Chromium调整DPI缩放
+          重建Windows Recovery分区
         </h1>
 
         <div class="post-meta">
@@ -206,7 +209,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-02-23 15:48:21" itemprop="dateCreated datePublished" datetime="2020-02-23T15:48:21+08:00">2020-02-23</time>
+              <time title="创建时间：2020-04-26 15:24:02" itemprop="dateCreated datePublished" datetime="2020-04-26T15:24:02+08:00">2020-04-26</time>
             </span>
 
           <br>
@@ -215,7 +218,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>246</span>
+              <span>415</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -234,14 +237,29 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>不得不说Linux系统在DPI缩放方面实在是不如Windows或MacOS优化的好。</p>
-<p>我用的是KDE桌面环境，如果设置全局DPI缩放为非整数倍时，许多Qt程序的字体渲染出现问题，比如说Yakuake总是会出现条纹。所以只能调整每个应用单独的配置来实现缩放。</p>
+        <p>最近想把原来装在机械硬盘的Linux系统移动到固态硬盘中。原来把Windows装在了固态硬盘，现在如果要把Linux和Windows在一个硬盘上共存会破坏Recovery分区，于是研究了一下如何手动重建Recovery分区。</p>
 <a id="more"></a>
-<p>对于Chromium（Chrome同理）而言，可以通过增加启动命令的方式来调整。</p>
-<p>具体做法是：新建文件<code>~/.config/chromium-flags.conf</code>，并写入如下内容：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">--force-device-scale-factor&#x3D;1.2</span><br></pre></td></tr></table></figure>
-<p>1.2可以调整为具体的缩放比例。</p>
-<p>然后重启Chromium即可。</p>
+<p>先看一下原来的分区：</p>
+<p><img src="/images/recovery-1.webp" alt="disk partitions"></p>
+<p>我们要重建的是最后680M的那个恢复分区。</p>
+<p>先使用<code>Diskgenius</code>删除那个分区，然后压缩原来的C盘，然后紧邻C盘的分区划分出一个大小约为<code>1G</code>的<code>NTFS</code>分区作为恢复分区。</p>
+<p>接着打开管理员模式下的命令提示符，执行以下命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">REM 新建文件夹，T为刚刚划分的恢复分区</span><br><span class="line">mkdir T:\Recovery\WindowsRE</span><br><span class="line">REM 拷贝winre镜像，W为系统分区</span><br><span class="line">xcopy /h W:\Windows\System32\Recovery\Winre.wim T:\Recovery\WindowsRE</span><br></pre></td></tr></table></figure>
+<p>然后我们要注册刚刚创建的恢复镜像</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">REM 注册我们创建的恢复镜像</span><br><span class="line">C:\Windows\System32\Reagentc /setreimage /path T:\Recovery\WindowsRE</span><br></pre></td></tr></table></figure>
+<p>然而，实际上，这条命令执行会出错，因为我们原来有的恢复镜像的配置没有清除，导致注册镜像时会调用原来的配置（原来的分区已经被我们删了）。</p>
+<p>编辑文件：<code>C:\Windows\System32\Recovery\ReAgent.xml</code></p>
+<p>用以下内容覆盖：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version='1.0' encoding='utf-8'?&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">WindowsRE</span> <span class="attr">version</span>=<span class="string">"2.0"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">WinreBCD</span> <span class="attr">id</span>=<span class="string">""</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">WinreLocation</span> <span class="attr">path</span>=<span class="string">""</span> <span class="attr">id</span>=<span class="string">"0"</span> <span class="attr">offset</span>=<span class="string">"0"</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">ImageLocation</span> <span class="attr">path</span>=<span class="string">""</span> <span class="attr">id</span>=<span class="string">"0"</span> <span class="attr">offset</span>=<span class="string">"0"</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">PBRImageLocation</span> <span class="attr">path</span>=<span class="string">""</span> <span class="attr">id</span>=<span class="string">"0"</span> <span class="attr">offset</span>=<span class="string">"0"</span>  <span class="attr">index</span>=<span class="string">"0"</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">PBRCustomImageLocation</span> <span class="attr">path</span>=<span class="string">""</span> <span class="attr">id</span>=<span class="string">"0"</span> <span class="attr">offset</span>=<span class="string">"0"</span> <span class="attr">index</span>=<span class="string">"0"</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">InstallState</span> <span class="attr">state</span>=<span class="string">"0"</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">OsInstallAvailable</span> <span class="attr">state</span>=<span class="string">"0"</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">CustomImageAvailable</span> <span class="attr">state</span>=<span class="string">"0"</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">WinREStaged</span> <span class="attr">state</span>=<span class="string">"0"</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">OemTool</span> <span class="attr">state</span>=<span class="string">"0"</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">ScheduledOperation</span> <span class="attr">state</span>=<span class="string">"4"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">WindowsRE</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>然后重新执行命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C:\Windows\System32\Reagentc /setreimage /path T:\Recovery\WindowsRE</span><br></pre></td></tr></table></figure>
+<p>接着设置恢复分区的属性：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">REM 打开diskpart</span><br><span class="line">diskpart</span><br><span class="line">REM 选中固态硬盘</span><br><span class="line">select disk 0</span><br><span class="line">REM 选中创建的恢复分区</span><br><span class="line">select partition 5</span><br><span class="line">REM 卸载分区</span><br><span class="line">remove</span><br><span class="line">REM 设置恢复分区的属性并且隐藏该卷</span><br><span class="line">set id=de94bba4-06d1-4d40-a16a-bfd50179d6ac</span><br><span class="line">gpt attributes=0x8000000000000001</span><br><span class="line">REM 退出</span><br><span class="line">exit</span><br></pre></td></tr></table></figure>
+<p>然后我们看一下执行的效果：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C:\Windows\System32\Reagentc /info</span><br></pre></td></tr></table></figure>
+<p>输出结果：</p>
+<p><img src="/images/recovery-3.webp" alt="reagentc info"></p>
+<p>参考：<span class="exturl" data-url="aHR0cHM6Ly9kb2NzLm1pY3Jvc29mdC5jb20vZW4tdXMvd2luZG93cy1oYXJkd2FyZS9tYW51ZmFjdHVyZS9kZXNrdG9wL2RlcGxveS13aW5kb3dzLXJl">微软官方文档<i class="fa fa-external-link-alt"></i></span></p>
 
     </div>
 
@@ -251,8 +269,8 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/chromium/" rel="tag"># chromium</a>
-              <a href="/tags/linux/" rel="tag"># linux</a>
+              <a href="/tags/windows/" rel="tag"># windows</a>
+              <a href="/tags/recovery/" rel="tag"># recovery</a>
           </div>
 
         
@@ -261,13 +279,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/02/17/atcoder-abc155/" rel="prev" title="AtCoder Beginner Contest 155 解题报告">
-      <i class="fa fa-chevron-left"></i> AtCoder Beginner Contest 155 解题报告
+    <a href="/2020/04/16/dell-keyboard-backlight/" rel="prev" title="(不完美)解决Dell笔记本键盘灯无法打开问题">
+      <i class="fa fa-chevron-left"></i> (不完美)解决Dell笔记本键盘灯无法打开问题
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2020/03/15/latex-proof/" rel="next" title="使用latex写证明树">
-      使用latex写证明树 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -473,9 +488,9 @@ NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
       api       : 'https://disqus.skk.moe/disqus/' || 'https://disqus.com/api/',
       apikey    : 'pwCicQgBQmc1ZEUP8fbsECJ1H1U5HWHEuUKbFFR0whF6VjLgL5CneiwMFOtQwwAv',
       shortname : 'silent-world',
-      url       : "https://blog.ofortune.xyz/2020/02/23/chromium-scale/",
-      identifier: "2020/02/23/chromium-scale/",
-      title     : "Linux版Chromium调整DPI缩放",
+      url       : "https://blog.ofortune.xyz/2020/04/26/windows-recovery/",
+      identifier: "2020/04/26/windows-recovery/",
+      title     : "重建Windows Recovery分区",
     });
   }, window.DisqusJS);
 });
