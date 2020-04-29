@@ -1,7 +1,7 @@
 ---
 title: Bomblab 记录
 date: 2020-03-31 20:12:15
-updated: 2020-04-04 17:28:00
+updated: 2020-04-29 16:30:00
 tags:
 - debugging
 - bomblab
@@ -205,7 +205,23 @@ tags:
 
   <img src="/images/bomb_10.webp" alt="bomblab_phase5">
 
-  其实这段汇编有些内容我还不清楚，但是不影响解题。
+  ~~其实这段汇编有些内容我还不清楚，但是不影响解题。~~
+
+  > 2020-4-27:
+  >
+  > 关于`fs:[0x28]`：
+  >
+  > 这里实际上是通过段寻址方式获取了一个“金丝雀”(canary)值并把这个值送入栈中，这个动作是一种栈溢出保护手段。
+  >
+  > 先将这个特殊的值压栈，当函数结束后再判断栈中的这个值是否被修改过，以此来验证是否出现栈溢出。
+  >
+  > 关于`0x28`这个偏移量：
+  >
+  > 这个`bomb`是64位，并且与`glibc`链接。`fs`寄存器被`glibc`定义为存放`TLS(Thread Local Storage)`信息。
+  >
+  > 在`Github`上的一份`glibc`的`mirror`中我们可以找到`tls`的定义:[Github](https://github.com/bminor/glibc/blob/e4a399921390509418826e8e8995d2441f29e243/sysdeps/x86_64/nptl/tls.h#L51)
+  >
+  > 其中`stack_guard`存放的就是这里偏移为`0x28`的金丝雀值。
 
   这段代码的大意是：
 
@@ -358,13 +374,13 @@ tags:
   int fun7(long long *x, long long y)
   {
       if (!x)
-          return 0xffffffff;
+          return 0xffffffff; // -1
       if (*x > y)
-          return 2 * fun7(x + 8, y);
+          return 2 * fun7(x + 1, y);
       if (*x == y)
           return 0;
       if (*x < y)
-          return 2 * fun7(x + 16, y) + 1;
+          return 2 * fun7(x + 2, y) + 1;
   }
   ```
 
@@ -379,5 +395,17 @@ tags:
   3. 接着取`x`的下两个数，也就是`0x603150`指向的内容，即`22`。此时要满足`*x==y`，即`y=22`。
 
   所以`secret_phase`的答案是`22`。
+  
+  UPDATE-2020-4-29:
+  
+  其实这个隐藏关还有另一个答案`20`
+  
+  我们不妨认为`x+1`就是左子树，`x+2`就是右子树，`x`对应的就是当前节点的值，可以画出以可二叉树：
+  
+  <img src="/images/bomb_tree.webp" alt="bomblab_secret_phase">
+  
+  关于另一个答案`20`，可以这样推出：我们知道，最后找到相等时返回的是`0`，所以在找到`0`的上一层可以嵌套多个`*x>y`(`0*2`还是`0`)。那么按照上面画的二叉树来判断就是在`22`的左子树上也就是`20`(比`22`的多遍历一次)
+  
+  
 
 
