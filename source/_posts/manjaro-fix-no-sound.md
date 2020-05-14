@@ -7,13 +7,15 @@ tags:
 - sound
 ---
 
-Recently I installed the *manjaro* linux.
-
-However it could not detect my *Intel* sound card automatically.
+It's outdated now. This issue has been resolved.
 
 <!--more-->
 
-Here some logs showing in *dmesg*:
+Recently I installed `Manjaro`.
+
+However it could not detect my *Intel* sound card automatically.
+
+Here some logs showing in `dmesg`:
 
 ```
 kernel: sof-audio-pci 0000:00:1f.3: warning: No matching ASoC machine driver found
@@ -28,11 +30,11 @@ kernel: sof-audio-pci 0000:00:1f.3: error: failed to load DSP firmware -2
 kernel: sof-audio-pci 0000:00:1f.3: error: sof_probe_work failed err: -2
 ```
 
-After searching online, I found a [same issue](https://bugs.archlinux.org/task/64720) in the bug list of *Arch Linux*.
+After searching online, I found a [same issue](https://bugs.archlinux.org/task/64720) in the bug list of `Arch Linux`.
 
 It gives us a solution.
 
-Just add a file in /etc/modprobe.d/ with its content as below:
+Just add a file in `/etc/modprobe.d/` with its content as below:
 
 ```
 options snd_hda_intel dmic_detect=0
