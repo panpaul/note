@@ -21,12 +21,12 @@
     var CONFIG = {"hostname":"blog.ofortune.xyz","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="Recently I installed the manjaro linux. However it could not detect my Intel sound card automatically.">
+  <meta name="description" content="It’s outdated now. This issue has been resolved.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="fix &quot;no sound&quot; issue under manjaro">
 <meta property="og:url" content="https://blog.ofortune.xyz/2019/12/31/manjaro-fix-no-sound/index.html">
 <meta property="og:site_name" content="Silent World">
-<meta property="og:description" content="Recently I installed the manjaro linux. However it could not detect my Intel sound card automatically.">
+<meta property="og:description" content="It’s outdated now. This issue has been resolved.">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2019-12-31T13:11:33.000Z">
 <meta property="article:modified_time" content="2020-03-29T07:44:51.000Z">
@@ -222,7 +222,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>323</span>
+              <span>356</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -241,14 +241,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>Recently I installed the <em>manjaro</em> linux.</p>
-<p>However it could not detect my <em>Intel</em> sound card automatically.</p>
+        <p>It’s outdated now. This issue has been resolved.</p>
 <a id="more"></a>
-<p>Here some logs showing in <em>dmesg</em>:</p>
+<p>Recently I installed <code>Manjaro</code>.</p>
+<p>However it could not detect my <em>Intel</em> sound card automatically.</p>
+<p>Here some logs showing in <code>dmesg</code>:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">kernel: sof-audio-pci 0000:00:1f.3: warning: No matching ASoC machine driver found</span><br><span class="line">kernel: sof-audio-pci 0000:00:1f.3: DSP detected with PCI class&#x2F;subclass&#x2F;prog-if 0x040380</span><br><span class="line">kernel: sof-audio-pci 0000:00:1f.3: use msi interrupt mode</span><br><span class="line">kernel: sof-audio-pci 0000:00:1f.3: bound 0000:00:02.0 (ops i915_audio_component_bind_ops [i915])</span><br><span class="line">kernel: sof-audio-pci 0000:00:1f.3: hda codecs found, mask 5</span><br><span class="line">kernel: sof-audio-pci 0000:00:1f.3: using HDA machine driver skl_hda_dsp_generic now</span><br><span class="line">kernel: sof-audio-pci 0000:00:1f.3: Direct firmware load for intel&#x2F;sof&#x2F;sof-cnl.ri failed with error -2</span><br><span class="line">kernel: sof-audio-pci 0000:00:1f.3: error: request firmware intel&#x2F;sof&#x2F;sof-cnl.ri failed err: -2</span><br><span class="line">kernel: sof-audio-pci 0000:00:1f.3: error: failed to load DSP firmware -2</span><br><span class="line">kernel: sof-audio-pci 0000:00:1f.3: error: sof_probe_work failed err: -2</span><br></pre></td></tr></table></figure>
-<p>After searching online, I found a <span class="exturl" data-url="aHR0cHM6Ly9idWdzLmFyY2hsaW51eC5vcmcvdGFzay82NDcyMA==">same issue<i class="fa fa-external-link-alt"></i></span> in the bug list of <em>Arch Linux</em>.</p>
+<p>After searching online, I found a <span class="exturl" data-url="aHR0cHM6Ly9idWdzLmFyY2hsaW51eC5vcmcvdGFzay82NDcyMA==">same issue<i class="fa fa-external-link-alt"></i></span> in the bug list of <code>Arch Linux</code>.</p>
 <p>It gives us a solution.</p>
-<p>Just add a file in /etc/modprobe.d/ with its content as below:</p>
+<p>Just add a file in <code>/etc/modprobe.d/</code> with its content as below:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">options snd_hda_intel dmic_detect&#x3D;0</span><br></pre></td></tr></table></figure>
 <p>And then reboot your computer.</p>
 <p>Or</p>
