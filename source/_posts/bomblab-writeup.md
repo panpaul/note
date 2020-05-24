@@ -13,13 +13,13 @@ tags:
 
 <!--more-->
 
-- ### bomb.c ###
+- ### bomb.c
 
   首先，出题者给我们提供了bomb的原型，通过`bomb.c`，大致可以了解这个`bomb`的执行流程：从键盘读入一行，然后执行`phase_(x)`然后解除炸弹。总共有`6`？个`phase`等待我们取解开。
 
   <img src="/images/bomb_3.webp" alt="bomblab_bomb.c">
 
-- ### 环境准备 ###
+- ### 环境准备
 
   这里，我是用了[radare2](https://www.radare.org/) 作为分析工具。(然而第6题太给力，用了`IDA`)
 
@@ -31,7 +31,7 @@ tags:
 
   <img src="/images/bomb_2.webp" alt="bomblab_functions">
 
-- ### Phase_1 ###
+- ### Phase_1
 
   先执行`s sym.phase_1`跳转到`phase_1`，然后执行`pdf`查看反汇编代码。
 
@@ -43,7 +43,7 @@ tags:
 
   所以`phase_1`的答案就是`Border relations with Canada have never been better.`
 
-- ### Phase_2 ###
+- ### Phase_2
 
   一样的跳转到`phase_2`然后查看反汇编代码。
 
@@ -59,7 +59,7 @@ tags:
 
   故`phase_2`的答案是`1 2 4 8 16 32`。
 
-- ### Phase_3 ###
+- ### Phase_3
 
   同样的，跳转到`phase_3`然后查看反汇编代码。
 
@@ -107,7 +107,7 @@ tags:
   |  6   | 682(0x2aa) |
   |  7   | 327(0x147) |
 
-- ### Phase_4 ###
+- ### Phase_4
 
   同样的，跳转到`phase_4`然后查看反汇编代码。
 
@@ -199,7 +199,7 @@ tags:
 
   所以综上，本题答案为`0 0`或`1 0`或`3 0`或`7 0`。
 
-- ### Phase_5 ###
+- ### Phase_5
 
   同样的，跳转到`phase_5`然后查看反汇编代码。
 
@@ -240,7 +240,7 @@ tags:
   ...
   ```
 
-- ### Phase_6 ###
+- ### Phase_6
 
   同样的，跳转到`phase_6`然后查看反汇编代码。
 
@@ -303,7 +303,7 @@ tags:
 
   所以我们手动给这几个数排序，也就是`924>691>477>443>332>168`对应成我们要输入的数就是`4 3 2 1 6 5`
 
-- ### 最后 ###
+- ### 最后
 
   其实还有一个`secret_phase`没分析，就等下一次填坑吧！
 
@@ -311,7 +311,7 @@ tags:
   
   UPDATE：来填坑了
 
-- ### secret_phase ###
+- ### secret_phase
 
   关于这个`secret_phase`如不是题目明确指明，我或许都不会去想有这一关。
 
