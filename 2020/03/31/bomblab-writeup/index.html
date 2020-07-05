@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.2.0">
+<meta name="generator" content="Hexo 4.2.1">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -286,7 +286,7 @@
 </li>
 <li><h3 id="Phase-2"><a href="#Phase-2" class="headerlink" title="Phase_2"></a>Phase_2</h3><p>一样的跳转到<code>phase_2</code>然后查看反汇编代码。</p>
 <p><img src="/images/bomb_5.webp" alt="bomblab_phase2"></p>
-<p>可以看到，在<code>phase_2</code>中程序读入了6个数字，然后判断第一个数字是否为1，不为1则爆照。</p>
+<p>可以看到，在<code>phase_2</code>中程序读入了6个数字，然后判断第一个数字是否为1，不为1则爆炸。</p>
 <p>若为1则跳转到<code>0x00400f30</code>处，这里<code>radare2</code>用<code>qword [local_4h]</code>表示<code>rsp+4</code>，也就说<code>local_4h</code>到<code>local_18h</code>刚好是第二个数到第六个数和“第七个数”（用于判断循环结束）（也刚好应证了开头<code>sub rsp, 0x28</code>开辟的7个空间）。将一头一尾分别保存到<code>rbx</code>，<code>rbp</code>后，一个<code>JMP</code>直接跳到了<code>0x00400f17</code>开始执行循环。</p>
 <p>在循环体中，程序先取出前一个值(<code>rbx-4</code>)，然后将这个值乘2，在与当前值比较(<code>rbx</code>)。如果相等那么将<code>rbx+4</code>也就是循环迭代下一个值，如果刚好到最后一个值了那么就跳出循环。</p>
 <p>所以这个循环就是判断这六个数是否是以1为首项，2为公比的等比数列。</p>
