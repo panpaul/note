@@ -341,8 +341,6 @@ num5\times v_{16}+num6\times v_{17}+num7\times v_{18}=num8\\
 num9\times v_{16}+num10\times v_{17}+num11\times v_{18}=num12\\
 \end{cases}
 $$
-不过这里只考虑了$v_{16},v_{17},v_{18}\gt 0 $的情况，反正题目数据是随机的，(多试几次就好了)
-
 接下来困难的是写脚本的过程，这里我使用了`radare2`来操作
 
 ```python
