@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.ofortune.xyz","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Emby 是一款开源的流媒体中心软件，用户只需要简单部署服务端，其它的客户端就能轻松访问服务端的所有媒体。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Emby逆向记录">
+<meta property="og:url" content="https://blog.ofortune.xyz/2020/07/21/hack-emby/index.html">
+<meta property="og:site_name" content="Silent World">
+<meta property="og:description" content="Emby 是一款开源的流媒体中心软件，用户只需要简单部署服务端，其它的客户端就能轻松访问服务端的所有媒体。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/emby_1.webp">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/emby_2.webp">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/emby_3.webp">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/emby_4.webp">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/emby_5.webp">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/emby_6.webp">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/emby_7.webp">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/emby_8.webp">
+<meta property="article:published_time" content="2020-07-21T03:02:37.000Z">
+<meta property="article:modified_time" content="2020-07-21T03:02:37.000Z">
+<meta property="article:author" content="Paul">
+<meta property="article:tag" content="debugging">
+<meta property="article:tag" content="hack">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.ofortune.xyz/images/emby_1.webp">
+
+<link rel="canonical" href="https://blog.ofortune.xyz/2020/07/21/hack-emby/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Emby逆向记录 | Silent World</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-91325067-5"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-91325067-5');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?838eea07a477dca863f82689af68d775";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Silent World</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Paul's notes</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.ofortune.xyz/2020/07/21/hack-emby/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Paul">
+      <meta itemprop="description" content="thoughts,stories,experiences">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Silent World">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Emby逆向记录
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-07-21 11:02:37" itemprop="dateCreated datePublished" datetime="2020-07-21T11:02:37+08:00">2020-07-21</time>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1.1k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>Emby 是一款<del>开源</del>的流媒体中心软件，用户只需要简单部署服务端，其它的客户端就能轻松访问服务端的所有媒体。</p>
+<a id="more"></a>
+<p>首先，关于<code>Emby</code>的破解方式，网上普遍流传的方法是通过劫持<code>mb3admin</code>来实现破解。在客户端，官方允许使用自签名证书，所以比较容易实现破解；但是在服务端，由于<code>Emby</code>使用的是<code>dotnet</code>运行时，注入我们自签名的证书相对困难，所以我考虑使用暴力破解的方式处理服务端。</p>
+<ul>
+<li><h3 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h3><p>Emby是使用<code>C#</code>编写的跨平台应用，所以我们使用<code>dnSpy</code>来进行逆向破解。</p>
+</li>
+<li><h3 id="分析目标"><a href="#分析目标" class="headerlink" title="分析目标"></a>分析目标</h3><p>Emby的安装目录下有许多<code>dll</code>文件，我们先尝试筛选出目标文件。</p>
+<p><img src="/images/emby_1.webp" alt="emby_directory"></p>
+<p>根据网上流传的传统破解方式，我们将所有文件拖入<code>dnSpy</code>后直接搜索<code>mb3admin</code>快速定位目标。</p>
+<p><img src="/images/emby_2.webp" alt="emby_dnSpy_search"></p>
+<p>可以看到，涉及验证授权的模块主要集中在<code>Emby.Server.Implementations.Security</code>和<code>Emby.Server.Implementations.Updates</code>中，我们接下来直接研究这两个类即可。</p>
+</li>
+<li><h3 id="修改代码"><a href="#修改代码" class="headerlink" title="修改代码"></a>修改代码</h3><p>我们先分析<code>Emby.Server.Implementations.Security</code></p>
+<p>定位到目标后发现代码没有反混淆措施，所以我们直接右键-编辑类</p>
+<p><img src="/images/emby_3.webp" alt="emby_dnSpy_edit"></p>
+<p>一路阅读代码，首先发现<code>RegisterAppStoreSale</code>方法，根据名字即内容猜测这个应该是向<code>emby store</code>注册，实现付费插件打折的功能？这里直接替换所有内容：</p>
+<p><img src="/images/emby_4.webp" alt="emby_dnSpy_edit"></p>
+<p>然后发现重要的函数：<code>IsFeatureAllowed</code>，这里根据<code>if</code>内<code>IsRegistered</code>可以猜测注册后应该返回<code>True</code>，所以直接更改代码为<code>return true;</code></p>
+<p><img src="/images/emby_5.webp" alt="emby_dnSpy_edit"></p>
+<p>接着发现两个相关的函数：<code>GetRegistrationStatus</code>和<code>GetRegistrationStatusInternal</code>，这里应该是用于向其它组件返回注册信息的，一样修改相应代码：</p>
+<p><img src="/images/emby_6.webp" alt="emby_dnSpy_edit"></p>
+<p>再者，是<code>UpdateRegistrationStatus</code>，顾名思义应该是更新注册信息，这里有与服务器交互的部分，直接注释替换掉：</p>
+<p><img src="/images/emby_7.webp" alt="emby_dnSpy_edit"></p>
+<p>最后修改一些反编译时产生的错误，编译即可。</p>
+<p>接下来分析<code>Emby.Server.Implementations.Updates</code></p>
+<p>通过阅读代码发现不用特意修改代码，直接略过即可。</p>
+</li>
+<li><h3 id="一些杂项"><a href="#一些杂项" class="headerlink" title="一些杂项"></a>一些杂项</h3><p>然后破解插件，方法同理。至此，我们的破解已经完成，直接替换修改过的文件就好了。</p>
+<p><img src="/images/emby_8.webp" alt="emby_success"></p>
+</li>
+<li><h3 id="总结与思考"><a href="#总结与思考" class="headerlink" title="总结与思考"></a>总结与思考</h3><p>这里我们暴力修改代码是一种方案，但是仅限于服务端破解，对于客户端，一般常用自建服务器伪装<code>mb3admin</code>实现。所以，在破解服务端时我们不妨可以复用自建的服务器，换一种破解思路，将代码里的验证服务器地址修改为自建服务器的地址。</p>
+<p><strong>最后的最后，本文所述内容仅限用于学习和研究目的，请支持正版。</strong></p>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/debugging/" rel="tag"># debugging</a>
+              <a href="/tags/hack/" rel="tag"># hack</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/05/27/whuctf-2020-writeup/" rel="prev" title="武汉大学第二届“珞格杯”校园CTF大赛部分题目Writeup">
+      <i class="fa fa-chevron-left"></i> 武汉大学第二届“珞格杯”校园CTF大赛部分题目Writeup
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#环境准备"><span class="nav-number">1.</span> <span class="nav-text">环境准备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分析目标"><span class="nav-number">2.</span> <span class="nav-text">分析目标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改代码"><span class="nav-number">3.</span> <span class="nav-text">修改代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一些杂项"><span class="nav-number">4.</span> <span class="nav-text">一些杂项</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结与思考"><span class="nav-number">5.</span> <span class="nav-text">总结与思考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Paul</p>
+  <div class="site-description" itemprop="description">thoughts,stories,experiences</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Paul</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">24k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">40 分钟</span>
+</div>
+  <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZw==">NexT.Gemini</span> 强力驱动
+  </div>
+
+        
+
+
+  <div style="display: none;">
+    <script src="//s95.cnzz.com/z_stat.php?id=1278724440&web_id=1278724440"></script>
+  </div>
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/disqusjs@1/dist/disqusjs.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/disqusjs@1/dist/disqus.js', () => {
+    window.dsqjs = new DisqusJS({
+      api       : 'https://disqus.skk.moe/disqus/' || 'https://disqus.com/api/',
+      apikey    : 'pwCicQgBQmc1ZEUP8fbsECJ1H1U5HWHEuUKbFFR0whF6VjLgL5CneiwMFOtQwwAv',
+      shortname : 'silent-world',
+      url       : "https://blog.ofortune.xyz/2020/07/21/hack-emby/",
+      identifier: "2020/07/21/hack-emby/",
+      title     : "Emby逆向记录",
+    });
+  }, window.DisqusJS);
+});
+</script>
+
+</body>
+</html>
