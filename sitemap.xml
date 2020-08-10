@@ -2,150 +2,350 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://blog.ofortune.xyz/2020/03/19/matlab-update-error/</loc>
+    
+    <lastmod>2020-08-10</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://blog.ofortune.xyz/2020/07/21/hack-emby/</loc>
     
-    <lastmod>2020-07-21T03:02:37.000Z</lastmod>
+    <lastmod>2020-07-21</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.ofortune.xyz/2020/05/27/whuctf-2020-writeup/</loc>
     
-    <lastmod>2020-05-27T12:12:55.000Z</lastmod>
+    <lastmod>2020-05-27</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.ofortune.xyz/2020/05/18/memory-intro/</loc>
     
-    <lastmod>2020-05-18T02:51:05.000Z</lastmod>
+    <lastmod>2020-05-18</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.ofortune.xyz/2020/03/31/bomblab-writeup/</loc>
     
-    <lastmod>2020-04-29T08:30:00.000Z</lastmod>
+    <lastmod>2020-04-29</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.ofortune.xyz/2020/04/26/windows-recovery/</loc>
     
-    <lastmod>2020-04-26T07:24:02.000Z</lastmod>
+    <lastmod>2020-04-26</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.ofortune.xyz/2020/04/16/dell-keyboard-backlight/</loc>
     
-    <lastmod>2020-04-16T10:16:45.000Z</lastmod>
+    <lastmod>2020-04-16</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.ofortune.xyz/2020/04/12/coq-powerset/</loc>
     
-    <lastmod>2020-04-13T07:40:00.000Z</lastmod>
+    <lastmod>2020-04-13</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.ofortune.xyz/2020/01/04/simulated-annealing/</loc>
     
-    <lastmod>2020-03-31T12:12:15.000Z</lastmod>
+    <lastmod>2020-03-31</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.ofortune.xyz/2020/03/29/beta-reduction/</loc>
     
-    <lastmod>2020-03-29T07:44:51.000Z</lastmod>
+    <lastmod>2020-03-29</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.ofortune.xyz/2019/12/31/manjaro-fix-no-sound/</loc>
     
-    <lastmod>2020-03-29T07:44:51.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.ofortune.xyz/2020/03/19/matlab-update-error/</loc>
-    
-    <lastmod>2020-03-19T05:11:10.000Z</lastmod>
+    <lastmod>2020-03-29</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.ofortune.xyz/2020/03/18/latex-parsetree/</loc>
     
-    <lastmod>2020-03-18T11:27:42.000Z</lastmod>
+    <lastmod>2020-03-18</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.ofortune.xyz/2020/03/15/latex-proof/</loc>
     
-    <lastmod>2020-03-17T11:45:00.000Z</lastmod>
+    <lastmod>2020-03-17</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.ofortune.xyz/2020/01/03/fix-network/</loc>
     
-    <lastmod>2020-03-15T11:45:00.000Z</lastmod>
+    <lastmod>2020-03-15</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.ofortune.xyz/2020/02/23/chromium-scale/</loc>
     
-    <lastmod>2020-02-23T07:48:21.000Z</lastmod>
+    <lastmod>2020-02-23</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.ofortune.xyz/2020/02/17/atcoder-abc155/</loc>
     
-    <lastmod>2020-02-17T08:44:40.000Z</lastmod>
+    <lastmod>2020-02-17</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.ofortune.xyz/2020/02/04/whu-2020-winter-day-2/</loc>
     
-    <lastmod>2020-02-04T03:09:28.000Z</lastmod>
+    <lastmod>2020-02-04</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.ofortune.xyz/2020/01/27/atcoder-abc153/</loc>
     
-    <lastmod>2020-01-27T07:41:21.000Z</lastmod>
+    <lastmod>2020-01-27</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.ofortune.xyz/about/index.html</loc>
     
-    <lastmod>2019-12-31T13:50:12.000Z</lastmod>
+    <lastmod>2019-12-31</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.ofortune.xyz/tags/index.html</loc>
     
-    <lastmod>2019-12-31T13:26:21.000Z</lastmod>
+    <lastmod>2019-12-31</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.ofortune.xyz/2019/12/31/hello-world/</loc>
     
-    <lastmod>2019-12-31T04:49:51.000Z</lastmod>
+    <lastmod>2019-12-31</lastmod>
     
   </url>
+  
+
+  <url>
+    <loc>https://blog.ofortune.xyz/</loc>
+    <lastmod>2020-08-10</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  
+  <url>
+    <loc>https://blog.ofortune.xyz/tags/algorithm/</loc>
+    <lastmod>2020-08-10</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.ofortune.xyz/tags/atcoder/</loc>
+    <lastmod>2020-08-10</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.ofortune.xyz/tags/debugging/</loc>
+    <lastmod>2020-08-10</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.ofortune.xyz/tags/bomblab/</loc>
+    <lastmod>2020-08-10</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.ofortune.xyz/tags/csapp/</loc>
+    <lastmod>2020-08-10</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.ofortune.xyz/tags/assembly/</loc>
+    <lastmod>2020-08-10</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.ofortune.xyz/tags/Coq/</loc>
+    <lastmod>2020-08-10</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.ofortune.xyz/tags/chromium/</loc>
+    <lastmod>2020-08-10</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.ofortune.xyz/tags/linux/</loc>
+    <lastmod>2020-08-10</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.ofortune.xyz/tags/dell/</loc>
+    <lastmod>2020-08-10</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.ofortune.xyz/tags/keyboard/</loc>
+    <lastmod>2020-08-10</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.ofortune.xyz/tags/backlight/</loc>
+    <lastmod>2020-08-10</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.ofortune.xyz/tags/windows/</loc>
+    <lastmod>2020-08-10</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.ofortune.xyz/tags/hyper-v/</loc>
+    <lastmod>2020-08-10</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.ofortune.xyz/tags/network/</loc>
+    <lastmod>2020-08-10</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.ofortune.xyz/tags/hack/</loc>
+    <lastmod>2020-08-10</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.ofortune.xyz/tags/hello/</loc>
+    <lastmod>2020-08-10</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.ofortune.xyz/tags/latex/</loc>
+    <lastmod>2020-08-10</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.ofortune.xyz/tags/parsetree/</loc>
+    <lastmod>2020-08-10</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.ofortune.xyz/tags/matlab/</loc>
+    <lastmod>2020-08-10</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.ofortune.xyz/tags/prooftree/</loc>
+    <lastmod>2020-08-10</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.ofortune.xyz/tags/sound/</loc>
+    <lastmod>2020-08-10</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.ofortune.xyz/tags/memory/</loc>
+    <lastmod>2020-08-10</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.ofortune.xyz/tags/codeforces/</loc>
+    <lastmod>2020-08-10</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.ofortune.xyz/tags/ctf/</loc>
+    <lastmod>2020-08-10</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.ofortune.xyz/tags/php/</loc>
+    <lastmod>2020-08-10</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.ofortune.xyz/tags/recovery/</loc>
+    <lastmod>2020-08-10</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+
   
 </urlset>

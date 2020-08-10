@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.2.1">
+<meta name="generator" content="Hexo 5.0.2">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -506,7 +506,7 @@
 </ol>
 <p>这里由于是4位二进制串故我们只用考虑在前16位（<code>maduiersnfotvbyl</code>）中找字母就可以了。</p>
 <p>其中<code>f-9</code>，<code>l-15</code>，<code>y-14</code>，<code>e-5</code>，<code>r-6</code>，<code>s-7</code>。这里由于只考虑后4位二进制，所以可以直接<code>printf</code>出几个不可见字符或者找可见字符后四位满足要求的。比如：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">"%c%c%c%c%c%c"</span>,<span class="number">9</span>,<span class="number">15</span>,<span class="number">14</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"IONEFG"</span>);</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%c%c%c%c%c%c&quot;</span>,<span class="number">9</span>,<span class="number">15</span>,<span class="number">14</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;IONEFG&quot;</span>);</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
 </li>
 <li><h3 id="Phase-6"><a href="#Phase-6" class="headerlink" title="Phase_6"></a>Phase_6</h3><p>同样的，跳转到<code>phase_6</code>然后查看反汇编代码。</p>
 <p><img src="/images/bomb_11.webp" alt="bomblab_phase6"></p>
@@ -713,7 +713,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#bomb-c"><span class="nav-number">1.</span> <span class="nav-text">bomb.c</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#环境准备"><span class="nav-number">2.</span> <span class="nav-text">环境准备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Phase-1"><span class="nav-number">3.</span> <span class="nav-text">Phase_1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Phase-2"><span class="nav-number">4.</span> <span class="nav-text">Phase_2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Phase-3"><span class="nav-number">5.</span> <span class="nav-text">Phase_3</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Phase-4"><span class="nav-number">6.</span> <span class="nav-text">Phase_4</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Phase-5"><span class="nav-number">7.</span> <span class="nav-text">Phase_5</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Phase-6"><span class="nav-number">8.</span> <span class="nav-text">Phase_6</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最后"><span class="nav-number">9.</span> <span class="nav-text">最后</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#secret-phase"><span class="nav-number">10.</span> <span class="nav-text">secret_phase</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#bomb-c"><span class="nav-number">1.</span> <span class="nav-text">bomb.c</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87"><span class="nav-number">2.</span> <span class="nav-text">环境准备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Phase-1"><span class="nav-number">3.</span> <span class="nav-text">Phase_1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Phase-2"><span class="nav-number">4.</span> <span class="nav-text">Phase_2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Phase-3"><span class="nav-number">5.</span> <span class="nav-text">Phase_3</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Phase-4"><span class="nav-number">6.</span> <span class="nav-text">Phase_4</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Phase-5"><span class="nav-number">7.</span> <span class="nav-text">Phase_5</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Phase-6"><span class="nav-number">8.</span> <span class="nav-text">Phase_6</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%80%E5%90%8E"><span class="nav-number">9.</span> <span class="nav-text">最后</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#secret-phase"><span class="nav-number">10.</span> <span class="nav-text">secret_phase</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -775,7 +775,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">40 分钟</span>
+    <span title="站点阅读时长">41 分钟</span>
 </div>
   <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZw==">NexT.Gemini</span> 强力驱动
   </div>
