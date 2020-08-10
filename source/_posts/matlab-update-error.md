@@ -1,6 +1,7 @@
 ---
 title: 记一次matlab升级错误
 date: 2020-03-19 13:11:10
+updated: 2020-08-10 15:30:00
 tags:
 - matlab
 - network
@@ -15,7 +16,7 @@ mathjax: false
 
 这是什么错误？
 
-所以马上想到找日志文件，其文件路径应该为`%USERPROFILE%\AppData\Local\Temp\mathworks_panyuxuan.log`
+所以马上想到找日志文件，其文件路径应该为`%USERPROFILE%\AppData\Local\Temp\mathworks_YOURNAME.log`
 
 在日志文件里有相对详细的错误信息，比如说我遇到的错误是：
 
@@ -82,3 +83,12 @@ mathjax: false
 而我比较幸运，至少`matlab`主程序还可以打开。不过`SimScape`好像损坏的比较彻底，连卸载也会报错。
 
 所以死马当活马医，打开`matlab`主程序，**科学上网**后重新安装更新，最后解决了问题。（~~省得我删目录重装~~）
+
+#### UPDATE 2020/08/10
+
+ 最近尝试更新到`Update 6`，于是~~喜闻乐见的~~又出现了**“不常见”**的异常现象。这次直接无法启动`Matlab`主程序。
+
+不过在安装目录下找到了更新工具，直接运行更新程序成功修复了问题。
+
+更新工具路径应该为`C:\Program Files\MATLAB\R2019b\bin\win64\update_installer.exe`
+
