@@ -2,13 +2,6 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://blog.ofortune.xyz/baidu_verify_1kqUVgyXWF.html</loc>
-    
-    <lastmod>2020-08-17</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://blog.ofortune.xyz/2020/08/16/arduino-bt-mpu6050/</loc>
     
     <lastmod>2020-08-16</lastmod>
@@ -228,7 +221,42 @@
   </url>
   
   <url>
+    <loc>https://blog.ofortune.xyz/tags/chromium/</loc>
+    <lastmod>2020-08-17</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.ofortune.xyz/tags/linux/</loc>
+    <lastmod>2020-08-17</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://blog.ofortune.xyz/tags/Coq/</loc>
+    <lastmod>2020-08-17</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.ofortune.xyz/tags/dell/</loc>
+    <lastmod>2020-08-17</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.ofortune.xyz/tags/keyboard/</loc>
+    <lastmod>2020-08-17</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.ofortune.xyz/tags/backlight/</loc>
     <lastmod>2020-08-17</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -263,35 +291,14 @@
   </url>
   
   <url>
-    <loc>https://blog.ofortune.xyz/tags/chromium/</loc>
+    <loc>https://blog.ofortune.xyz/tags/hack/</loc>
     <lastmod>2020-08-17</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://blog.ofortune.xyz/tags/linux/</loc>
-    <lastmod>2020-08-17</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.ofortune.xyz/tags/dell/</loc>
-    <lastmod>2020-08-17</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.ofortune.xyz/tags/keyboard/</loc>
-    <lastmod>2020-08-17</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.ofortune.xyz/tags/backlight/</loc>
+    <loc>https://blog.ofortune.xyz/tags/hello/</loc>
     <lastmod>2020-08-17</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -319,20 +326,6 @@
   </url>
   
   <url>
-    <loc>https://blog.ofortune.xyz/tags/hello/</loc>
-    <lastmod>2020-08-17</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.ofortune.xyz/tags/hack/</loc>
-    <lastmod>2020-08-17</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://blog.ofortune.xyz/tags/latex/</loc>
     <lastmod>2020-08-17</lastmod>
     <changefreq>daily</changefreq>
@@ -347,13 +340,6 @@
   </url>
   
   <url>
-    <loc>https://blog.ofortune.xyz/tags/prooftree/</loc>
-    <lastmod>2020-08-17</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://blog.ofortune.xyz/tags/sound/</loc>
     <lastmod>2020-08-17</lastmod>
     <changefreq>daily</changefreq>
@@ -361,7 +347,7 @@
   </url>
   
   <url>
-    <loc>https://blog.ofortune.xyz/tags/memory/</loc>
+    <loc>https://blog.ofortune.xyz/tags/prooftree/</loc>
     <lastmod>2020-08-17</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -375,7 +361,7 @@
   </url>
   
   <url>
-    <loc>https://blog.ofortune.xyz/tags/codeforces/</loc>
+    <loc>https://blog.ofortune.xyz/tags/memory/</loc>
     <lastmod>2020-08-17</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -390,6 +376,13 @@
   
   <url>
     <loc>https://blog.ofortune.xyz/tags/php/</loc>
+    <lastmod>2020-08-17</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.ofortune.xyz/tags/codeforces/</loc>
     <lastmod>2020-08-17</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
