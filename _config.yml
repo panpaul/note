@@ -114,3 +114,9 @@ symbols_count_time:
   awl: 2
   wpm: 300
   suffix: "mins."
+
+baidu_url_submit:
+  count: 5
+  host: blog.ofortune.xyz
+  token: 
+  path: baidu_urls.txt
