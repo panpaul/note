@@ -54,7 +54,7 @@ $$
 0,& \text{otherwise}
 \end{cases}
 
-\end{equation}
+\end{equation} 
 $$
 
   其中， $E_{min}=\min\limits_{j\in S}E(j)$ 且 $S_{min}=\{i|E(i)=E_{min}\}$
