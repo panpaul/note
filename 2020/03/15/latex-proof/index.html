@@ -13,11 +13,13 @@
 <link rel="stylesheet" href="/css/main.css">
 
 
-<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-<script id="hexo-configurations">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"blog.ofortune.xyz","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"blog.ofortune.xyz","root":"/","scheme":"Gemini","version":"8.0.0-rc.5","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}};
   </script>
 
   <meta name="description" content="最近离散数学课的作业要求用$\LaTeX$写证明树和推导序列，故研究了相关内容，以此记录。">
@@ -40,10 +42,11 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://blog.ofortune.xyz/images/latex-proof-1.png">
 
+
 <link rel="canonical" href="https://blog.ofortune.xyz/2020/03/15/latex-proof/">
 
 
-<script id="page-configurations">
+<script data-pjax class="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
@@ -56,7 +59,7 @@
   <title>使用latex写证明树 | Silent World</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-91325067-5"></script>
-    <script>
+    <script data-pjax>
       if (CONFIG.hostname === location.hostname) {
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
@@ -66,7 +69,7 @@
     </script>
 
 
-  <script>
+  <script data-pjax>
     var _hmt = _hmt || [];
     (function() {
       var hm = document.createElement("script");
@@ -81,49 +84,61 @@
 
   <noscript>
   <style>
-  .use-motion .brand,
+  body { margin-top: 2rem; }
+
   .use-motion .menu-item,
-  .sidebar-inner,
+  .use-motion .sidebar,
   .use-motion .post-block,
   .use-motion .pagination,
   .use-motion .comments,
   .use-motion .post-header,
   .use-motion .post-body,
-  .use-motion .collection-header { opacity: initial; }
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
 
   .use-motion .site-title,
-  .use-motion .site-subtitle {
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
     opacity: initial;
     top: initial;
   }
 
-  .use-motion .logo-line-before i { left: initial; }
-  .use-motion .logo-line-after i { right: initial; }
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
   </style>
 </noscript>
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage">
-  <div class="container use-motion">
-    <div class="headband"></div>
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
 
+  <main class="main">
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-container">
   <div class="site-nav-toggle">
     <div class="toggle" aria-label="切换导航栏">
-      <span class="toggle-line toggle-line-first"></span>
-      <span class="toggle-line toggle-line-middle"></span>
-      <span class="toggle-line toggle-line-last"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
 
   <div class="site-meta">
 
     <a href="/" class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
+      <i class="logo-line"></i>
       <h1 class="site-title">Silent World</h1>
-      <span class="logo-line-after"><i></i></span>
+      <i class="logo-line"></i>
     </a>
       <p class="site-subtitle" itemprop="description">Paul's notes</p>
   </div>
@@ -136,9 +151,8 @@
 
 
 
-
 <nav class="site-nav">
-  <ul id="menu" class="main-menu menu">
+  <ul class="main-menu menu">
         <li class="menu-item menu-item-home">
 
     <a href="/" rel="section"><i class="home fa-fw"></i>首页</a>
@@ -166,6 +180,62 @@
 
 
 </div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Paul</p>
+  <div class="site-description" itemprop="description">thoughts,stories,experiences</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
     </header>
 
     
@@ -175,14 +245,15 @@
   </div>
   <div class="reading-progress-bar"></div>
 
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
 
-    <main class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          
 
-          <div class="content post posts-expand">
-            
+    <div class="main-inner post posts-expand">
+      
+
+      
 
     
   
@@ -199,6 +270,9 @@
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Silent World">
     </span>
+
+    
+    
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           使用latex写证明树
@@ -226,14 +300,14 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-                <span class="post-meta-item-text">本文字数：</span>
+              <span class="post-meta-item-text">本文字数：</span>
               <span>600</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span class="post-meta-item-text">阅读时长 &asymp;</span>
               <span>1 分钟</span>
             </span>
 
@@ -244,15 +318,13 @@
     
     
     <div class="post-body" itemprop="articleBody">
-
-      
         <p>最近离散数学课的作业要求用$\LaTeX$写证明树和推导序列，故研究了相关内容，以此记录。</p>
 <a id="more"></a>
 <ol>
 <li><p>首先是最基本的证明树</p>
 <p>这里引用了包<code>bussproofs</code></p>
 <figure class="highlight latex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">\<span class="name">usepackage</span><span class="string">&#123;bussproofs&#125;</span></span></span><br><span class="line">--snip--</span><br><span class="line">A simple proof tree.</span><br><span class="line"><span class="tag">\<span class="name">begin</span><span class="string">&#123;prooftree&#125;</span></span></span><br><span class="line">    <span class="tag">\<span class="name">AxiomC</span><span class="string">&#123;$p$&#125;</span></span></span><br><span class="line">    <span class="tag">\<span class="name">AxiomC</span><span class="string">&#123;$p \to q$&#125;</span></span></span><br><span class="line">    <span class="tag">\<span class="name">RightLabel</span><span class="string">&#123;$\to e$&#125;</span></span></span><br><span class="line">    <span class="tag">\<span class="name">BinaryInfC</span><span class="string">&#123;$q$&#125;</span></span></span><br><span class="line"><span class="tag">\<span class="name">end</span><span class="string">&#123;prooftree&#125;</span></span></span><br></pre></td></tr></table></figure>
-<p>最终的效果是：<img src="/images/latex-proof-1.png" width="80%" alt="latex-proof-tree-1"></p>
+<p>最终的效果是：<img data-src="/images/latex-proof-1.png" width="80%" alt="latex-proof-tree-1"></p>
 <p>从代码中看，构造的这个证明树有几个元素：</p>
 <ul>
 <li><code>\AxiomC&#123;&#125;</code> 如同其名字，这个元素用于放置假设、条件、公理等</li>
@@ -263,22 +335,22 @@
 <li><p>其次是一个较为复杂的证明树</p>
 <figure class="highlight latex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">Yet another proof tree.</span><br><span class="line"><span class="tag">\<span class="name">begin</span><span class="string">&#123;prooftree&#125;</span></span></span><br><span class="line">    <span class="tag">\<span class="name">AxiomC</span><span class="string">&#123;$p \vee q$&#125;</span></span> &lt;-----------最外层的内容</span><br><span class="line"></span><br><span class="line">        <span class="tag">\<span class="name">AxiomC</span><span class="string">&#123;$p$&#125;</span></span>          |</span><br><span class="line">        <span class="tag">\<span class="name">AxiomC</span><span class="string">&#123;$p \to s$&#125;</span></span>    |</span><br><span class="line">        <span class="tag">\<span class="name">RightLabel</span><span class="string">&#123;$\to e$&#125;</span></span>  |&lt;----一个块</span><br><span class="line">        <span class="tag">\<span class="name">BinaryInfC</span><span class="string">&#123;$s$&#125;</span></span>     _|</span><br><span class="line"></span><br><span class="line">        <span class="tag">\<span class="name">AxiomC</span><span class="string">&#123;$q$&#125;</span></span>          |</span><br><span class="line">        <span class="tag">\<span class="name">AxiomC</span><span class="string">&#123;$q \to s$&#125;</span></span>    |</span><br><span class="line">        <span class="tag">\<span class="name">RightLabel</span><span class="string">&#123;$\to e$&#125;</span></span>  |&lt;----第二个块</span><br><span class="line">        <span class="tag">\<span class="name">BinaryInfC</span><span class="string">&#123;$s$&#125;</span></span>     _|</span><br><span class="line"></span><br><span class="line">    <span class="tag">\<span class="name">RightLabel</span><span class="string">&#123;$\vee e$&#125;</span></span> &lt;---------最外层的内容</span><br><span class="line">    <span class="tag">\<span class="name">TrinaryInfC</span><span class="string">&#123;$s$&#125;</span></span></span><br><span class="line"><span class="tag">\<span class="name">end</span><span class="string">&#123;prooftree&#125;</span></span></span><br></pre></td></tr></table></figure>
 <p>这里我们无需关心<code>bussproof</code>如何完成公式的渲染，对于复杂的证明树，我们只需要按照“堆栈”的思想去编写证明树代码即可。</p>
-<p>效果如图：<img src="/images/latex-proof-2.png" width="80%" alt="latex-proof-tree-2"></p>
+<p>效果如图：<img data-src="/images/latex-proof-2.png" width="80%" alt="latex-proof-tree-2"></p>
 </li>
 <li><p>绘制带框的证明树</p>
 <p>这里采用<code>\fbox</code>与<code>\parbox</code>的配合完成加框。总体效果如下：</p>
-<p><img src="/images/latex-proof-3.png" width="80%" alt="latex-proof-tree-3"></p>
+<p><img data-src="/images/latex-proof-3.png" width="80%" alt="latex-proof-tree-3"></p>
 <figure class="highlight latex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">\<span class="name">usepackage</span><span class="string">&#123;calc&#125;</span></span></span><br><span class="line">--snip--</span><br><span class="line">Proof tree(s) with boxes.</span><br><span class="line"><span class="tag">\<span class="name">newsavebox</span><span class="string">&#123;\prooftreeOne&#125;</span></span></span><br><span class="line"><span class="tag">\<span class="name">sbox</span><span class="string">&#123;\prooftreeOne&#125;</span><span class="string">&#123;</span></span></span><br><span class="line"><span class="tag"><span class="string">    \AxiomC&#123;$p$&#125;</span></span></span><br><span class="line">    <span class="tag">\<span class="name">AxiomC</span><span class="string">&#123;$p \to s$&#125;</span></span></span><br><span class="line">    <span class="tag">\<span class="name">RightLabel</span><span class="string">&#123;$\to e$&#125;</span></span></span><br><span class="line">    <span class="tag">\<span class="name">BinaryInfC</span><span class="string">&#123;$s$&#125;</span></span></span><br><span class="line">    <span class="tag">\<span class="name">DisplayProof</span></span></span><br><span class="line">&#125;</span><br><span class="line"><span class="tag">\<span class="name">newsavebox</span><span class="string">&#123;\prooftreeTwo&#125;</span></span></span><br><span class="line"><span class="tag">\<span class="name">sbox</span><span class="string">&#123;\prooftreeTwo&#125;</span><span class="string">&#123;</span></span></span><br><span class="line"><span class="tag"><span class="string">    \AxiomC&#123;$q$&#125;</span></span></span><br><span class="line">    <span class="tag">\<span class="name">AxiomC</span><span class="string">&#123;$q \to s$&#125;</span></span></span><br><span class="line">    <span class="tag">\<span class="name">RightLabel</span><span class="string">&#123;$\to e$&#125;</span></span></span><br><span class="line">    <span class="tag">\<span class="name">BinaryInfC</span><span class="string">&#123;$s$&#125;</span></span></span><br><span class="line">    <span class="tag">\<span class="name">DisplayProof</span></span></span><br><span class="line">&#125;</span><br><span class="line"><span class="tag">\<span class="name">begin</span><span class="string">&#123;prooftree&#125;</span></span></span><br><span class="line">    <span class="tag">\<span class="name">AxiomC</span><span class="string">&#123;$p \vee q$&#125;</span></span></span><br><span class="line">    <span class="tag">\<span class="name">AxiomC</span><span class="string">&#123;\fbox&#123;\parbox&#123;\widthof&#123;\usebox&#123;\prooftreeOne&#125;</span></span>&#125;&#125;&#123;<span class="tag">\<span class="name">usebox</span><span class="string">&#123;\prooftreeOne&#125;</span></span>&#125;&#125;&#125;</span><br><span class="line">    <span class="tag">\<span class="name">AxiomC</span><span class="string">&#123;\fbox&#123;\parbox&#123;\widthof&#123;\usebox&#123;\prooftreeTwo&#125;</span></span>&#125;&#125;&#123;<span class="tag">\<span class="name">usebox</span><span class="string">&#123;\prooftreeTwo&#125;</span></span>&#125;&#125;&#125;</span><br><span class="line">    <span class="tag">\<span class="name">RightLabel</span><span class="string">&#123;$\vee e$&#125;</span></span></span><br><span class="line">    <span class="tag">\<span class="name">TrinaryInfC</span><span class="string">&#123;$s$&#125;</span></span></span><br><span class="line"><span class="tag">\<span class="name">end</span><span class="string">&#123;prooftree&#125;</span></span></span><br></pre></td></tr></table></figure>
 <p>需要注意的是当引用<code>box</code>时需测量子块的宽度，否则会出现框直接占满整页的情况</p>
 </li>
 <li><p>单独一条横线的绘制</p>
 <p>其实只用放置一个空的<code>\AxiomC&#123;&#125;</code>元素就可以了</p>
 <figure class="highlight latex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">LEM example.</span><br><span class="line"><span class="tag">\<span class="name">begin</span><span class="string">&#123;prooftree&#125;</span></span></span><br><span class="line">    <span class="tag">\<span class="name">AxiomC</span><span class="string">&#123;&#125;</span></span></span><br><span class="line">    <span class="tag">\<span class="name">RightLabel</span><span class="string">&#123;$LEM$&#125;</span></span></span><br><span class="line">    <span class="tag">\<span class="name">UnaryInfC</span><span class="string">&#123;$p \vee \neg p$&#125;</span></span></span><br><span class="line"><span class="tag">\<span class="name">end</span><span class="string">&#123;prooftree&#125;</span></span></span><br></pre></td></tr></table></figure>
-<p><img src="/images/latex-proof-4.png" width="80%" alt="latex-proof-tree-4"></p>
+<p><img data-src="/images/latex-proof-4.png" width="80%" alt="latex-proof-tree-4"></p>
 </li>
 <li><p>证明序列的编写</p>
 <p>这里需要强调的是，我目前的方法十分局限并且复杂。它不适用于需要换页的情况，并且当框的数目多起来后要编写许多冗余的代码。</p>
-<p>效果如图：<img src="/images/latex-proof-5.png" width="80%" alt="latex-proof-tree-5"></p>
+<p>效果如图：<img data-src="/images/latex-proof-5.png" width="80%" alt="latex-proof-tree-5"></p>
 <figure class="highlight latex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">\<span class="name">usepackage</span><span class="string">&#123;tikz&#125;</span></span></span><br><span class="line"><span class="tag">\<span class="name">usetikzlibrary</span><span class="string">&#123;tikzmark,fit&#125;</span></span></span><br><span class="line">--snip--</span><br><span class="line">A simple proof sequence.</span><br><span class="line"><span class="tag">\<span class="name">begin</span><span class="string">&#123;enumerate&#125;</span></span></span><br><span class="line">    <span class="tag">\<span class="name">item</span></span> <span class="tag">\<span class="name">qquad</span></span> <span class="formula">$p <span class="tag">\<span class="name">vee</span></span> q$</span> <span class="tag">\<span class="name">hfill</span></span> <span class="formula">$Premise$</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">\<span class="name">item</span></span> <span class="tag">\<span class="name">qquad</span></span> <span class="tag">\<span class="name">qquad</span></span> <span class="tag">\<span class="name">tikzmarknode</span><span class="string">&#123;block1&#125;</span><span class="string">&#123;$p$&#125;</span></span> <span class="tag">\<span class="name">hfill</span></span> <span class="formula">$(1)$</span></span><br><span class="line">    <span class="tag">\<span class="name">item</span></span> <span class="tag">\<span class="name">qquad</span></span> <span class="tag">\<span class="name">qquad</span></span> <span class="formula">$p <span class="tag">\<span class="name">to</span></span> s$</span> <span class="tag">\<span class="name">hfill</span></span> <span class="formula">$Premise$</span></span><br><span class="line">    <span class="tag">\<span class="name">item</span></span> <span class="tag">\<span class="name">qquad</span></span> <span class="tag">\<span class="name">qquad</span></span> <span class="tag">\<span class="name">tikzmarknode</span><span class="string">&#123;end1&#125;</span><span class="string">&#123;$s$ \qquad\quad&#125;</span></span> <span class="tag">\<span class="name">hfill</span></span> <span class="formula">$(2)+(3)+<span class="tag">\<span class="name">to</span></span> e$</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">\<span class="name">item</span></span> <span class="tag">\<span class="name">qquad</span></span> <span class="tag">\<span class="name">qquad</span></span> <span class="tag">\<span class="name">tikzmarknode</span><span class="string">&#123;block2&#125;</span><span class="string">&#123;$p$&#125;</span></span> <span class="tag">\<span class="name">hfill</span></span> <span class="formula">$(1)$</span></span><br><span class="line">    <span class="tag">\<span class="name">item</span></span> <span class="tag">\<span class="name">qquad</span></span> <span class="tag">\<span class="name">qquad</span></span> <span class="formula">$p <span class="tag">\<span class="name">to</span></span> s$</span> <span class="tag">\<span class="name">hfill</span></span> <span class="formula">$Premise$</span></span><br><span class="line">    <span class="tag">\<span class="name">item</span></span> <span class="tag">\<span class="name">qquad</span></span> <span class="tag">\<span class="name">qquad</span></span> <span class="tag">\<span class="name">tikzmarknode</span><span class="string">&#123;end2&#125;</span><span class="string">&#123;$s$ \qquad\quad&#125;</span></span> <span class="tag">\<span class="name">hfill</span></span> <span class="formula">$(5)+(6)+<span class="tag">\<span class="name">to</span></span> e$</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">\<span class="name">item</span></span> <span class="tag">\<span class="name">qquad</span></span> <span class="formula">$s$</span> <span class="tag">\<span class="name">hfill</span></span> <span class="formula">$(1)-(7)+<span class="tag">\<span class="name">vee</span></span> e$</span></span><br><span class="line"><span class="tag">\<span class="name">end</span><span class="string">&#123;enumerate&#125;</span></span></span><br><span class="line"><span class="tag">\<span class="name">begin</span><span class="string">&#123;tikzpicture&#125;</span><span class="string">[overlay,remember picture]</span></span></span><br><span class="line">    <span class="tag">\<span class="name">node</span><span class="string">[draw,inner sep=9pt,fit=(block1)(end1)]</span><span class="string">&#123;&#125;</span></span>;</span><br><span class="line">    <span class="tag">\<span class="name">node</span><span class="string">[draw,inner sep=9pt,fit=(block2)(end2)]</span><span class="string">&#123;&#125;</span></span>;</span><br><span class="line"><span class="tag">\<span class="name">end</span><span class="string">&#123;tikzpicture&#125;</span></span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>最后附上完整的代码</p>
@@ -292,7 +364,7 @@
     
     
 
-      <footer class="post-footer">
+    <footer class="post-footer">
           <div class="post-tags">
               <a href="/tags/latex/" rel="tag"># latex</a>
               <a href="/tags/prooftree/" rel="tag"># prooftree</a>
@@ -300,20 +372,19 @@
 
         
 
-
-        
-    <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/2020/02/23/chromium-scale/" rel="prev" title="Linux版Chromium调整DPI缩放">
-      <i class="fa fa-chevron-left"></i> Linux版Chromium调整DPI缩放
-    </a></div>
-      <div class="post-nav-item">
-    <a href="/2020/03/18/latex-parsetree/" rel="next" title="使用latex写分析树">
-      使用latex写分析树 <i class="fa fa-chevron-right"></i>
-    </a></div>
-    </div>
-      </footer>
-    
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/02/23/chromium-scale/" rel="prev" title="Linux版Chromium调整DPI缩放">
+                  <i class="fa fa-chevron-left"></i> Linux版Chromium调整DPI缩放
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/03/18/latex-parsetree/" rel="next" title="使用latex写分析树">
+                  使用latex写分析树 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
   </article>
   
   
@@ -321,8 +392,7 @@
 
 
 
-          </div>
-          
+      
     
   <div class="comments">
     <div id="disqus_thread">
@@ -338,7 +408,7 @@
       activeClass = localStorage.getItem('comments_active') || activeClass;
     }
     if (activeClass) {
-      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
       if (activeTab) {
         activeTab.click();
       }
@@ -347,106 +417,111 @@
   if (CONFIG.comments.storage) {
     window.addEventListener('tabs:click', event => {
       if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
-      let commentClass = event.target.classList[1];
+      const commentClass = event.target.classList[1];
       localStorage.setItem('comments_active', commentClass);
     });
   }
 </script>
 
-        </div>
-          
-  
-  <div class="toggle sidebar-toggle">
-    <span class="toggle-line toggle-line-first"></span>
-    <span class="toggle-line toggle-line-middle"></span>
-    <span class="toggle-line toggle-line-last"></span>
-  </div>
-
-  <aside class="sidebar">
-    <div class="sidebar-inner">
-
-      <ul class="sidebar-nav motion-element">
-        <li class="sidebar-nav-toc">
-          文章目录
-        </li>
-        <li class="sidebar-nav-overview">
-          站点概览
-        </li>
-      </ul>
-
-      <!--noindex-->
-      <div class="post-toc-wrap sidebar-panel">
-      </div>
-      <!--/noindex-->
-
-      <div class="site-overview-wrap sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">Paul</p>
-  <div class="site-description" itemprop="description">thoughts,stories,experiences</div>
-</div>
-<div class="site-state-wrap motion-element">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-          <a href="/archives/">
-        
-          <span class="site-state-item-count">20</span>
-          <span class="site-state-item-name">日志</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-tags">
-            <a href="/tags/">
-          
-        <span class="site-state-item-count">33</span>
-        <span class="site-state-item-name">标签</span></a>
-      </div>
-  </nav>
-</div>
-
-
-
-      </div>
-
     </div>
-  </aside>
-  <div id="sidebar-dimmer"></div>
+  </main>
 
+  <footer class="footer">
+    <div class="footer-inner">
+      
 
-      </div>
-    </main>
-
-    <footer class="footer">
-      <div class="footer-inner">
-        
-
-        
+      
 
 <div class="copyright">
   
   &copy; 
   <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
-    <i class="user"></i>
+    <i class="fa fa-heart"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">Paul</span>
-    <span class="post-meta-divider">|</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
     <span class="post-meta-item-icon">
-      <i class="fa fa-chart-area"></i>
+      <i class="fa fa-chart-line"></i>
     </span>
     <span title="站点总字数">25k</span>
-    <span class="post-meta-divider">|</span>
+  </span>
+  <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
     <span title="站点阅读时长">42 分钟</span>
+  </span>
 </div>
-  <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZw==">NexT.Gemini</span> 强力驱动
+  <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZw==">NexT.Gemini</span> 强力驱动
   </div>
 
-        
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1.15.0/dist/lozad.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '.page-configurations',
+    '.main-inner',
+    '.post-toc-wrap',
+    '.languages',
+    '.pjax'
+  ],
+  analytics: false,
+  cacheBust: false,
+  scrollRestoration: false,
+  scrollTo: !CONFIG.bookmark.enable
+});
+
+document.addEventListener('pjax:success', () => {
+  pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  const hasTOC = document.querySelector('.post-toc');
+  document.querySelector('.sidebar-inner').classList.toggle('sidebar-nav-active', hasTOC);
+  document.querySelector(hasTOC ? '.sidebar-nav-toc' : '.sidebar-nav-overview').click();
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
 
 
   <div style="display: none;">
-    <script src="//s95.cnzz.com/z_stat.php?id=1278724440&web_id=1278724440"></script>
+    <script data-pjax src="//s95.cnzz.com/z_stat.php?id=1278724440&web_id=1278724440"></script>
   </div>
 
 
@@ -454,50 +529,11 @@
 
 
 
-      </div>
-    </footer>
-  </div>
-
-  
-  <script src="/lib/anime.min.js"></script>
-  <script src="/lib/velocity/velocity.min.js"></script>
-  <script src="/lib/velocity/velocity.ui.min.js"></script>
-
-<script src="/js/utils.js"></script>
-
-<script src="/js/motion.js"></script>
-
-
-<script src="/js/schemes/pisces.js"></script>
-
-
-<script src="/js/next-boot.js"></script>
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    <div class="pjax">
   
 
   
-      
-
-<script>
+      <script>
   if (typeof MathJax === 'undefined') {
     window.MathJax = {
       loader: {
@@ -525,7 +561,7 @@
           }, '', false],
           insertedScript: [200, () => {
             document.querySelectorAll('mjx-container').forEach(node => {
-              let target = node.parentNode;
+              const target = node.parentNode;
               if (target.nodeName.toLowerCase() === 'li') {
                 target.parentNode.classList.add('has-jax');
               }
@@ -535,8 +571,8 @@
       }
     };
     (function () {
-      var script = document.createElement('script');
-      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      const script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js';
       script.defer = true;
       document.head.appendChild(script);
     })();
@@ -551,11 +587,11 @@
 
   
 
-<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/disqusjs@1/dist/disqusjs.css">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/disqusjs@1.3.0/dist/disqusjs.css">
 
 <script>
-NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
-  NexT.utils.getScript('//cdn.jsdelivr.net/npm/disqusjs@1/dist/disqus.js', () => {
+NexT.utils.loadComments('#disqus_thread', () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/disqusjs@1.3.0/dist/disqus.js', () => {
     window.dsqjs = new DisqusJS({
       api       : 'https://disqus.skk.moe/disqus/' || 'https://disqus.com/api/',
       apikey    : 'pwCicQgBQmc1ZEUP8fbsECJ1H1U5HWHEuUKbFFR0whF6VjLgL5CneiwMFOtQwwAv',
@@ -568,5 +604,6 @@ NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
 });
 </script>
 
+    </div>
 </body>
 </html>

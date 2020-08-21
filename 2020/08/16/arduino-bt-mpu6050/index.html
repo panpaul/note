@@ -13,11 +13,13 @@
 <link rel="stylesheet" href="/css/main.css">
 
 
-<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-<script id="hexo-configurations">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"blog.ofortune.xyz","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"blog.ofortune.xyz","root":"/","scheme":"Gemini","version":"8.0.0-rc.5","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}};
   </script>
 
   <meta name="description" content="最近在使用Arduino构建加速度收集工具，选用的传感器为MPU-6050，使用蓝牙模块HC-05将数据发送至手机。">
@@ -44,10 +46,11 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://blog.ofortune.xyz/images/abm_board.webp">
 
+
 <link rel="canonical" href="https://blog.ofortune.xyz/2020/08/16/arduino-bt-mpu6050/">
 
 
-<script id="page-configurations">
+<script data-pjax class="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
@@ -60,7 +63,7 @@
   <title>使用Arduino构建运动收集平台 | Silent World</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-91325067-5"></script>
-    <script>
+    <script data-pjax>
       if (CONFIG.hostname === location.hostname) {
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
@@ -70,7 +73,7 @@
     </script>
 
 
-  <script>
+  <script data-pjax>
     var _hmt = _hmt || [];
     (function() {
       var hm = document.createElement("script");
@@ -85,49 +88,61 @@
 
   <noscript>
   <style>
-  .use-motion .brand,
+  body { margin-top: 2rem; }
+
   .use-motion .menu-item,
-  .sidebar-inner,
+  .use-motion .sidebar,
   .use-motion .post-block,
   .use-motion .pagination,
   .use-motion .comments,
   .use-motion .post-header,
   .use-motion .post-body,
-  .use-motion .collection-header { opacity: initial; }
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
 
   .use-motion .site-title,
-  .use-motion .site-subtitle {
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
     opacity: initial;
     top: initial;
   }
 
-  .use-motion .logo-line-before i { left: initial; }
-  .use-motion .logo-line-after i { right: initial; }
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
   </style>
 </noscript>
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage">
-  <div class="container use-motion">
-    <div class="headband"></div>
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
 
+  <main class="main">
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-container">
   <div class="site-nav-toggle">
     <div class="toggle" aria-label="切换导航栏">
-      <span class="toggle-line toggle-line-first"></span>
-      <span class="toggle-line toggle-line-middle"></span>
-      <span class="toggle-line toggle-line-last"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
 
   <div class="site-meta">
 
     <a href="/" class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
+      <i class="logo-line"></i>
       <h1 class="site-title">Silent World</h1>
-      <span class="logo-line-after"><i></i></span>
+      <i class="logo-line"></i>
     </a>
       <p class="site-subtitle" itemprop="description">Paul's notes</p>
   </div>
@@ -140,9 +155,8 @@
 
 
 
-
 <nav class="site-nav">
-  <ul id="menu" class="main-menu menu">
+  <ul class="main-menu menu">
         <li class="menu-item menu-item-home">
 
     <a href="/" rel="section"><i class="home fa-fw"></i>首页</a>
@@ -170,6 +184,63 @@
 
 
 </div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%93%9D%E7%89%99%E6%A8%A1%E5%9D%97"><span class="nav-number">1.</span> <span class="nav-text">蓝牙模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%90%E5%8A%A8%E9%87%87%E9%9B%86%E6%A8%A1%E5%9D%97"><span class="nav-number">2.</span> <span class="nav-text">运动采集模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%9D%97%E6%8E%A5%E7%BA%BF"><span class="nav-number">3.</span> <span class="nav-text">模块接线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E7%BC%96%E5%86%99"><span class="nav-number">4.</span> <span class="nav-text">代码编写</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%93%9D%E7%89%99%E6%A8%A1%E5%9D%97-1"><span class="nav-number">4.1.</span> <span class="nav-text">蓝牙模块</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%90%E5%8A%A8%E4%BC%A0%E6%84%9F%E5%99%A8"><span class="nav-number">4.2.</span> <span class="nav-text">运动传感器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%88%E6%88%90"><span class="nav-number">4.3.</span> <span class="nav-text">合成</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Paul</p>
+  <div class="site-description" itemprop="description">thoughts,stories,experiences</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
     </header>
 
     
@@ -179,14 +250,15 @@
   </div>
   <div class="reading-progress-bar"></div>
 
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
 
-    <main class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          
 
-          <div class="content post posts-expand">
-            
+    <div class="main-inner post posts-expand">
+      
+
+      
 
     
   
@@ -203,6 +275,9 @@
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Silent World">
     </span>
+
+    
+    
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           使用Arduino构建运动收集平台
@@ -223,14 +298,14 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>957</span>
+              <span class="post-meta-item-text">本文字数：</span>
+              <span>954</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span class="post-meta-item-text">阅读时长 &asymp;</span>
               <span>2 分钟</span>
             </span>
 
@@ -241,15 +316,13 @@
     
     
     <div class="post-body" itemprop="articleBody">
-
-      
         <p>最近在使用<code>Arduino</code>构建加速度收集工具，选用的传感器为<code>MPU-6050</code>，使用蓝牙模块<code>HC-05</code>将数据发送至手机。</p>
 <a id="more"></a>
 <h3 id="蓝牙模块"><a href="#蓝牙模块" class="headerlink" title="蓝牙模块"></a>蓝牙模块</h3><p>我使用的蓝牙模块是<code>HC-05</code>，它是主从一体的蓝牙串口模块，当设备完成配对连接后，我们可以直接将蓝牙当作串口用。</p>
 <p>在Arduino Uno中，板载了TX、RX接口，如果将蓝牙模块直接连接到该端口上可以直接通过串口输出到蓝牙。但是在我的项目里，串口同时要输出调试信息，为了不干扰蓝牙的输出，我们选用了<code>10</code>和<code>11</code>号引脚作为模拟串口。</p>
-<h3 id="运动采集模块"><a href="#运动采集模块" class="headerlink" title="运动采集模块"></a>运动采集模块</h3><p>我使用了<code>MPU6050</code>作为运动传感器。<code>MPU6050</code>是首个为实现低功耗、低成本和高性能需求而设计的运动传感器。其内置了数字信号处理器，并且通过$I^2C$接口进行数据的输入输出。</p>
+<h3 id="运动采集模块"><a href="#运动采集模块" class="headerlink" title="运动采集模块"></a>运动采集模块</h3><p>我使用了<code>MPU6050</code>作为运动传感器。<code>MPU6050</code>是首个为实现低功耗、低成本和高性能需求而设计的运动传感器。其内置了数字信号处理器，并且通过<code>I2C</code>接口进行数据的输入输出。</p>
 <h3 id="模块接线"><a href="#模块接线" class="headerlink" title="模块接线"></a>模块接线</h3><p><code>Arduino</code>、<code>HC-05</code>、<code>MPU6050</code>的接线如图3.1.1所示：</p>
-<p><img src="/images/abm_board.webp" alt="board"></p>
+<p><img data-src="/images/abm_board.webp" alt="board"></p>
 <p>在这张图里，<code>Arduino</code>左上角紫色、蓝色接线对应的端口没有标记引脚类型，其实际上分别为<code>SCL</code>和<code>SDA</code>接口。考虑到不同型号的<code>Arduino</code>以及国产<code>Arduino</code>的一些定制，实际上不同板子的<code>SCL</code>和<code>SDA</code>接口对应的引脚不同，需要查询厂商提供的接口参数表。</p>
 <h3 id="代码编写"><a href="#代码编写" class="headerlink" title="代码编写"></a>代码编写</h3><h4 id="蓝牙模块-1"><a href="#蓝牙模块-1" class="headerlink" title="蓝牙模块"></a>蓝牙模块</h4><p>我们首先可以根据需求调整蓝牙的参数，这一步通过<code>AT</code>模式来完成。</p>
 <p>将<code>EN</code>端与<code>Arduino</code>中的<code>3.3V</code>高电平相连，进入<code>AT</code>模式，然后调整<code>bitrate</code>至<code>38400</code>，然后根据<code>AT</code>指令集语法来调整或者查询蓝牙设置。</p>
@@ -261,14 +334,14 @@
 <h4 id="运动传感器"><a href="#运动传感器" class="headerlink" title="运动传感器"></a>运动传感器</h4><p>我们在使用之前要先初始化传感器的串口，具体代码可以写在<code>setup</code>里面。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> MPU = <span class="number">0x68</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">Wire</span>.<span class="built_in">begin</span>();</span><br><span class="line"><span class="built_in">Wire</span>.<span class="built_in">beginTransmission</span>(MPU);</span><br><span class="line"><span class="built_in">Wire</span>.<span class="built_in">write</span>(<span class="number">0x6B</span>);</span><br><span class="line"><span class="built_in">Wire</span>.<span class="built_in">write</span>(<span class="number">0</span>);</span><br><span class="line"><span class="built_in">Wire</span>.<span class="built_in">endTransmission</span>(<span class="literal">true</span>);</span><br></pre></td></tr></table></figure>
 <p>具体的文档如下：</p>
-<p><img src="/images/abm_426.webp" alt="4.2.6"></p>
+<p><img data-src="/images/abm_426.webp" alt="4.2.6"></p>
 <p>然后是读取数据：</p>
 <p>先上代码：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ReadData</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">Wire</span>.<span class="built_in">beginTransmission</span>(MPU);</span><br><span class="line">    <span class="built_in">Wire</span>.<span class="built_in">write</span>(<span class="number">0x3B</span>);</span><br><span class="line">    <span class="built_in">Wire</span>.<span class="built_in">requestFrom</span>(MPU, <span class="number">14</span>, <span class="literal">true</span>);</span><br><span class="line">    <span class="built_in">Wire</span>.<span class="built_in">endTransmission</span>(<span class="literal">true</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 1条数据2字节 一次读取一个字节</span></span><br><span class="line">    <span class="comment">// 加速度</span></span><br><span class="line">    ACC_X = (<span class="built_in">Wire</span>.<span class="built_in">read</span>() &lt;&lt; <span class="number">8</span> | <span class="built_in">Wire</span>.<span class="built_in">read</span>());</span><br><span class="line">    ACC_Y = (<span class="built_in">Wire</span>.<span class="built_in">read</span>() &lt;&lt; <span class="number">8</span> | <span class="built_in">Wire</span>.<span class="built_in">read</span>());</span><br><span class="line">    ACC_Z = (<span class="built_in">Wire</span>.<span class="built_in">read</span>() &lt;&lt; <span class="number">8</span> | <span class="built_in">Wire</span>.<span class="built_in">read</span>());</span><br><span class="line">    <span class="comment">// 温度</span></span><br><span class="line">    TMP = (<span class="built_in">Wire</span>.<span class="built_in">read</span>() &lt;&lt; <span class="number">8</span> | <span class="built_in">Wire</span>.<span class="built_in">read</span>());</span><br><span class="line">    <span class="comment">// 角速度</span></span><br><span class="line">    GYR_X = (<span class="built_in">Wire</span>.<span class="built_in">read</span>() &lt;&lt; <span class="number">8</span> | <span class="built_in">Wire</span>.<span class="built_in">read</span>());</span><br><span class="line">    GYR_Y = (<span class="built_in">Wire</span>.<span class="built_in">read</span>() &lt;&lt; <span class="number">8</span> | <span class="built_in">Wire</span>.<span class="built_in">read</span>());</span><br><span class="line">    GYR_Z = (<span class="built_in">Wire</span>.<span class="built_in">read</span>() &lt;&lt; <span class="number">8</span> | <span class="built_in">Wire</span>.<span class="built_in">read</span>());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>在文档中从<code>0x3B</code>开始是存放传感器获得的数据的寄存器：</p>
-<p><img src="/images/abm_417.webp" alt="4.1.7"></p>
-<p><img src="/images/abm_418.webp" alt="4.1.8"></p>
-<p><img src="/images/abm_419.webp" alt="4.1.9"></p>
+<p><img data-src="/images/abm_417.webp" alt="4.1.7"></p>
+<p><img data-src="/images/abm_418.webp" alt="4.1.8"></p>
+<p><img data-src="/images/abm_419.webp" alt="4.1.9"></p>
 <p>更多详细的参数可以参见官方文档</p>
 <h4 id="合成"><a href="#合成" class="headerlink" title="合成"></a>合成</h4><p>最后我们只需要根据自己的实际功能所需，将各个模块的代码组合起来写入<code>loop</code>中即可</p>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>已知存在的问题：</p>
@@ -283,7 +356,7 @@
     
     
 
-      <footer class="post-footer">
+    <footer class="post-footer">
           <div class="post-tags">
               <a href="/tags/arduino/" rel="tag"># arduino</a>
               <a href="/tags/bluetooth/" rel="tag"># bluetooth</a>
@@ -295,17 +368,16 @@
 
         
 
-
-        
-    <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/2020/07/21/hack-emby/" rel="prev" title="Emby逆向记录">
-      <i class="fa fa-chevron-left"></i> Emby逆向记录
-    </a></div>
-      <div class="post-nav-item"></div>
-    </div>
-      </footer>
-    
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/07/21/hack-emby/" rel="prev" title="Emby逆向记录">
+                  <i class="fa fa-chevron-left"></i> Emby逆向记录
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
   </article>
   
   
@@ -313,8 +385,7 @@
 
 
 
-          </div>
-          
+      
     
   <div class="comments">
     <div id="disqus_thread">
@@ -330,7 +401,7 @@
       activeClass = localStorage.getItem('comments_active') || activeClass;
     }
     if (activeClass) {
-      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
       if (activeTab) {
         activeTab.click();
       }
@@ -339,107 +410,111 @@
   if (CONFIG.comments.storage) {
     window.addEventListener('tabs:click', event => {
       if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
-      let commentClass = event.target.classList[1];
+      const commentClass = event.target.classList[1];
       localStorage.setItem('comments_active', commentClass);
     });
   }
 </script>
 
-        </div>
-          
-  
-  <div class="toggle sidebar-toggle">
-    <span class="toggle-line toggle-line-first"></span>
-    <span class="toggle-line toggle-line-middle"></span>
-    <span class="toggle-line toggle-line-last"></span>
-  </div>
-
-  <aside class="sidebar">
-    <div class="sidebar-inner">
-
-      <ul class="sidebar-nav motion-element">
-        <li class="sidebar-nav-toc">
-          文章目录
-        </li>
-        <li class="sidebar-nav-overview">
-          站点概览
-        </li>
-      </ul>
-
-      <!--noindex-->
-      <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%93%9D%E7%89%99%E6%A8%A1%E5%9D%97"><span class="nav-number">1.</span> <span class="nav-text">蓝牙模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%90%E5%8A%A8%E9%87%87%E9%9B%86%E6%A8%A1%E5%9D%97"><span class="nav-number">2.</span> <span class="nav-text">运动采集模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%9D%97%E6%8E%A5%E7%BA%BF"><span class="nav-number">3.</span> <span class="nav-text">模块接线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E7%BC%96%E5%86%99"><span class="nav-number">4.</span> <span class="nav-text">代码编写</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%93%9D%E7%89%99%E6%A8%A1%E5%9D%97-1"><span class="nav-number">4.1.</span> <span class="nav-text">蓝牙模块</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%90%E5%8A%A8%E4%BC%A0%E6%84%9F%E5%99%A8"><span class="nav-number">4.2.</span> <span class="nav-text">运动传感器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%88%E6%88%90"><span class="nav-number">4.3.</span> <span class="nav-text">合成</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li></ol></div>
-      </div>
-      <!--/noindex-->
-
-      <div class="site-overview-wrap sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">Paul</p>
-  <div class="site-description" itemprop="description">thoughts,stories,experiences</div>
-</div>
-<div class="site-state-wrap motion-element">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-          <a href="/archives/">
-        
-          <span class="site-state-item-count">20</span>
-          <span class="site-state-item-name">日志</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-tags">
-            <a href="/tags/">
-          
-        <span class="site-state-item-count">33</span>
-        <span class="site-state-item-name">标签</span></a>
-      </div>
-  </nav>
-</div>
-
-
-
-      </div>
-
     </div>
-  </aside>
-  <div id="sidebar-dimmer"></div>
+  </main>
 
+  <footer class="footer">
+    <div class="footer-inner">
+      
 
-      </div>
-    </main>
-
-    <footer class="footer">
-      <div class="footer-inner">
-        
-
-        
+      
 
 <div class="copyright">
   
   &copy; 
   <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
-    <i class="user"></i>
+    <i class="fa fa-heart"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">Paul</span>
-    <span class="post-meta-divider">|</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
     <span class="post-meta-item-icon">
-      <i class="fa fa-chart-area"></i>
+      <i class="fa fa-chart-line"></i>
     </span>
     <span title="站点总字数">25k</span>
-    <span class="post-meta-divider">|</span>
+  </span>
+  <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
     <span title="站点阅读时长">42 分钟</span>
+  </span>
 </div>
-  <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZw==">NexT.Gemini</span> 强力驱动
+  <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZw==">NexT.Gemini</span> 强力驱动
   </div>
 
-        
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1.15.0/dist/lozad.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '.page-configurations',
+    '.main-inner',
+    '.post-toc-wrap',
+    '.languages',
+    '.pjax'
+  ],
+  analytics: false,
+  cacheBust: false,
+  scrollRestoration: false,
+  scrollTo: !CONFIG.bookmark.enable
+});
+
+document.addEventListener('pjax:success', () => {
+  pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  const hasTOC = document.querySelector('.post-toc');
+  document.querySelector('.sidebar-inner').classList.toggle('sidebar-nav-active', hasTOC);
+  document.querySelector(hasTOC ? '.sidebar-nav-toc' : '.sidebar-nav-overview').click();
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
 
 
   <div style="display: none;">
-    <script src="//s95.cnzz.com/z_stat.php?id=1278724440&web_id=1278724440"></script>
+    <script data-pjax src="//s95.cnzz.com/z_stat.php?id=1278724440&web_id=1278724440"></script>
   </div>
 
 
@@ -447,55 +522,18 @@
 
 
 
-      </div>
-    </footer>
-  </div>
-
-  
-  <script src="/lib/anime.min.js"></script>
-  <script src="/lib/velocity/velocity.min.js"></script>
-  <script src="/lib/velocity/velocity.ui.min.js"></script>
-
-<script src="/js/utils.js"></script>
-
-<script src="/js/motion.js"></script>
-
-
-<script src="/js/schemes/pisces.js"></script>
-
-
-<script src="/js/next-boot.js"></script>
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    <div class="pjax">
   
 
   
 
   
 
-<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/disqusjs@1/dist/disqusjs.css">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/disqusjs@1.3.0/dist/disqusjs.css">
 
 <script>
-NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
-  NexT.utils.getScript('//cdn.jsdelivr.net/npm/disqusjs@1/dist/disqus.js', () => {
+NexT.utils.loadComments('#disqus_thread', () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/disqusjs@1.3.0/dist/disqus.js', () => {
     window.dsqjs = new DisqusJS({
       api       : 'https://disqus.skk.moe/disqus/' || 'https://disqus.com/api/',
       apikey    : 'pwCicQgBQmc1ZEUP8fbsECJ1H1U5HWHEuUKbFFR0whF6VjLgL5CneiwMFOtQwwAv',
@@ -508,5 +546,6 @@ NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
 });
 </script>
 
+    </div>
 </body>
 </html>
