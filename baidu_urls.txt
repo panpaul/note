@@ -1,5 +1,5 @@
+https://blog.ofortune.xyz/2020/08/30/seetaface6-intro/
 https://blog.ofortune.xyz/2020/08/16/arduino-bt-mpu6050/
 https://blog.ofortune.xyz/2020/07/21/hack-emby/
 https://blog.ofortune.xyz/2020/05/27/whuctf-2020-writeup/
 https://blog.ofortune.xyz/2020/05/18/memory-intro/
-https://blog.ofortune.xyz/2020/04/26/windows-recovery/

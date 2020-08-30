@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.0.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.ofortune.xyz","root":"/","scheme":"Gemini","version":"8.0.0-rc.5","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}};
+  </script>
+
+  <meta name="description" content="在今年三月中科视拓开放了最新的商业版本人脸识别算法。SeetaFace6是最新开放的商业版本，并且就在前几天，官方开放了SeetaFace6的源代码以及所使用的推理引擎TenniS。 最近我写一个玩具项目刚好用到了这个项目，总的来说，编译配置开源版本的SeetaFace6相对麻烦，故写本文记录如何使用SeetaFace6。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="人脸识别SeetaFace6入门">
+<meta property="og:url" content="https://blog.ofortune.xyz/2020/08/30/seetaface6-intro/index.html">
+<meta property="og:site_name" content="Silent World">
+<meta property="og:description" content="在今年三月中科视拓开放了最新的商业版本人脸识别算法。SeetaFace6是最新开放的商业版本，并且就在前几天，官方开放了SeetaFace6的源代码以及所使用的推理引擎TenniS。 最近我写一个玩具项目刚好用到了这个项目，总的来说，编译配置开源版本的SeetaFace6相对麻烦，故写本文记录如何使用SeetaFace6。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-08-30T11:38:41.000Z">
+<meta property="article:modified_time" content="2020-08-30T11:38:41.000Z">
+<meta property="article:author" content="Paul">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="SeetaFace">
+<meta property="article:tag" content="face detection">
+<meta property="article:tag" content="face recognition">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://blog.ofortune.xyz/2020/08/30/seetaface6-intro/">
+
+
+<script data-pjax class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>人脸识别SeetaFace6入门 | Silent World</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-91325067-5"></script>
+    <script data-pjax>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-91325067-5');
+      }
+    </script>
+
+
+  <script data-pjax>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?838eea07a477dca863f82689af68d775";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Silent World</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Paul's notes</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E8%8E%B7%E5%8F%96"><span class="nav-number">1.</span> <span class="nav-text">代码获取</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E7%BC%96%E8%AF%91"><span class="nav-number">2.</span> <span class="nav-text">代码编译</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E4%BD%BF%E7%94%A8"><span class="nav-number">3.</span> <span class="nav-text">代码使用</span></a></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Paul</p>
+  <div class="site-description" itemprop="description">thoughts,stories,experiences</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">37</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.ofortune.xyz/2020/08/30/seetaface6-intro/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Paul">
+      <meta itemprop="description" content="thoughts,stories,experiences">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Silent World">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          人脸识别SeetaFace6入门
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-08-30 19:38:41" itemprop="dateCreated datePublished" datetime="2020-08-30T19:38:41+08:00">2020-08-30</time>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+              <span class="post-meta-item-text">本文字数：</span>
+              <span>1.9k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+              <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>在今年三月中科视拓开放了最新的商业版本人脸识别算法。<code>SeetaFace6</code>是最新开放的商业版本，并且就在前几天，官方开放了<code>SeetaFace6</code>的源代码以及所使用的推理引擎<code>TenniS</code>。</p>
+<p>最近我写一个玩具项目刚好用到了这个项目，总的来说，编译配置开源版本的<code>SeetaFace6</code>相对麻烦，故写本文记录如何使用<code>SeetaFace6</code>。</p>
+<a id="more"></a>
+<h4 id="代码获取"><a href="#代码获取" class="headerlink" title="代码获取"></a>代码获取</h4><p>首先，开源版本的代码地址在：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1NlZXRhRmFjZTZPcGVuL2luZGV4">SeetaFace6<i class="fa fa-external-link-alt"></i></span></p>
+<p>执行操作<code>git clone --recursive https://github.com/SeetaFace6Open/index.git</code>获取项目的所有代码</p>
+<p>这个仓库相当于一个索引，通过<code>submodule</code>的方式组合了<code>SeetaFace6</code>所包含的所有模块以及依赖库。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">目录</th>
+<th style="text-align:center">功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>FaceAntiSpoofingX6</code></td>
+<td style="text-align:center">活体检测</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>FaceBoxes</code></td>
+<td style="text-align:center">人脸检测</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>FaceRecognizer6</code></td>
+<td style="text-align:center">人脸识别</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>FaceTracker6</code></td>
+<td style="text-align:center">人脸追踪</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>Landmarker</code></td>
+<td style="text-align:center">特征点提取</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>PoseEstimator6</code></td>
+<td style="text-align:center">姿态评估</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>QualityAssessor3</code></td>
+<td style="text-align:center">质量评估</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>SeetaAgePredictor</code></td>
+<td style="text-align:center">年龄检测</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>SeetaEyeStateDetector</code></td>
+<td style="text-align:center">眼睛状态检测</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>SeetaGenderPredictor</code></td>
+<td style="text-align:center">性别检测</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>SeetaMaskDetector</code></td>
+<td style="text-align:center">口罩检测</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>OpenRoleZoo</code></td>
+<td style="text-align:center">常用操作集合</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>SeetaAuthorize</code></td>
+<td style="text-align:center">模型解析工程</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>TenniS</code></td>
+<td style="text-align:center">前向计算框架</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id="代码编译"><a href="#代码编译" class="headerlink" title="代码编译"></a>代码编译</h4><p>根据官方文档，我们需要先编译三个基础库：<code>OpenRoleZoo</code>、<code>SeetaAuthorize</code>、<code>TenniS</code>。</p>
+<p>先是<code>OpenRoleZoo</code>，这个库需要修改一下源代码才能成功编译：修改代码<code>OpenRoleZoo/include/orz/mem/pot.h</code>，在第9行<code>#include&lt;memory&gt;</code>后面插入一行<code>#include &lt;functional&gt;</code>补充所需要的头文件。然后就执行<code>cmake</code>指令并且编译安装。</p>
+<p>这个模块所用到的配置选项有：<code>CMAKE_BUILD_TYPE</code>(设置<code>Release</code>就好了)、<code>ORZ_WITH_OPENSSL</code>(设置为<code>OFF</code>，官方的脚本内均为<code>OFF</code>)、<code>CMAKE_INSTALL_PREFIX</code>(设置为一个固定的目录，其它模块要用到)</p>
+<p>然后是<code>SeetaAuthorize</code>和<code>TenniS</code>模块。这里<code>SeetaAuthorize</code>模块需要指定<code>PLATFORM</code>(<code>auto</code>或<code>x86</code>或<code>x64</code>)，否则在编译其它模块时会报错，同时需要指定<code>ORZ_ROOT_DIR</code>为上一步<code>OpenRoleZoo</code>的安装目录；至于<code>TenniS</code>模块，不同的平台，可以启用不同的优化选项，具体参考<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1Rlbm5pUy1PcGVuL1Rlbm5pUw==">TenniS<i class="fa fa-external-link-alt"></i></span></p>
+<p>在编译完基础模块后，就可以按需编译自己所需要的其它模块了。</p>
+<p>其它模块在配置时需要指定的选项有：<code>CMAKE_BUILD_TYPE</code>（默认<code>Release</code>即可）、<code>PLATFORM</code>（本地平台编译<code>auto</code>即可）、<code>SEETA_INSTALL_PREFIX</code>（不是所有的模块都支持，这里设置为前面的安装目录）、<code>ORZ_ROOT_PATH</code>（前面的安装目录）、<code>CMAKE_MODULE_PATH</code>（前面的安装目录<code>+/cmake</code>）、<code>SEETA_AUTHORIZE</code>（官方给的构建脚本是<code>OFF</code>，但是当后面那个设置为<code>ON</code>后会变成<code>ON</code>）、<code>SEETA_MODEL_ENCRYPT</code>（如果使用官方的模型就设置为<code>ON</code>）</p>
+<p>需要说明的是，各个模块的维护者感觉不一样，每个项目的<code>CMakeLists.txt</code>的对同一个选项的处理逻辑不太相同。其中<code>QualityAssessor3</code>以及<code>FaceBoxes</code>模块会忽略你手动设置的<code>INSTALL_PREFIX</code>，而强制设置为<code>../build/</code>；同时，模块之间也有依赖关系，比如说<code>QualityAssessor3</code>依赖于<code>PoseEstimator6</code>等</p>
+<p>为了方便，我写了一个脚本<code>build.sh</code>来配置编译<code>SeetaFace6</code></p>
+<p>这里我们默认<code>SeetaFace6</code>目录位于<code>./3rdparty/SeetaFace6</code>中，编译的文件置于<code>./build</code>目录下</p>
+<p>(<del>代码略丑、能用就好</del>)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/env bash</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 环境变量准备</span></span><br><span class="line"><span class="function"><span class="title">env_setup</span></span>() &#123;</span><br><span class="line">  BUILD_HOME=$(</span><br><span class="line">    <span class="built_in">cd</span> <span class="string">&quot;<span class="subst">$(dirname <span class="string">&quot;<span class="variable">$0</span>&quot;</span>)</span>&quot;</span> || <span class="built_in">exit</span></span><br><span class="line">    <span class="built_in">pwd</span></span><br><span class="line">  )</span><br><span class="line"></span><br><span class="line">  BUILD_PATH_BASE=<span class="string">&quot;<span class="variable">$BUILD_HOME</span>&quot;</span>/build</span><br><span class="line">  BUILD_PATH_SEETA=<span class="string">&quot;<span class="variable">$BUILD_PATH_BASE</span>&quot;</span>/SeetaFace_build</span><br><span class="line">  INSTALL_PATH_SEETA=<span class="string">&quot;<span class="variable">$BUILD_PATH_BASE</span>&quot;</span>/SeetaFace</span><br><span class="line">  SOURCE_PATH_SEETA=<span class="string">&quot;<span class="variable">$BUILD_HOME</span>&quot;</span>/3rdparty/SeetaFace6</span><br><span class="line"></span><br><span class="line">  mkdir -p <span class="string">&quot;<span class="variable">$BUILD_PATH_BASE</span>&quot;</span></span><br><span class="line">  mkdir -p <span class="string">&quot;<span class="variable">$BUILD_PATH_SEETA</span>&quot;</span></span><br><span class="line">  mkdir -p <span class="string">&quot;<span class="variable">$INSTALL_PATH_SEETA</span>&quot;</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">export</span> BUILD_HOME</span><br><span class="line">  <span class="built_in">export</span> BUILD_PATH_BASE</span><br><span class="line">  <span class="built_in">export</span> BUILD_PATH_SEETA</span><br><span class="line">  <span class="built_in">export</span> INSTALL_PATH_SEETA</span><br><span class="line">  <span class="built_in">export</span> SOURCE_PATH_SEETA</span><br><span class="line"></span><br><span class="line">  CORES=<span class="string">&quot;-j&quot;</span>$(grep -c <span class="string">&quot;processor&quot;</span> &lt;/proc/cpuinfo)</span><br><span class="line">  <span class="built_in">export</span> CORES</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">build_seeta_OpenRoleZoo</span></span>() &#123;</span><br><span class="line">  <span class="built_in">echo</span> -e <span class="string">&quot;\n&gt;&gt; Building OpenRoleZoo&quot;</span></span><br><span class="line">  mkdir -p <span class="string">&quot;<span class="variable">$BUILD_PATH_SEETA</span>&quot;</span>/OpenRoleZoo</span><br><span class="line">  <span class="built_in">cd</span> <span class="string">&quot;<span class="variable">$BUILD_PATH_SEETA</span>&quot;</span>/OpenRoleZoo || <span class="built_in">exit</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">echo</span> -e <span class="string">&quot;&gt;&gt;&gt; Fixing OpenRoleZoo&quot;</span></span><br><span class="line">  <span class="keyword">if</span> grep -q <span class="string">&quot;&lt;functional&gt;&quot;</span> <span class="string">&quot;<span class="variable">$SOURCE_PATH_SEETA</span>&quot;</span>/OpenRoleZoo/include/orz/mem/pot.h; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> -e <span class="string">&quot;&gt;&gt;&gt;&gt; Already Fixed!&quot;</span></span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    sed -i <span class="string">&#x27;/&lt;memory&gt;/a\#include &lt;functional&gt;&#x27;</span> <span class="string">&quot;<span class="variable">$SOURCE_PATH_SEETA</span>&quot;</span>/OpenRoleZoo/include/orz/mem/pot.h</span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;&gt;&gt;&gt;&gt; Fixed!&quot;</span></span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">echo</span> -e <span class="string">&quot;&gt;&gt;&gt; Configuring OpenRoleZoo&quot;</span></span><br><span class="line">  cmake <span class="string">&quot;<span class="variable">$SOURCE_PATH_SEETA</span>&quot;</span>/OpenRoleZoo \</span><br><span class="line">    -DCMAKE_BUILD_TYPE=<span class="string">&quot;Release&quot;</span> \</span><br><span class="line">    -DORZ_WITH_OPENSSL=OFF \</span><br><span class="line">    -DCMAKE_INSTALL_PREFIX=<span class="string">&quot;<span class="variable">$INSTALL_PATH_SEETA</span>&quot;</span> || <span class="built_in">exit</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">echo</span> -e <span class="string">&quot;\n&gt;&gt;&gt; Making OpenRoleZoo&quot;</span></span><br><span class="line">  make <span class="string">&quot;<span class="variable">$CORES</span>&quot;</span> || <span class="built_in">exit</span></span><br><span class="line">  make install || <span class="built_in">exit</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">echo</span> -e <span class="string">&quot;\n&gt;&gt; OpenRoleZoo Built&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">build_seeta_Authorize</span></span>() &#123;</span><br><span class="line">  <span class="built_in">echo</span> -e <span class="string">&quot;\n&gt;&gt; Building SeetaAuthorize&quot;</span></span><br><span class="line">  mkdir -p <span class="string">&quot;<span class="variable">$BUILD_PATH_SEETA</span>&quot;</span>/SeetaAuthorize</span><br><span class="line">  <span class="built_in">cd</span> <span class="string">&quot;<span class="variable">$BUILD_PATH_SEETA</span>&quot;</span>/SeetaAuthorize || <span class="built_in">exit</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">echo</span> -e <span class="string">&quot;&gt;&gt;&gt; Configuring SeetaAuthorize&quot;</span></span><br><span class="line">  cmake <span class="string">&quot;<span class="variable">$SOURCE_PATH_SEETA</span>&quot;</span>/SeetaAuthorize \</span><br><span class="line">    -DCMAKE_BUILD_TYPE=<span class="string">&quot;Release&quot;</span> \</span><br><span class="line">    -DPLATFORM=<span class="string">&quot;auto&quot;</span> \</span><br><span class="line">    -DORZ_ROOT_DIR=<span class="string">&quot;<span class="variable">$INSTALL_PATH_SEETA</span>&quot;</span> \</span><br><span class="line">    -DCMAKE_INSTALL_PREFIX=<span class="string">&quot;<span class="variable">$INSTALL_PATH_SEETA</span>&quot;</span> || <span class="built_in">exit</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">echo</span> -e <span class="string">&quot;\n&gt;&gt;&gt; Making SeetaAuthorize&quot;</span></span><br><span class="line">  make <span class="string">&quot;<span class="variable">$CORES</span>&quot;</span> || <span class="built_in">exit</span></span><br><span class="line">  make install || <span class="built_in">exit</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">echo</span> -e <span class="string">&quot;\n&gt;&gt; SeetaAuthorize Built&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">build_seeta_TenniS</span></span>() &#123;</span><br><span class="line">  <span class="built_in">echo</span> -e <span class="string">&quot;\n&gt;&gt; Building TenniS&quot;</span></span><br><span class="line">  mkdir -p <span class="string">&quot;<span class="variable">$BUILD_PATH_SEETA</span>&quot;</span>/TenniS</span><br><span class="line">  <span class="built_in">cd</span> <span class="string">&quot;<span class="variable">$BUILD_PATH_SEETA</span>&quot;</span>/TenniS || <span class="built_in">exit</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">echo</span> -e <span class="string">&quot;&gt;&gt;&gt; Configuring TenniS&quot;</span></span><br><span class="line">  </span><br><span class="line">  <span class="comment"># 这里我选用了Arm平台，其它平台根据文档修改</span></span><br><span class="line">  cmake <span class="string">&quot;<span class="variable">$SOURCE_PATH_SEETA</span>&quot;</span>/TenniS \</span><br><span class="line">    -DCMAKE_BUILD_TYPE=<span class="string">&quot;Release&quot;</span> \</span><br><span class="line">    -DCMAKE_INSTALL_PREFIX=<span class="string">&quot;<span class="variable">$INSTALL_PATH_SEETA</span>&quot;</span> \</span><br><span class="line">    -DTS_USE_OPENMP=ON \</span><br><span class="line">    -DTS_BUILD_TEST=OFF \</span><br><span class="line">    -DTS_BUILD_TOOLS=OFF \</span><br><span class="line">    -DTS_ON_ARM=ON || <span class="built_in">exit</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">echo</span> -e <span class="string">&quot;\n&gt;&gt;&gt; Making TenniS&quot;</span></span><br><span class="line">  make <span class="string">&quot;<span class="variable">$CORES</span>&quot;</span> || <span class="built_in">exit</span></span><br><span class="line">  make install || <span class="built_in">exit</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">echo</span> -e <span class="string">&quot;\n&gt;&gt; TenniS Built&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">build_seeta_module</span></span>() &#123;</span><br><span class="line">  <span class="built_in">echo</span> -e <span class="string">&quot;\n&gt;&gt; Building <span class="variable">$1</span>&quot;</span></span><br><span class="line">  mkdir -p <span class="string">&quot;<span class="variable">$BUILD_PATH_SEETA</span>&quot;</span>/<span class="string">&quot;<span class="variable">$1</span>&quot;</span></span><br><span class="line">  <span class="built_in">cd</span> <span class="string">&quot;<span class="variable">$BUILD_PATH_SEETA</span>&quot;</span>/<span class="string">&quot;<span class="variable">$1</span>&quot;</span> || <span class="built_in">exit</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">echo</span> -e <span class="string">&quot;&gt;&gt;&gt; Configuring <span class="variable">$1</span>&quot;</span></span><br><span class="line">  cmake <span class="string">&quot;<span class="variable">$SOURCE_PATH_SEETA</span>&quot;</span>/<span class="string">&quot;<span class="variable">$1</span>&quot;</span> \</span><br><span class="line">    -DCMAKE_BUILD_TYPE=<span class="string">&quot;Release&quot;</span> \</span><br><span class="line">    -DPLATFORM=<span class="string">&quot;auto&quot;</span> \</span><br><span class="line">    -DCMAKE_INSTALL_PREFIX=<span class="string">&quot;<span class="variable">$INSTALL_PATH_SEETA</span>&quot;</span> \</span><br><span class="line">    -DSEETA_INSTALL_PATH=<span class="string">&quot;<span class="variable">$INSTALL_PATH_SEETA</span>&quot;</span> \</span><br><span class="line">    -DORZ_ROOT_DIR=<span class="string">&quot;<span class="variable">$INSTALL_PATH_SEETA</span>&quot;</span> \</span><br><span class="line">    -DCMAKE_MODULE_PATH=<span class="string">&quot;<span class="variable">$INSTALL_PATH_SEETA</span>&quot;</span>/cmake \</span><br><span class="line">    -DCONFIGURATION=<span class="string">&quot;Release&quot;</span> \</span><br><span class="line">    -DSEETA_AUTHORIZE=OFF \</span><br><span class="line">    -DSEETA_MODEL_ENCRYPT=ON || <span class="built_in">exit</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">echo</span> -e <span class="string">&quot;\n&gt;&gt;&gt; Making <span class="variable">$1</span>&quot;</span></span><br><span class="line">  make <span class="string">&quot;<span class="variable">$CORES</span>&quot;</span> || <span class="built_in">exit</span></span><br><span class="line">  make install || <span class="built_in">exit</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">echo</span> -e <span class="string">&quot;\n&gt;&gt; <span class="variable">$1</span> Built&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">build_seeta</span></span>() &#123;</span><br><span class="line">  <span class="built_in">echo</span> -e <span class="string">&quot;\n&gt; Building SeetaFace&quot;</span></span><br><span class="line"></span><br><span class="line">  build_seeta_OpenRoleZoo</span><br><span class="line">  build_seeta_Authorize</span><br><span class="line">  build_seeta_TenniS</span><br><span class="line">  </span><br><span class="line">  <span class="comment"># 需要注意的是如果是64位平台，部分.so文件会放置于/lib64目录下，而其它模块的cmake配置写的有问题，会搜索不到，需要手动复制到/lib目录下。（同时编译64位和32位时需要注意这个操作是有问题的）</span></span><br><span class="line">  <span class="keyword">if</span> [ -d <span class="string">&quot;<span class="variable">$INSTALL_PATH_SEETA</span>&quot;</span>/lib64 ]; <span class="keyword">then</span></span><br><span class="line">    cp -u <span class="string">&quot;<span class="variable">$INSTALL_PATH_SEETA</span>&quot;</span>/lib64/* <span class="string">&quot;<span class="variable">$INSTALL_PATH_SEETA</span>&quot;</span>/lib</span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line">  </span><br><span class="line">  <span class="comment"># 这里只编译了4个模块，按需增加</span></span><br><span class="line">  build_seeta_module Landmarker</span><br><span class="line">  build_seeta_module FaceRecognizer6</span><br><span class="line">  build_seeta_module PoseEstimator6</span><br><span class="line">  build_seeta_module QualityAssessor3</span><br><span class="line"></span><br><span class="line">  <span class="comment"># 前面说过了，QualityAssessor3等模块会忽略我们手动设定的INSTALL_PREFIX，我们手动移动合并一下文件</span></span><br><span class="line">  cp -rfu <span class="string">&quot;<span class="variable">$SOURCE_PATH_SEETA</span>&quot;</span>/build/* <span class="string">&quot;<span class="variable">$INSTALL_PATH_SEETA</span>&quot;</span></span><br><span class="line">  rm -rf <span class="string">&quot;<span class="variable">$SOURCE_PATH_SEETA</span>&quot;</span>/build</span><br><span class="line">  </span><br><span class="line">  <span class="comment"># 一样的问题</span></span><br><span class="line">  <span class="keyword">if</span> [ -d <span class="string">&quot;<span class="variable">$INSTALL_PATH_SEETA</span>&quot;</span>/lib64 ]; <span class="keyword">then</span></span><br><span class="line">    cp -u <span class="string">&quot;<span class="variable">$INSTALL_PATH_SEETA</span>&quot;</span>/lib64/* <span class="string">&quot;<span class="variable">$INSTALL_PATH_SEETA</span>&quot;</span>/lib</span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;==========Start Building==========&quot;</span></span><br><span class="line">env_setup</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;BUILD_HOME: <span class="variable">$BUILD_HOME</span>&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;Build Path: <span class="variable">$BUILD_PATH_BASE</span>&quot;</span></span><br><span class="line"></span><br><span class="line">build_seeta</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;==========Build Finished!==========&quot;</span></span><br></pre></td></tr></table></figure>
+<h4 id="代码使用"><a href="#代码使用" class="headerlink" title="代码使用"></a>代码使用</h4><p>具体可以参考官方给出的文档使用：<span class="exturl" data-url="aHR0cDovL2xlYW5vdGUuY29tL2Jsb2cvcG9zdC81ZTdkNmNlY2FiNjQ0MTJhZTYwMDE2ZWY=">文档<i class="fa fa-external-link-alt"></i></span></p>
+<p>有几点感觉要单独说一下的：</p>
+<p>首先是一个常用的<code>hack</code>：将<code>cv::Mat</code>转换成<code>SeetaImageData</code></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 代码来自官方文档</span></span><br><span class="line"><span class="keyword">namespace</span> seeta</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">namespace</span> cv</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// using namespace ::cv;</span></span><br><span class="line">        <span class="class"><span class="keyword">class</span> <span class="title">ImageData</span> :</span> <span class="keyword">public</span> SeetaImageData &#123;</span><br><span class="line">        <span class="keyword">public</span>:</span><br><span class="line">            ImageData( <span class="keyword">const</span> ::cv::Mat &amp;mat )</span><br><span class="line">                : cv_mat( mat.clone() ) &#123;</span><br><span class="line">                <span class="keyword">this</span>-&gt;<span class="built_in">width</span> = cv_mat.cols;</span><br><span class="line">                <span class="keyword">this</span>-&gt;<span class="built_in">height</span> = cv_mat.rows;</span><br><span class="line">                <span class="keyword">this</span>-&gt;channels = cv_mat.channels();</span><br><span class="line">                <span class="keyword">this</span>-&gt;data = cv_mat.data;</span><br><span class="line">            &#125;</span><br><span class="line">        <span class="keyword">private</span>:</span><br><span class="line">            ::cv::Mat cv_mat;</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后是<code>ModelSetting</code>，在使用许多模块时要定义一个<code>ModelSetting</code>，否则无法使用</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 以FaceLandmarker为例</span></span><br><span class="line">FaceLandmarker = <span class="keyword">new</span> seeta::FaceLandmarker(</span><br><span class="line">    seeta::ModelSetting(<span class="string">&quot;./data/SeetaFace/face_landmarker_pts5.csta&quot;</span>));</span><br><span class="line"><span class="comment">// 需要注意，QualityAssessor相对不同</span></span><br><span class="line">QualityAssessor = <span class="keyword">new</span> seeta::QualityAssessor();</span><br><span class="line">QualityAssessor-&gt;add_rule(seeta::INTEGRITY);</span><br><span class="line">QualityAssessor-&gt;add_rule(seeta::RESOLUTION);</span><br><span class="line">QualityAssessor-&gt;add_rule(seeta::BRIGHTNESS);</span><br><span class="line">QualityAssessor-&gt;add_rule(seeta::CLARITY);</span><br></pre></td></tr></table></figure>
+<p>最后，关于各个模块，遇到文档读不懂的时候，可以参考官方示例：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1NlZXRhRmFjZTZPcGVuL2luZGV4L3RyZWUvbWFzdGVyL2V4YW1wbGUvcXQ=">示例<i class="fa fa-external-link-alt"></i></span></p>
+<p>同时，必要时也得参考具体的源码，文档中所列举的函数在代码中没有完全实现，比如说许多的<code>_v2</code>的接口等。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/linux/" rel="tag"># linux</a>
+              <a href="/tags/SeetaFace/" rel="tag"># SeetaFace</a>
+              <a href="/tags/face-detection/" rel="tag"># face detection</a>
+              <a href="/tags/face-recognition/" rel="tag"># face recognition</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/08/16/arduino-bt-mpu6050/" rel="prev" title="使用Arduino构建运动收集平台">
+                  <i class="fa fa-chevron-left"></i> 使用Arduino构建运动收集平台
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+  
+  
+  
+
+
+
+      
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Paul</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">27k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">45 分钟</span>
+  </span>
+</div>
+  <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZw==">NexT.Gemini</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1.15.0/dist/lozad.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '.page-configurations',
+    '.main-inner',
+    '.post-toc-wrap',
+    '.languages',
+    '.pjax'
+  ],
+  analytics: false,
+  cacheBust: false,
+  scrollRestoration: false,
+  scrollTo: !CONFIG.bookmark.enable
+});
+
+document.addEventListener('pjax:success', () => {
+  pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  const hasTOC = document.querySelector('.post-toc');
+  document.querySelector('.sidebar-inner').classList.toggle('sidebar-nav-active', hasTOC);
+  document.querySelector(hasTOC ? '.sidebar-nav-toc' : '.sidebar-nav-overview').click();
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+  <div style="display: none;">
+    <script data-pjax src="//s95.cnzz.com/z_stat.php?id=1278724440&web_id=1278724440"></script>
+  </div>
+
+
+
+
+
+
+    <div class="pjax">
+  
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/disqusjs@1.3.0/dist/disqusjs.css">
+
+<script>
+NexT.utils.loadComments('#disqus_thread', () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/disqusjs@1.3.0/dist/disqus.js', () => {
+    window.dsqjs = new DisqusJS({
+      api       : 'https://disqus.skk.moe/disqus/' || 'https://disqus.com/api/',
+      apikey    : 'pwCicQgBQmc1ZEUP8fbsECJ1H1U5HWHEuUKbFFR0whF6VjLgL5CneiwMFOtQwwAv',
+      shortname : 'silent-world',
+      url       : "https://blog.ofortune.xyz/2020/08/30/seetaface6-intro/",
+      identifier: "2020/08/30/seetaface6-intro/",
+      title     : "人脸识别SeetaFace6入门",
+    });
+  }, window.DisqusJS);
+});
+</script>
+
+    </div>
+</body>
+</html>
