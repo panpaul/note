@@ -42,7 +42,7 @@ custom_file_path:
 scheme: Gemini
 
 # Dark Mode
-darkmode: false
+darkmode: true
 
 
 # ---------------------------------------------------------------
@@ -82,14 +82,14 @@ creative_commons:
 # When running the site in a subdirectory (e.g. yoursite.com/blog), remove the leading slash from link value (/archives -> archives).
 # External url should start with http:// or https://
 menu:
-  home: / || home
-  about: /about/ || user
-  tags: /tags/ || tags
-  #categories: /categories/ || th
-  archives: /archives/ || archive
-  #schedule: /schedule/ || calendar
-  #sitemap: /sitemap.xml || sitemap
-  #commonweal: /404/ || heartbeat
+  home: / || fa fa-home
+  about: /about/ || fa fa-user
+  tags: /tags/ || fa fa-tags
+  #categories: /categories/ || fa fa-th
+  archives: /archives/ || fa fa-archive
+  #schedule: /schedule/ || fa fa-calendar
+  #sitemap: /sitemap.xml || fa fa-sitemap
+  #commonweal: /404/ || fa fa-heartbeat
 
 # Enable / Disable menu icons / item badges.
 menu_settings:
@@ -217,7 +217,7 @@ footer:
   # Powered by Hexo & NexT
   powered: true
 
-  # Beian ICP and gongan information for Chinese users. See: http://www.beian.miit.gov.cn, http://www.beian.gov.cn
+  # Beian ICP and gongan information for Chinese users. See: https://beian.miit.gov.cn, http://www.beian.gov.cn
   beian:
     enable: false
     icp:
@@ -498,10 +498,10 @@ baidu_push: false
 # See: https://theme-next.js.org/docs/third-party-services/math-equations
 # Server-side plugin: https://github.com/next-theme/hexo-filter-mathjax
 math:
-  # Default (true) will load mathjax / katex script on demand.
+  # Default (false) will load mathjax / katex script on demand.
   # That is it only render those page which has `mathjax: true` in Front-matter.
-  # If you set it to false, it will load mathjax / katex srcipt EVERY PAGE.
-  per_page: true
+  # If you set it to true, it will load mathjax / katex srcipt EVERY PAGE.
+  every_page: false
 
   mathjax:
     enable: true
@@ -585,7 +585,6 @@ disqus:
   enable: false
   shortname:
   count: true
-  #post_meta_order: 0
 
 # DisqusJS
 # Alternative Disqus - Render comment component using Disqus API.
@@ -606,7 +605,6 @@ changyan:
   enable: false
   appid:
   appkey:
-  #post_meta_order: 0
 
 # Valine
 # For more information: https://valine.js.org, https://github.com/xCss/Valine
@@ -625,7 +623,6 @@ valine:
   serverURLs: # When the custom domain name is enabled, fill it in here (it will be detected automatically by default, no need to fill in)
   enableQQ: false # Whether to enable the Nickname box to automatically get QQ Nickname and QQ Avatar
   requiredFields: [] # Set required fields: [nick] | [nick, mail]
-  #post_meta_order: 0
 
 # LiveRe comments system
 # You can get your uid from https://livere.com/insight/myCode (General web site)
