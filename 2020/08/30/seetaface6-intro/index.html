@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.0.2">
+<meta name="generator" content="Hexo 5.2.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -212,14 +212,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-count">22</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">37</span>
+        <span class="site-state-item-count">40</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -402,7 +402,7 @@
 <p>首先是一个常用的<code>hack</code>：将<code>cv::Mat</code>转换成<code>SeetaImageData</code></p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 代码来自官方文档</span></span><br><span class="line"><span class="keyword">namespace</span> seeta</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">namespace</span> cv</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// using namespace ::cv;</span></span><br><span class="line">        <span class="class"><span class="keyword">class</span> <span class="title">ImageData</span> :</span> <span class="keyword">public</span> SeetaImageData &#123;</span><br><span class="line">        <span class="keyword">public</span>:</span><br><span class="line">            ImageData( <span class="keyword">const</span> ::cv::Mat &amp;mat )</span><br><span class="line">                : cv_mat( mat.clone() ) &#123;</span><br><span class="line">                <span class="keyword">this</span>-&gt;<span class="built_in">width</span> = cv_mat.cols;</span><br><span class="line">                <span class="keyword">this</span>-&gt;<span class="built_in">height</span> = cv_mat.rows;</span><br><span class="line">                <span class="keyword">this</span>-&gt;channels = cv_mat.channels();</span><br><span class="line">                <span class="keyword">this</span>-&gt;data = cv_mat.data;</span><br><span class="line">            &#125;</span><br><span class="line">        <span class="keyword">private</span>:</span><br><span class="line">            ::cv::Mat cv_mat;</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>然后是<code>ModelSetting</code>，在使用许多模块时要定义一个<code>ModelSetting</code>，否则无法使用</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 以FaceLandmarker为例</span></span><br><span class="line">FaceLandmarker = <span class="keyword">new</span> seeta::FaceLandmarker(</span><br><span class="line">    seeta::ModelSetting(<span class="string">&quot;./data/SeetaFace/face_landmarker_pts5.csta&quot;</span>));</span><br><span class="line"><span class="comment">// 需要注意，QualityAssessor相对不同</span></span><br><span class="line">QualityAssessor = <span class="keyword">new</span> seeta::QualityAssessor();</span><br><span class="line">QualityAssessor-&gt;add_rule(seeta::INTEGRITY);</span><br><span class="line">QualityAssessor-&gt;add_rule(seeta::RESOLUTION);</span><br><span class="line">QualityAssessor-&gt;add_rule(seeta::BRIGHTNESS);</span><br><span class="line">QualityAssessor-&gt;add_rule(seeta::CLARITY);</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 以FaceLandmarker为例</span></span><br><span class="line">FaceLandmarker = <span class="keyword">new</span> seeta::FaceLandmarker(</span><br><span class="line">	seeta::ModelSetting(<span class="string">&quot;./data/SeetaFace/face_landmarker_pts5.csta&quot;</span>));</span><br><span class="line"><span class="comment">// 需要注意，QualityAssessor相对不同</span></span><br><span class="line">QualityAssessor = <span class="keyword">new</span> seeta::QualityAssessor();</span><br><span class="line">QualityAssessor-&gt;add_rule(seeta::INTEGRITY);</span><br><span class="line">QualityAssessor-&gt;add_rule(seeta::RESOLUTION);</span><br><span class="line">QualityAssessor-&gt;add_rule(seeta::BRIGHTNESS);</span><br><span class="line">QualityAssessor-&gt;add_rule(seeta::CLARITY);</span><br></pre></td></tr></table></figure>
 <p>最后，关于各个模块，遇到文档读不懂的时候，可以参考官方示例：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1NlZXRhRmFjZTZPcGVuL2luZGV4L3RyZWUvbWFzdGVyL2V4YW1wbGUvcXQ=">示例<i class="fa fa-external-link-alt"></i></span></p>
 <p>同时，必要时也得参考具体的源码，文档中所列举的函数在代码中没有完全实现，比如说许多的<code>_v2</code>的接口等。</p>
 
@@ -429,6 +429,9 @@
                 </a>
             </div>
             <div class="post-nav-item">
+                <a href="/2020/09/19/riscv-env-vscode/" rel="next" title="使用vscode调试RISC-V程序">
+                  使用vscode调试RISC-V程序 <i class="fa fa-chevron-right"></i>
+                </a>
             </div>
           </div>
     </footer>
@@ -493,13 +496,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">27k</span>
+    <span title="站点总字数">28k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">45 分钟</span>
+    <span title="站点阅读时长">46 分钟</span>
   </span>
 </div>
   <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZw==">NexT.Gemini</span> 强力驱动
