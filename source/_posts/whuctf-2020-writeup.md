@@ -6,6 +6,7 @@ tags:
 - debugging
 - assembly
 - php
+- qemu
 mathjax: true
 ---
 
