@@ -326,28 +326,28 @@
 <li><h3 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h3><p>Emby是使用<code>C#</code>编写的跨平台应用，所以我们使用<code>dnSpy</code>来进行逆向破解。</p>
 </li>
 <li><h3 id="分析目标"><a href="#分析目标" class="headerlink" title="分析目标"></a>分析目标</h3><p>Emby的安装目录下有许多<code>dll</code>文件，我们先尝试筛选出目标文件。</p>
-<p><img data-src="/images/emby_1.webp" alt="emby_directory"></p>
+<p><img data-src="//cdn.ofortune.xyz/ldcraft/images/emby_1.webp" alt="emby_directory"></p>
 <p>根据网上流传的传统破解方式，我们将所有文件拖入<code>dnSpy</code>后直接搜索<code>mb3admin</code>快速定位目标。</p>
-<p><img data-src="/images/emby_2.webp" alt="emby_dnSpy_search"></p>
+<p><img data-src="//cdn.ofortune.xyz/ldcraft/images/emby_2.webp" alt="emby_dnSpy_search"></p>
 <p>可以看到，涉及验证授权的模块主要集中在<code>Emby.Server.Implementations.Security</code>和<code>Emby.Server.Implementations.Updates</code>中，我们接下来直接研究这两个类即可。</p>
 </li>
 <li><h3 id="修改代码"><a href="#修改代码" class="headerlink" title="修改代码"></a>修改代码</h3><p>我们先分析<code>Emby.Server.Implementations.Security</code></p>
 <p>定位到目标后发现代码没有反混淆措施，所以我们直接右键-编辑类</p>
-<p><img data-src="/images/emby_3.webp" alt="emby_dnSpy_edit"></p>
+<p><img data-src="//cdn.ofortune.xyz/ldcraft/images/emby_3.webp" alt="emby_dnSpy_edit"></p>
 <p>一路阅读代码，首先发现<code>RegisterAppStoreSale</code>方法，根据名字即内容猜测这个应该是向<code>emby store</code>注册，实现付费插件打折的功能？这里直接替换所有内容：</p>
-<p><img data-src="/images/emby_4.webp" alt="emby_dnSpy_edit"></p>
+<p><img data-src="//cdn.ofortune.xyz/ldcraft/images/emby_4.webp" alt="emby_dnSpy_edit"></p>
 <p>然后发现重要的函数：<code>IsFeatureAllowed</code>，这里根据<code>if</code>内<code>IsRegistered</code>可以猜测注册后应该返回<code>True</code>，所以直接更改代码为<code>return true;</code></p>
-<p><img data-src="/images/emby_5.webp" alt="emby_dnSpy_edit"></p>
+<p><img data-src="//cdn.ofortune.xyz/ldcraft/images/emby_5.webp" alt="emby_dnSpy_edit"></p>
 <p>接着发现两个相关的函数：<code>GetRegistrationStatus</code>和<code>GetRegistrationStatusInternal</code>，这里应该是用于向其它组件返回注册信息的，一样修改相应代码：</p>
-<p><img data-src="/images/emby_6.webp" alt="emby_dnSpy_edit"></p>
+<p><img data-src="//cdn.ofortune.xyz/ldcraft/images/emby_6.webp" alt="emby_dnSpy_edit"></p>
 <p>再者，是<code>UpdateRegistrationStatus</code>，顾名思义应该是更新注册信息，这里有与服务器交互的部分，直接注释替换掉：</p>
-<p><img data-src="/images/emby_7.webp" alt="emby_dnSpy_edit"></p>
+<p><img data-src="//cdn.ofortune.xyz/ldcraft/images/emby_7.webp" alt="emby_dnSpy_edit"></p>
 <p>最后修改一些反编译时产生的错误，编译即可。</p>
 <p>接下来分析<code>Emby.Server.Implementations.Updates</code></p>
 <p>通过阅读代码发现不用特意修改代码，直接略过即可。</p>
 </li>
 <li><h3 id="一些杂项"><a href="#一些杂项" class="headerlink" title="一些杂项"></a>一些杂项</h3><p>然后破解插件，方法同理。至此，我们的破解已经完成，直接替换修改过的文件就好了。</p>
-<p><img data-src="/images/emby_8.webp" alt="emby_success"></p>
+<p><img data-src="//cdn.ofortune.xyz/ldcraft/images/emby_8.webp" alt="emby_success"></p>
 </li>
 <li><h3 id="总结与思考"><a href="#总结与思考" class="headerlink" title="总结与思考"></a>总结与思考</h3><p>这里我们暴力修改代码是一种方案，但是仅限于服务端破解，对于客户端，一般常用自建服务器伪装<code>mb3admin</code>实现。所以，在破解服务端时我们不妨可以复用自建的服务器，换一种破解思路，将代码里的验证服务器地址修改为自建服务器的地址。</p>
 <p><strong>最后的最后，本文所述内容仅限用于学习和研究目的，请支持正版。</strong></p>
