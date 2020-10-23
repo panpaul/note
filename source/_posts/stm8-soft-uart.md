@@ -131,7 +131,7 @@ u8 SU_CNT = 0;                 // which bit to send
 u8 SU_PARITY = 0;              // Parity check
 enum STATUS SU_STATUS = START; // current sending status
 
-#pragma vector = TIM2_OVR_UIF_vector // Don't forget to add this
+#pragma vector = TIM2_OVR_UIF_vector
 __interrupt void TIM2_Handler(void)
 {
     switch (SU_STATUS)
@@ -168,6 +168,7 @@ __interrupt void TIM2_Handler(void)
             PC_ODR_ODR6 = 0;
         else
             PC_ODR_ODR6 = 1;
+        SU_PARITY = 0;
         SU_STATUS = STOP;
     }
     break;
@@ -189,8 +190,17 @@ __interrupt void TIM2_Handler(void)
 
     case IDLE: /* idle bit(s) */
     {
-        PC_ODR_ODR6 = 0;
-        SU_STATUS = START;
+        PC_ODR_ODR6 = 1;
+        if (SU_IDLE == 8)
+        {
+            SU_IDLE = 0;
+            SU_STATUS = START;
+        }
+        else
+        {
+            SU_IDLE++;
+            SU_STATUS = IDLE;
+        }
     }
     break;
 
