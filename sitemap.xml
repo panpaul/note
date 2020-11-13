@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://blog.ofortune.xyz/links/index.html</loc>
+    
+    <lastmod>2020-11-13</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.ofortune.xyz/tags/index.html</loc>
+    
+    <lastmod>2020-11-13</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://blog.ofortune.xyz/2020/11/08/ustc-hack-lug2020/</loc>
     
     <lastmod>2020-11-08</lastmod>
@@ -170,13 +184,6 @@
   </url>
   
   <url>
-    <loc>https://blog.ofortune.xyz/tags/index.html</loc>
-    
-    <lastmod>2019-12-31</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://blog.ofortune.xyz/2019/12/31/hello-world/</loc>
     
     <lastmod>2019-12-31</lastmod>
@@ -191,20 +198,6 @@
     <priority>1.0</priority>
   </url>
 
-  
-  <url>
-    <loc>https://blog.ofortune.xyz/tags/algorithm/</loc>
-    <lastmod>2020-11-13</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.ofortune.xyz/tags/atcoder/</loc>
-    <lastmod>2020-11-13</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
   
   <url>
     <loc>https://blog.ofortune.xyz/tags/arduino/</loc>
@@ -249,6 +242,41 @@
   </url>
   
   <url>
+    <loc>https://blog.ofortune.xyz/tags/algorithm/</loc>
+    <lastmod>2020-11-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.ofortune.xyz/tags/atcoder/</loc>
+    <lastmod>2020-11-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.ofortune.xyz/tags/Coq/</loc>
+    <lastmod>2020-11-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.ofortune.xyz/tags/chromium/</loc>
+    <lastmod>2020-11-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.ofortune.xyz/tags/linux/</loc>
+    <lastmod>2020-11-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://blog.ofortune.xyz/tags/debugging/</loc>
     <lastmod>2020-11-13</lastmod>
     <changefreq>daily</changefreq>
@@ -277,21 +305,7 @@
   </url>
   
   <url>
-    <loc>https://blog.ofortune.xyz/tags/Coq/</loc>
-    <lastmod>2020-11-13</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.ofortune.xyz/tags/chromium/</loc>
-    <lastmod>2020-11-13</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.ofortune.xyz/tags/linux/</loc>
+    <loc>https://blog.ofortune.xyz/tags/powerset/</loc>
     <lastmod>2020-11-13</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -319,7 +333,7 @@
   </url>
   
   <url>
-    <loc>https://blog.ofortune.xyz/tags/powerset/</loc>
+    <loc>https://blog.ofortune.xyz/tags/hack/</loc>
     <lastmod>2020-11-13</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -327,13 +341,6 @@
   
   <url>
     <loc>https://blog.ofortune.xyz/tags/hello/</loc>
-    <lastmod>2020-11-13</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.ofortune.xyz/tags/hack/</loc>
     <lastmod>2020-11-13</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -368,13 +375,6 @@
   </url>
   
   <url>
-    <loc>https://blog.ofortune.xyz/tags/parsetree/</loc>
-    <lastmod>2020-11-13</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://blog.ofortune.xyz/tags/prooftree/</loc>
     <lastmod>2020-11-13</lastmod>
     <changefreq>daily</changefreq>
@@ -389,7 +389,7 @@
   </url>
   
   <url>
-    <loc>https://blog.ofortune.xyz/tags/memory/</loc>
+    <loc>https://blog.ofortune.xyz/tags/parsetree/</loc>
     <lastmod>2020-11-13</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -397,6 +397,13 @@
   
   <url>
     <loc>https://blog.ofortune.xyz/tags/matlab/</loc>
+    <lastmod>2020-11-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.ofortune.xyz/tags/memory/</loc>
     <lastmod>2020-11-13</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -480,14 +487,14 @@
   </url>
   
   <url>
-    <loc>https://blog.ofortune.xyz/tags/php/</loc>
+    <loc>https://blog.ofortune.xyz/tags/recovery/</loc>
     <lastmod>2020-11-13</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://blog.ofortune.xyz/tags/recovery/</loc>
+    <loc>https://blog.ofortune.xyz/tags/php/</loc>
     <lastmod>2020-11-13</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
