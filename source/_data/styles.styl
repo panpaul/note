@@ -1,0 +1,89 @@
+#links{
+	margin-top: 5rem;
+	.links-content{
+		margin-top:1rem;
+	}
+	.link-navigation::after {
+		content: " ";
+		display: block;
+		clear: both;
+	}
+	.card {
+		width: 300px;
+		font-size: 1.1em;
+		padding: 10px 20px;
+		border-radius: 4px;
+		transition-duration: 0.15s;
+		margin-bottom: 1rem;
+		display:flex;
+	}
+	.card:nth-child(odd) {
+		float: left;
+	}
+	.card:nth-child(even) {
+		float: right;
+		+mobile() {
+			float: left;
+		}
+	}
+	.card:hover {
+		transform: scale(1.1);
+		box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.12), 0 0 6px 0 rgba(0, 0, 0, 0.04);
+		background: rgba(68, 68, 68, 0.12)
+	}
+	.card a {
+		border:none;
+	}
+	.card .linkAvatar {
+		width: 3rem!important;
+		height: 3rem!important;
+		margin:0!important;
+		margin-right: 1em!important;
+		border-radius:50%
+		transition: transform 1s ease-out;
+	}
+	.linkAvatar:hover {
+			transform: rotateZ(360deg);
+		}
+	.card .card-header {
+		font-style: italic;
+		overflow: hidden;
+		width: 236px;
+	}
+	.card .card-header a {
+		font-style: normal;
+		color: #2bbc8a;
+		font-weight: bold;
+		text-decoration: none;
+	}
+	.card .card-header a:hover {
+		color: #d480aa;
+		text-decoration: none;
+	}
+	.card .card-header .info {
+		font-style:normal;
+		color:#a3a3a3;
+		font-size:14px;
+		min-width: 0;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		white-space: nowrap;
+	}
+	span.focus-links{
+		vertical-align:1px;
+		font-style:normal;
+		margin-left:10px;
+		position:unset;
+		left:0;
+		padding:0 7px 0 5px;
+		font-size:11px;
+		border-color:#42c02e;
+		border-radius:40px;
+		line-height:24px;
+		height:24px;
+		color:#fff!important;
+		background-color:#2bbc8a;
+		display:inline-block
+		}
+	span.focus-links:hover{background-color:#318024}
+}
