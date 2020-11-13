@@ -1,0 +1,508 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Silent World</title>
+  <icon>https://www.gravatar.com/avatar/3ee928a14cde391f9528b13419ee8b54</icon>
+  <subtitle>Paul&#39;s notes</subtitle>
+  <link href="https://blog.ofortune.xyz/atom.xml" rel="self"/>
+  
+  <link href="https://blog.ofortune.xyz/"/>
+  <updated>2020-11-08T13:59:25.000Z</updated>
+  <id>https://blog.ofortune.xyz/</id>
+  
+  <author>
+    <name>Paul</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Hackergame2020部分题解</title>
+    <link href="https://blog.ofortune.xyz/2020/11/08/ustc-hack-lug2020/"/>
+    <id>https://blog.ofortune.xyz/2020/11/08/ustc-hack-lug2020/</id>
+    <published>2020-11-08T13:59:25.000Z</published>
+    <updated>2020-11-08T13:59:25.000Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;总的来说这场比赛游戏体验良好，学习到了许多新的知识&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="hack" scheme="https://blog.ofortune.xyz/tags/hack/"/>
+    
+    <category term="ctf" scheme="https://blog.ofortune.xyz/tags/ctf/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>在STM8上使用GPIO模拟UART</title>
+    <link href="https://blog.ofortune.xyz/2020/09/29/stm8-soft-uart/"/>
+    <id>https://blog.ofortune.xyz/2020/09/29/stm8-soft-uart/</id>
+    <published>2020-09-29T11:48:38.000Z</published>
+    <updated>2020-09-29T11:48:38.000Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;STM8是意法半导体公司生产的8位的单片机，这款单片机价格便宜又不失强大，但是其自带的通信用&lt;code&gt;UART&lt;/code&gt;串口只有一组，在某些场景写不够，所以有软件模拟的需求。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="STM8" scheme="https://blog.ofortune.xyz/tags/STM8/"/>
+    
+    <category term="UART" scheme="https://blog.ofortune.xyz/tags/UART/"/>
+    
+    <category term="GPIO" scheme="https://blog.ofortune.xyz/tags/GPIO/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>使用vscode调试RISC-V程序</title>
+    <link href="https://blog.ofortune.xyz/2020/09/19/riscv-env-vscode/"/>
+    <id>https://blog.ofortune.xyz/2020/09/19/riscv-env-vscode/</id>
+    <published>2020-09-19T13:11:15.000Z</published>
+    <updated>2020-09-19T13:11:15.000Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;我们班&lt;code&gt;计算机组成与设计&lt;/code&gt;课程选用了今年四月份发行的&lt;code&gt;RISC-V&lt;/code&gt;版本教材，为了方便今后的学习，我配置了&lt;code&gt;RISC-V&lt;/code&gt;运行环境，以此记录。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="debugging" scheme="https://blog.ofortune.xyz/tags/debugging/"/>
+    
+    <category term="VSCode" scheme="https://blog.ofortune.xyz/tags/VSCode/"/>
+    
+    <category term="RISC-V" scheme="https://blog.ofortune.xyz/tags/RISC-V/"/>
+    
+    <category term="qemu" scheme="https://blog.ofortune.xyz/tags/qemu/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>人脸识别SeetaFace6入门</title>
+    <link href="https://blog.ofortune.xyz/2020/08/30/seetaface6-intro/"/>
+    <id>https://blog.ofortune.xyz/2020/08/30/seetaface6-intro/</id>
+    <published>2020-08-30T11:38:41.000Z</published>
+    <updated>2020-08-30T11:38:41.000Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;在今年三月中科视拓开放了最新的商业版本人脸识别算法。&lt;code&gt;SeetaFace6&lt;/code&gt;是最新开放的商业版本，并且就在前几天，官方开放了&lt;code&gt;SeetaFace6&lt;/code&gt;的源代码以及所使用的推理引擎&lt;code&gt;TenniS&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;最近我写一个玩具项目刚好用到了这个项目，总的来说，编译配置开源版本的&lt;code&gt;SeetaFace6&lt;/code&gt;相对麻烦，故写本文记录如何使用&lt;code&gt;SeetaFace6&lt;/code&gt;。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="linux" scheme="https://blog.ofortune.xyz/tags/linux/"/>
+    
+    <category term="SeetaFace" scheme="https://blog.ofortune.xyz/tags/SeetaFace/"/>
+    
+    <category term="face detection" scheme="https://blog.ofortune.xyz/tags/face-detection/"/>
+    
+    <category term="face recognition" scheme="https://blog.ofortune.xyz/tags/face-recognition/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>使用Arduino构建运动收集平台</title>
+    <link href="https://blog.ofortune.xyz/2020/08/16/arduino-bt-mpu6050/"/>
+    <id>https://blog.ofortune.xyz/2020/08/16/arduino-bt-mpu6050/</id>
+    <published>2020-08-16T04:01:43.000Z</published>
+    <updated>2020-08-16T04:01:43.000Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;最近在使用&lt;code&gt;Arduino&lt;/code&gt;构建加速度收集工具，选用的传感器为&lt;code&gt;MPU-6050&lt;/code&gt;，使用蓝牙模块&lt;code&gt;HC-05&lt;/code&gt;将数据发送至手机。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="arduino" scheme="https://blog.ofortune.xyz/tags/arduino/"/>
+    
+    <category term="bluetooth" scheme="https://blog.ofortune.xyz/tags/bluetooth/"/>
+    
+    <category term="HC-05" scheme="https://blog.ofortune.xyz/tags/HC-05/"/>
+    
+    <category term="acceleration" scheme="https://blog.ofortune.xyz/tags/acceleration/"/>
+    
+    <category term="mpu6050" scheme="https://blog.ofortune.xyz/tags/mpu6050/"/>
+    
+    <category term="sensor" scheme="https://blog.ofortune.xyz/tags/sensor/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Emby逆向记录</title>
+    <link href="https://blog.ofortune.xyz/2020/07/21/hack-emby/"/>
+    <id>https://blog.ofortune.xyz/2020/07/21/hack-emby/</id>
+    <published>2020-07-21T03:02:37.000Z</published>
+    <updated>2020-07-21T03:02:37.000Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;Emby 是一款&lt;del&gt;开源&lt;/del&gt;的流媒体中心软件，用户只需要简单部署服务端，其它的客户端就能轻松访问服务端的所有媒体。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="debugging" scheme="https://blog.ofortune.xyz/tags/debugging/"/>
+    
+    <category term="hack" scheme="https://blog.ofortune.xyz/tags/hack/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>武汉大学第二届“珞格杯”校园CTF大赛部分题目Writeup</title>
+    <link href="https://blog.ofortune.xyz/2020/05/27/whuctf-2020-writeup/"/>
+    <id>https://blog.ofortune.xyz/2020/05/27/whuctf-2020-writeup/</id>
+    <published>2020-05-27T12:12:55.000Z</published>
+    <updated>2020-05-27T12:12:55.000Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;第一次打CTF，体验了被大佬碾压的感觉。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="debugging" scheme="https://blog.ofortune.xyz/tags/debugging/"/>
+    
+    <category term="assembly" scheme="https://blog.ofortune.xyz/tags/assembly/"/>
+    
+    <category term="qemu" scheme="https://blog.ofortune.xyz/tags/qemu/"/>
+    
+    <category term="ctf" scheme="https://blog.ofortune.xyz/tags/ctf/"/>
+    
+    <category term="php" scheme="https://blog.ofortune.xyz/tags/php/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>计算机系统基础-主存储器组织</title>
+    <link href="https://blog.ofortune.xyz/2020/05/18/memory-intro/"/>
+    <id>https://blog.ofortune.xyz/2020/05/18/memory-intro/</id>
+    <published>2020-05-18T02:51:05.000Z</published>
+    <updated>2020-05-18T02:51:05.000Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;计算机系统基础-主存储器组织&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="csapp" scheme="https://blog.ofortune.xyz/tags/csapp/"/>
+    
+    <category term="memory" scheme="https://blog.ofortune.xyz/tags/memory/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>重建Windows Recovery分区</title>
+    <link href="https://blog.ofortune.xyz/2020/04/26/windows-recovery/"/>
+    <id>https://blog.ofortune.xyz/2020/04/26/windows-recovery/</id>
+    <published>2020-04-26T07:24:02.000Z</published>
+    <updated>2020-04-26T07:24:02.000Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;最近想把原来装在机械硬盘的Linux系统移动到固态硬盘中。原来把Windows装在了固态硬盘，现在如果要把Linux和Windows在一个硬盘上共存会破坏Recovery分区，于是研究了一下如何手动重建Recovery分区。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="windows" scheme="https://blog.ofortune.xyz/tags/windows/"/>
+    
+    <category term="recovery" scheme="https://blog.ofortune.xyz/tags/recovery/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>(不完美)解决Dell笔记本键盘灯无法打开问题</title>
+    <link href="https://blog.ofortune.xyz/2020/04/16/dell-keyboard-backlight/"/>
+    <id>https://blog.ofortune.xyz/2020/04/16/dell-keyboard-backlight/</id>
+    <published>2020-04-16T10:16:45.000Z</published>
+    <updated>2020-04-16T10:16:45.000Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;最近给笔记本重装了&lt;code&gt;Windows&lt;/code&gt;系统，然而发现&lt;code&gt;Fn+F10&lt;/code&gt;组合键无法开启键盘灯。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="dell" scheme="https://blog.ofortune.xyz/tags/dell/"/>
+    
+    <category term="keyboard" scheme="https://blog.ofortune.xyz/tags/keyboard/"/>
+    
+    <category term="backlight" scheme="https://blog.ofortune.xyz/tags/backlight/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>使用Coq求一个集合的（幂集）所有子集</title>
+    <link href="https://blog.ofortune.xyz/2020/04/12/coq-powerset/"/>
+    <id>https://blog.ofortune.xyz/2020/04/12/coq-powerset/</id>
+    <published>2020-04-12T02:50:53.000Z</published>
+    <updated>2020-04-13T07:40:00.000Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;最近离散数学在讲集合，刚好作业里有一个使用&lt;code&gt;Coq&lt;/code&gt;求幂集的题目，感觉比较有意思就记录一下：&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="Coq" scheme="https://blog.ofortune.xyz/tags/Coq/"/>
+    
+    <category term="powerset" scheme="https://blog.ofortune.xyz/tags/powerset/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Bomblab 记录</title>
+    <link href="https://blog.ofortune.xyz/2020/03/31/bomblab-writeup/"/>
+    <id>https://blog.ofortune.xyz/2020/03/31/bomblab-writeup/</id>
+    <published>2020-03-31T12:12:15.000Z</published>
+    <updated>2020-04-29T08:30:00.000Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;最近计算机系统基础课程要求完成这项作业，故记录一下完成过程。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="debugging" scheme="https://blog.ofortune.xyz/tags/debugging/"/>
+    
+    <category term="bomblab" scheme="https://blog.ofortune.xyz/tags/bomblab/"/>
+    
+    <category term="csapp" scheme="https://blog.ofortune.xyz/tags/csapp/"/>
+    
+    <category term="assembly" scheme="https://blog.ofortune.xyz/tags/assembly/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>使用Coq实现β-reduction</title>
+    <link href="https://blog.ofortune.xyz/2020/03/29/beta-reduction/"/>
+    <id>https://blog.ofortune.xyz/2020/03/29/beta-reduction/</id>
+    <published>2020-03-29T07:44:51.000Z</published>
+    <updated>2020-03-29T07:44:51.000Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;如果问为什么要写这个？（&lt;del&gt;其实是离散数学的作业&lt;/del&gt;）&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="Coq" scheme="https://blog.ofortune.xyz/tags/Coq/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>记一次matlab升级错误</title>
+    <link href="https://blog.ofortune.xyz/2020/03/19/matlab-update-error/"/>
+    <id>https://blog.ofortune.xyz/2020/03/19/matlab-update-error/</id>
+    <published>2020-03-19T05:11:10.000Z</published>
+    <updated>2020-08-10T07:30:00.000Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;最近(&lt;del&gt;很久以前&lt;/del&gt;)&lt;code&gt;matlab&lt;/code&gt;发布了&lt;code&gt;update5&lt;/code&gt;补丁包，但是在升级时出现了异常情况，错误信息可谓是言简意赅：&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="network" scheme="https://blog.ofortune.xyz/tags/network/"/>
+    
+    <category term="matlab" scheme="https://blog.ofortune.xyz/tags/matlab/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>使用latex写分析树</title>
+    <link href="https://blog.ofortune.xyz/2020/03/18/latex-parsetree/"/>
+    <id>https://blog.ofortune.xyz/2020/03/18/latex-parsetree/</id>
+    <published>2020-03-18T11:27:42.000Z</published>
+    <updated>2020-03-18T11:27:42.000Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;离散数学课的作业要求升级了！要求用$\LaTeX$写分析树。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="latex" scheme="https://blog.ofortune.xyz/tags/latex/"/>
+    
+    <category term="parsetree" scheme="https://blog.ofortune.xyz/tags/parsetree/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>使用latex写证明树</title>
+    <link href="https://blog.ofortune.xyz/2020/03/15/latex-proof/"/>
+    <id>https://blog.ofortune.xyz/2020/03/15/latex-proof/</id>
+    <published>2020-03-15T11:50:53.000Z</published>
+    <updated>2020-03-17T11:45:00.000Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;最近离散数学课的作业要求用$\LaTeX$写证明树和推导序列，故研究了相关内容，以此记录。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="latex" scheme="https://blog.ofortune.xyz/tags/latex/"/>
+    
+    <category term="prooftree" scheme="https://blog.ofortune.xyz/tags/prooftree/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Linux版Chromium调整DPI缩放</title>
+    <link href="https://blog.ofortune.xyz/2020/02/23/chromium-scale/"/>
+    <id>https://blog.ofortune.xyz/2020/02/23/chromium-scale/</id>
+    <published>2020-02-23T07:48:21.000Z</published>
+    <updated>2020-02-23T07:48:21.000Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;不得不说Linux系统在DPI缩放方面实在是不如Windows或MacOS优化的好。&lt;/p&gt;
+&lt;p&gt;我用的是KDE桌面环境，如果设置全局DPI缩放为非整数倍时，许多Qt程序的字体渲染出现问题，比如说Yakuake总是会出现条纹。所以只能调整每个应用单独的配置来实现缩放。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="chromium" scheme="https://blog.ofortune.xyz/tags/chromium/"/>
+    
+    <category term="linux" scheme="https://blog.ofortune.xyz/tags/linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>AtCoder Beginner Contest 155 解题报告</title>
+    <link href="https://blog.ofortune.xyz/2020/02/17/atcoder-abc155/"/>
+    <id>https://blog.ofortune.xyz/2020/02/17/atcoder-abc155/</id>
+    <published>2020-02-17T08:44:40.000Z</published>
+    <updated>2020-02-17T08:44:40.000Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;总体而言，这次比赛题目难度梯度不合理，ABC过于简单，DEF难度提升幅度大。&lt;/p&gt;
+&lt;p&gt;比赛地址: &lt;span class=&quot;exturl&quot; data-url=&quot;aHR0cHM6Ly9hdGNvZGVyLmpwL2NvbnRlc3RzL2FiYzE1NQ==&quot;&gt;AtCoder Beginner Contest 155&lt;i class=&quot;fa fa-external-link-alt&quot;&gt;&lt;/i&gt;&lt;/span&gt;&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="algorithm" scheme="https://blog.ofortune.xyz/tags/algorithm/"/>
+    
+    <category term="atcoder" scheme="https://blog.ofortune.xyz/tags/atcoder/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>武汉大学新生寒假集训测试-Day2</title>
+    <link href="https://blog.ofortune.xyz/2020/02/04/whu-2020-winter-day-2/"/>
+    <id>https://blog.ofortune.xyz/2020/02/04/whu-2020-winter-day-2/</id>
+    <published>2020-02-04T03:09:28.000Z</published>
+    <updated>2020-02-04T03:09:28.000Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;比赛地址：&lt;span class=&quot;exturl&quot; data-url=&quot;aHR0cHM6Ly92anVkZ2UubmV0L2NvbnRlc3QvMzU1MDk3&quot;&gt;vjudge&lt;i class=&quot;fa fa-external-link-alt&quot;&gt;&lt;/i&gt;&lt;/span&gt;&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="algorithm" scheme="https://blog.ofortune.xyz/tags/algorithm/"/>
+    
+    <category term="codeforces" scheme="https://blog.ofortune.xyz/tags/codeforces/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>AtCoder Beginner Contest 153 解题报告</title>
+    <link href="https://blog.ofortune.xyz/2020/01/27/atcoder-abc153/"/>
+    <id>https://blog.ofortune.xyz/2020/01/27/atcoder-abc153/</id>
+    <published>2020-01-27T07:41:21.000Z</published>
+    <updated>2020-01-27T07:41:21.000Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;在ICPC/CCPC群里面看见有大佬说要打&lt;em&gt;AtCoder Contest&lt;/em&gt;，于是我这个萌新去凑了一下热闹。&lt;/p&gt;
+&lt;p&gt;总体来说比赛不算太难，但最后的F题对我很不友好。&lt;/p&gt;
+&lt;p&gt;比赛地址: &lt;span class=&quot;exturl&quot; data-url=&quot;aHR0cHM6Ly9hdGNvZGVyLmpwL2NvbnRlc3RzL2FiYzE1Mw==&quot;&gt;AtCoder Beginner Contest 153&lt;i class=&quot;fa fa-external-link-alt&quot;&gt;&lt;/i&gt;&lt;/span&gt;&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="algorithm" scheme="https://blog.ofortune.xyz/tags/algorithm/"/>
+    
+    <category term="atcoder" scheme="https://blog.ofortune.xyz/tags/atcoder/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>模拟退火算法</title>
+    <link href="https://blog.ofortune.xyz/2020/01/04/simulated-annealing/"/>
+    <id>https://blog.ofortune.xyz/2020/01/04/simulated-annealing/</id>
+    <published>2020-01-04T12:58:11.000Z</published>
+    <updated>2020-03-31T12:12:15.000Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;在认知计算导引&lt;del&gt;水课&lt;/del&gt;课程中介绍了启发式搜索，其中模拟退火算法就是一种启发式搜索算法。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="algorithm" scheme="https://blog.ofortune.xyz/tags/algorithm/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>fix binding port error on Windows</title>
+    <link href="https://blog.ofortune.xyz/2020/01/03/fix-network/"/>
+    <id>https://blog.ofortune.xyz/2020/01/03/fix-network/</id>
+    <published>2020-01-03T14:14:36.000Z</published>
+    <updated>2020-03-15T11:45:00.000Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;Having installed Hyper-V on my machine, I found that I couldn’t start up Tomcat.&lt;/p&gt;
+&lt;p&gt;It warns me that port 1099 is in use.&lt;/p&gt;
+&lt;p&gt;And here is my debugging note.&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="windows" scheme="https://blog.ofortune.xyz/tags/windows/"/>
+    
+    <category term="hyper-v" scheme="https://blog.ofortune.xyz/tags/hyper-v/"/>
+    
+    <category term="network" scheme="https://blog.ofortune.xyz/tags/network/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>fix &quot;no sound&quot; issue under manjaro</title>
+    <link href="https://blog.ofortune.xyz/2019/12/31/manjaro-fix-no-sound/"/>
+    <id>https://blog.ofortune.xyz/2019/12/31/manjaro-fix-no-sound/</id>
+    <published>2019-12-31T13:11:33.000Z</published>
+    <updated>2020-03-29T07:44:51.000Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;It’s outdated now. This issue has been resolved.&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="linux" scheme="https://blog.ofortune.xyz/tags/linux/"/>
+    
+    <category term="sound" scheme="https://blog.ofortune.xyz/tags/sound/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Hello World</title>
+    <link href="https://blog.ofortune.xyz/2019/12/31/hello-world/"/>
+    <id>https://blog.ofortune.xyz/2019/12/31/hello-world/</id>
+    <published>2019-12-31T04:49:51.000Z</published>
+    <updated>2019-12-31T04:49:51.000Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;This is my first post.&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="hello" scheme="https://blog.ofortune.xyz/tags/hello/"/>
+    
+  </entry>
+  
+</feed>
