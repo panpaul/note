@@ -6,7 +6,7 @@
   <link href="https://blog.ofortune.xyz/atom.xml" rel="self"/>
   
   <link href="https://blog.ofortune.xyz/"/>
-  <updated>2020-11-08T13:59:25.000Z</updated>
+  <updated>2021-02-04T08:34:14.000Z</updated>
   <id>https://blog.ofortune.xyz/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>MIT6.S081操作系统实验解答</title>
+    <link href="https://blog.ofortune.xyz/2021/02/04/mit-6-S081-lab/"/>
+    <id>https://blog.ofortune.xyz/2021/02/04/mit-6-S081-lab/</id>
+    <published>2021-02-04T08:34:14.000Z</published>
+    <updated>2021-02-04T08:34:14.000Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;最近在自学MIT的操作系统课程，本文记录一下我的课后lab解答。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="6.S081" scheme="https://blog.ofortune.xyz/tags/6-S081/"/>
+    
+    <category term="Operating System" scheme="https://blog.ofortune.xyz/tags/Operating-System/"/>
+    
+    <category term="RISC-V" scheme="https://blog.ofortune.xyz/tags/RISC-V/"/>
+    
+  </entry>
   
   <entry>
     <title>Hackergame2020部分题解</title>
@@ -71,9 +92,9 @@
     
     <category term="debugging" scheme="https://blog.ofortune.xyz/tags/debugging/"/>
     
-    <category term="VSCode" scheme="https://blog.ofortune.xyz/tags/VSCode/"/>
-    
     <category term="RISC-V" scheme="https://blog.ofortune.xyz/tags/RISC-V/"/>
+    
+    <category term="VSCode" scheme="https://blog.ofortune.xyz/tags/VSCode/"/>
     
     <category term="qemu" scheme="https://blog.ofortune.xyz/tags/qemu/"/>
     
