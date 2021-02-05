@@ -29,11 +29,11 @@
     
     
     
+    <category term="RISC-V" scheme="https://blog.ofortune.xyz/tags/RISC-V/"/>
+    
     <category term="6.S081" scheme="https://blog.ofortune.xyz/tags/6-S081/"/>
     
     <category term="Operating System" scheme="https://blog.ofortune.xyz/tags/Operating-System/"/>
-    
-    <category term="RISC-V" scheme="https://blog.ofortune.xyz/tags/RISC-V/"/>
     
   </entry>
   
@@ -92,9 +92,9 @@
     
     <category term="debugging" scheme="https://blog.ofortune.xyz/tags/debugging/"/>
     
-    <category term="RISC-V" scheme="https://blog.ofortune.xyz/tags/RISC-V/"/>
-    
     <category term="VSCode" scheme="https://blog.ofortune.xyz/tags/VSCode/"/>
+    
+    <category term="RISC-V" scheme="https://blog.ofortune.xyz/tags/RISC-V/"/>
     
     <category term="qemu" scheme="https://blog.ofortune.xyz/tags/qemu/"/>
     

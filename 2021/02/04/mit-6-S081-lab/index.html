@@ -35,9 +35,9 @@
 <meta property="article:published_time" content="2021-02-04T08:34:14.000Z">
 <meta property="article:modified_time" content="2021-02-04T08:34:14.000Z">
 <meta property="article:author" content="Paul">
+<meta property="article:tag" content="RISC-V">
 <meta property="article:tag" content="6.S081">
 <meta property="article:tag" content="Operating System">
-<meta property="article:tag" content="RISC-V">
 <meta name="twitter:card" content="summary">
 
 
@@ -345,7 +345,7 @@
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">uint64 <span class="title">get_free_mem</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">run</span> *<span class="title">r</span>;</span></span><br><span class="line">  uint64 pages = <span class="number">0</span>; <span class="comment">// 记录空闲页数</span></span><br><span class="line"></span><br><span class="line">  acquire(&amp;kmem.lock);</span><br><span class="line">  r = kmem.freelist;</span><br><span class="line">  <span class="keyword">while</span> (r)</span><br><span class="line">  &#123;</span><br><span class="line">    pages++;</span><br><span class="line">    r = r-&gt;next;</span><br><span class="line">  &#125;</span><br><span class="line">  release(&amp;kmem.lock);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> (pages &lt;&lt; <span class="number">12</span>); <span class="comment">// Book P29</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>整个流程可以参考<code>kalloc.c</code>中的<code>kalloc</code>函数：上锁 -&gt; 获取空闲链表(<code>kmem.freelist</code>) -&gt; 解锁</p>
 <p>我们可以获取到空闲的页数，但是页大小是多少？这里在<code>xv6 book</code>中3.1节中阐述了<code>xv6</code>页表的设计：</p>
-<p><code>VPN</code>总共有<code>39</code>位，其中高<code>27</code>位对应于<code>PTE</code>用于查找<code>PPN</code>，剩下的<code>12</code>位表示页内偏移，也就是一个页的大小</p>
+<p><code>VA</code>总共有<code>39</code>位，其中高<code>27</code>位对应于<code>PTE</code>用于查找<code>PPN</code>，剩下的<code>12</code>位表示页内偏移，也就是一个页的大小</p>
 <p>接着关注<code>UNUSED</code>的进程，在<code>kernel/proc.c</code>中添加辅助函数<code>get_unused_proc</code></p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">uint64 <span class="title">unused_proc</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">proc</span> *<span class="title">p</span>;</span></span><br><span class="line">  uint64 unused = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (p = proc; p &lt; &amp;proc[NPROC]; p++)</span><br><span class="line">    <span class="keyword">if</span> (p-&gt;state != UNUSED)</span><br><span class="line">      unused++;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> unused;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>最后添加实际的系统调用函数</p>
@@ -360,9 +360,9 @@
 
     <footer class="post-footer">
           <div class="post-tags">
+              <a href="/tags/RISC-V/" rel="tag"># RISC-V</a>
               <a href="/tags/6-S081/" rel="tag"># 6.S081</a>
               <a href="/tags/Operating-System/" rel="tag"># Operating System</a>
-              <a href="/tags/RISC-V/" rel="tag"># RISC-V</a>
           </div>
 
         
