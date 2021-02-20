@@ -200,7 +200,7 @@
 
   <url>
     <loc>https://blog.ofortune.xyz/</loc>
-    <lastmod>2021-02-19</lastmod>
+    <lastmod>2021-02-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -208,315 +208,315 @@
   
   <url>
     <loc>https://blog.ofortune.xyz/tags/arduino/</loc>
-    <lastmod>2021-02-19</lastmod>
+    <lastmod>2021-02-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://blog.ofortune.xyz/tags/bluetooth/</loc>
-    <lastmod>2021-02-19</lastmod>
+    <lastmod>2021-02-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://blog.ofortune.xyz/tags/HC-05/</loc>
-    <lastmod>2021-02-19</lastmod>
+    <lastmod>2021-02-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://blog.ofortune.xyz/tags/acceleration/</loc>
-    <lastmod>2021-02-19</lastmod>
+    <lastmod>2021-02-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://blog.ofortune.xyz/tags/mpu6050/</loc>
-    <lastmod>2021-02-19</lastmod>
+    <lastmod>2021-02-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://blog.ofortune.xyz/tags/sensor/</loc>
-    <lastmod>2021-02-19</lastmod>
+    <lastmod>2021-02-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://blog.ofortune.xyz/tags/algorithm/</loc>
-    <lastmod>2021-02-19</lastmod>
+    <lastmod>2021-02-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://blog.ofortune.xyz/tags/atcoder/</loc>
-    <lastmod>2021-02-19</lastmod>
+    <lastmod>2021-02-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://blog.ofortune.xyz/tags/Coq/</loc>
-    <lastmod>2021-02-19</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.ofortune.xyz/tags/chromium/</loc>
-    <lastmod>2021-02-19</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.ofortune.xyz/tags/linux/</loc>
-    <lastmod>2021-02-19</lastmod>
+    <lastmod>2021-02-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://blog.ofortune.xyz/tags/debugging/</loc>
-    <lastmod>2021-02-19</lastmod>
+    <lastmod>2021-02-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://blog.ofortune.xyz/tags/bomblab/</loc>
-    <lastmod>2021-02-19</lastmod>
+    <lastmod>2021-02-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://blog.ofortune.xyz/tags/csapp/</loc>
-    <lastmod>2021-02-19</lastmod>
+    <lastmod>2021-02-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://blog.ofortune.xyz/tags/assembly/</loc>
-    <lastmod>2021-02-19</lastmod>
+    <lastmod>2021-02-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://blog.ofortune.xyz/tags/dell/</loc>
-    <lastmod>2021-02-19</lastmod>
+    <lastmod>2021-02-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://blog.ofortune.xyz/tags/keyboard/</loc>
-    <lastmod>2021-02-19</lastmod>
+    <lastmod>2021-02-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://blog.ofortune.xyz/tags/backlight/</loc>
-    <lastmod>2021-02-19</lastmod>
+    <lastmod>2021-02-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.ofortune.xyz/tags/chromium/</loc>
+    <lastmod>2021-02-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.ofortune.xyz/tags/linux/</loc>
+    <lastmod>2021-02-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://blog.ofortune.xyz/tags/powerset/</loc>
-    <lastmod>2021-02-19</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.ofortune.xyz/tags/windows/</loc>
-    <lastmod>2021-02-19</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.ofortune.xyz/tags/hyper-v/</loc>
-    <lastmod>2021-02-19</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.ofortune.xyz/tags/network/</loc>
-    <lastmod>2021-02-19</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.ofortune.xyz/tags/hack/</loc>
-    <lastmod>2021-02-19</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.ofortune.xyz/tags/hello/</loc>
-    <lastmod>2021-02-19</lastmod>
+    <lastmod>2021-02-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://blog.ofortune.xyz/tags/latex/</loc>
-    <lastmod>2021-02-19</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.ofortune.xyz/tags/prooftree/</loc>
-    <lastmod>2021-02-19</lastmod>
+    <lastmod>2021-02-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://blog.ofortune.xyz/tags/parsetree/</loc>
-    <lastmod>2021-02-19</lastmod>
+    <lastmod>2021-02-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://blog.ofortune.xyz/tags/sound/</loc>
-    <lastmod>2021-02-19</lastmod>
+    <loc>https://blog.ofortune.xyz/tags/windows/</loc>
+    <lastmod>2021-02-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.ofortune.xyz/tags/hyper-v/</loc>
+    <lastmod>2021-02-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.ofortune.xyz/tags/network/</loc>
+    <lastmod>2021-02-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.ofortune.xyz/tags/hello/</loc>
+    <lastmod>2021-02-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.ofortune.xyz/tags/hack/</loc>
+    <lastmod>2021-02-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://blog.ofortune.xyz/tags/matlab/</loc>
-    <lastmod>2021-02-19</lastmod>
+    <lastmod>2021-02-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.ofortune.xyz/tags/sound/</loc>
+    <lastmod>2021-02-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.ofortune.xyz/tags/prooftree/</loc>
+    <lastmod>2021-02-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://blog.ofortune.xyz/tags/memory/</loc>
-    <lastmod>2021-02-19</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.ofortune.xyz/tags/SeetaFace/</loc>
-    <lastmod>2021-02-19</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.ofortune.xyz/tags/face-detection/</loc>
-    <lastmod>2021-02-19</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.ofortune.xyz/tags/face-recognition/</loc>
-    <lastmod>2021-02-19</lastmod>
+    <lastmod>2021-02-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://blog.ofortune.xyz/tags/VSCode/</loc>
-    <lastmod>2021-02-19</lastmod>
+    <lastmod>2021-02-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://blog.ofortune.xyz/tags/RISC-V/</loc>
-    <lastmod>2021-02-19</lastmod>
+    <lastmod>2021-02-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://blog.ofortune.xyz/tags/qemu/</loc>
-    <lastmod>2021-02-19</lastmod>
+    <lastmod>2021-02-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://blog.ofortune.xyz/tags/ctf/</loc>
-    <lastmod>2021-02-19</lastmod>
+    <loc>https://blog.ofortune.xyz/tags/SeetaFace/</loc>
+    <lastmod>2021-02-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://blog.ofortune.xyz/tags/php/</loc>
-    <lastmod>2021-02-19</lastmod>
+    <loc>https://blog.ofortune.xyz/tags/face-detection/</loc>
+    <lastmod>2021-02-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.ofortune.xyz/tags/face-recognition/</loc>
+    <lastmod>2021-02-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://blog.ofortune.xyz/tags/STM8/</loc>
-    <lastmod>2021-02-19</lastmod>
+    <lastmod>2021-02-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://blog.ofortune.xyz/tags/UART/</loc>
-    <lastmod>2021-02-19</lastmod>
+    <lastmod>2021-02-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://blog.ofortune.xyz/tags/GPIO/</loc>
-    <lastmod>2021-02-19</lastmod>
+    <lastmod>2021-02-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.ofortune.xyz/tags/ctf/</loc>
+    <lastmod>2021-02-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.ofortune.xyz/tags/php/</loc>
+    <lastmod>2021-02-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://blog.ofortune.xyz/tags/codeforces/</loc>
-    <lastmod>2021-02-19</lastmod>
+    <lastmod>2021-02-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://blog.ofortune.xyz/tags/recovery/</loc>
-    <lastmod>2021-02-19</lastmod>
+    <lastmod>2021-02-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://blog.ofortune.xyz/tags/6-S081/</loc>
-    <lastmod>2021-02-19</lastmod>
+    <lastmod>2021-02-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://blog.ofortune.xyz/tags/Operating-System/</loc>
-    <lastmod>2021-02-19</lastmod>
+    <lastmod>2021-02-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
