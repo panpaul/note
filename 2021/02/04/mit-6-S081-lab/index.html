@@ -393,4 +393,224 @@
 <p>接着修改<code>proc.c</code>，在<code>allocproc</code>和<code>freeproc</code>中添加代码初始化、销毁上述变量：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">struct</span> <span class="title">proc</span>*</span></span><br><span class="line"><span class="class"><span class="title">allocproc</span>(<span class="title">void</span>)</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  <span class="comment">// --snip--</span></span><br><span class="line">found:</span><br><span class="line">  p-&gt;pid = allocpid();</span><br><span class="line"></span><br><span class="line">  p-&gt;alarm_en = <span class="number">0</span>;</span><br><span class="line">  p-&gt;alarm_handler = <span class="number">0</span>;</span><br><span class="line">  p-&gt;alarm_interval = <span class="number">0</span>;</span><br><span class="line">  p-&gt;alarm_counter = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">if</span> ((p-&gt;alarm_save = (struct trapframe *)kalloc()) == <span class="number">0</span>) <span class="comment">// 分配内存!</span></span><br><span class="line">  &#123;</span><br><span class="line">    release(&amp;p-&gt;lock);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// --snip--</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">void</span></span><br><span class="line">freeproc(struct proc *p)</span><br><span class="line">&#123;</span><br><span class="line">  <span class="comment">// 仿照trapframe的销毁步骤销毁alarm_save</span></span><br><span class="line">  <span class="keyword">if</span> (p-&gt;alarm_save)</span><br><span class="line">    kfree((<span class="keyword">void</span> *)p-&gt;alarm_save);</span><br><span class="line">  p-&gt;alarm_save = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  p-&gt;alarm_en = <span class="number">0</span>;</span><br><span class="line">  p-&gt;alarm_interval = <span class="number">0</span>;</span><br><span class="line">  p-&gt;alarm_counter = <span class="number">0</span>;</span><br><span class="line">  p-&gt;alarm_handler = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>然后根据提示，在每个<code>CPU</code>周期到来时会触发<code>usertrap</code>函数，所以我们在这里面添加<code>alarm</code>相关的处理内容：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="c
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// give up the CPU if this is a timer interrupt.</span></span><br><span class="line"><span class="keyword">if</span> (which_dev == <span class="number">2</span>)</span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">if</span> (p-&gt;alarm_interval &gt; <span class="number">0</span> &amp;&amp; p-&gt;alarm_en)</span><br><span class="line">  &#123;</span><br><span class="line">    p-&gt;alarm_counter++;</span><br><span class="line">    <span class="keyword">if</span> (p-&gt;alarm_counter == p-&gt;alarm_interval)</span><br><span class="line">    &#123;</span><br><span class="line">      p-&gt;alarm_en = <span class="number">0</span>;      <span class="comment">// 停止alarm</span></span><br><span class="line">      p-&gt;alarm_counter = <span class="number">0</span>; <span class="comment">// 计数器清空</span></span><br><span class="line">      memmove(p-&gt;alarm_save,</span><br><span class="line">              p-&gt;trapframe,</span><br><span class="line">              <span class="keyword">sizeof</span>(struct trapframe));    <span class="comment">// 备份寄存器</span></span><br><span class="line">      p-&gt;trapframe-&gt;epc = p-&gt;alarm_handler; <span class="comment">// 修改PC,跳转到handler执行</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  yield();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最后给系统调用添加相关内容：</p>
+<p>对于<code>sys_sigalarm</code>只用获取传递的参数然后开启<code>alarm</code>即可：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">uint64 <span class="title">sys_sigalarm</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">int</span> interval;</span><br><span class="line">  uint64 handler;</span><br><span class="line">  <span class="keyword">if</span> (argint(<span class="number">0</span>, &amp;interval) &lt; <span class="number">0</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">  <span class="keyword">if</span> (argaddr(<span class="number">1</span>, &amp;handler) &lt; <span class="number">0</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line"></span><br><span class="line">  myproc()-&gt;alarm_interval = interval;</span><br><span class="line">  myproc()-&gt;alarm_handler = handler;</span><br><span class="line">  myproc()-&gt;alarm_en = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>而对于<code>sys_sigreturn</code>，要在这里还原寄存器：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">uint64 <span class="title">sys_sigreturn</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  memmove(myproc()-&gt;trapframe,</span><br><span class="line">          myproc()-&gt;alarm_save,</span><br><span class="line">          <span class="keyword">sizeof</span>(struct trapframe)); <span class="comment">// 还原寄存器</span></span><br><span class="line">  myproc()-&gt;alarm_en = <span class="number">1</span>;            <span class="comment">// alarm使能</span></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Lab-Lazy"><a href="#Lab-Lazy" class="headerlink" title="Lab Lazy"></a>Lab Lazy</h2><p>这一个实验是要给<code>xv6</code>系统的<code>sbrk</code>添加延迟分配内存的功能。</p>
+<p>首先修改<code>sys_sbrk</code>：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">uint64</span><br><span class="line">sys_sbrk(<span class="keyword">void</span>)</span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">int</span> addr;</span><br><span class="line">  <span class="keyword">int</span> n;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (argint(<span class="number">0</span>, &amp;n) &lt; <span class="number">0</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">  addr = myproc()-&gt;sz;</span><br><span class="line">  <span class="keyword">if</span> (n &lt; <span class="number">0</span>) <span class="comment">// n &lt; 0 时回收内存</span></span><br><span class="line">    uvmdealloc(myproc()-&gt;pagetable, addr, addr + n);</span><br><span class="line">  myproc()-&gt;sz += n; <span class="comment">// 如果n &gt; 0就只记录一下</span></span><br><span class="line">  <span class="keyword">return</span> addr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后，由于修改后的<code>sbrk</code>并未真正分配内存，在程序运行时如果访问了这部分的内存会产生<code>page fault</code>，我们可以在<code>usertrap</code>中去处理这些问题：</p>
+<p>这一部分可以参考课程上老师给出的代码，稍加修改（边界条件的判定：<code>r_scause</code>、地址范围）</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (r_scause() == <span class="number">13</span> || r_scause() == <span class="number">15</span>)</span><br><span class="line">&#123;</span><br><span class="line">  <span class="comment">// Page Fault</span></span><br><span class="line">  uint64 va = r_stval();</span><br><span class="line">  <span class="comment">//printf(&quot;page fault: %p\n&quot;, va);</span></span><br><span class="line">  <span class="keyword">if</span> (va &gt;= p-&gt;sz || va &lt;= PGROUNDDOWN(p-&gt;trapframe-&gt;sp)) <span class="comment">// 确保出现page fault的地址在分配的范围内，在栈空间内</span></span><br><span class="line">    p-&gt;killed = <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">char</span> *mem = kalloc();</span><br><span class="line">    <span class="keyword">if</span> (mem == <span class="number">0</span>)</span><br><span class="line">      p-&gt;killed = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">      <span class="built_in">memset</span>(mem, <span class="number">0</span>, PGSIZE);</span><br><span class="line">      va = PGROUNDDOWN(va);</span><br><span class="line">      <span class="keyword">if</span> (mappages(p-&gt;pagetable, va, PGSIZE, (uint64)mem, PTE_W | PTE_X | PTE_R | PTE_U) != <span class="number">0</span>)</span><br><span class="line">      &#123;</span><br><span class="line">        kfree(mem);</span><br><span class="line">        p-&gt;killed = <span class="number">1</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接着，继续完善程序：根据提示，程序有可能使用尚未分配的地址去调用如<code>read</code>、<code>write</code>等系统调用。而进入<code>sys_read</code>之后，代码在内核空间中执行，如果出现页错误不会到<code>usertrap</code>中执行，所以我们需要修改代码使得我们的系统能判断并分配这些尚未分配的内存：</p>
+<p>首先分析一下内核的代码：从用户空间传入地址可以通过<code>argaddr</code>函数读取，先查找一下<code>argaddr</code>的引用：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">argaddr &lt;- argstr</span><br><span class="line">        &lt;- sys_read</span><br><span class="line">        &lt;- sys_write</span><br><span class="line">        &lt;- sys_fstat</span><br><span class="line">        &lt;- sys_exec</span><br><span class="line">        &lt;- sys_pipe</span><br><span class="line">        &lt;- sys_wait</span><br></pre></td></tr></table></figure>
+<p>接着我们逐个研究这些函数，追踪传入的地址经过了哪些函数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">sys_wait -&gt; copyout</span><br><span class="line">sys_pipe -&gt; copyout</span><br><span class="line">sys_exec -&gt; fetchaddr -&gt; copyin</span><br><span class="line">         -&gt; exec -&gt; loadseg</span><br><span class="line">sys_fstat -&gt; filestat -&gt; copyout</span><br><span class="line">sys_write -&gt; ... -&gt; copyin</span><br><span class="line">sys_read -&gt; ... -&gt; copyout</span><br><span class="line">argstr -&gt; fetchstr -&gt; copyinstr</span><br><span class="line"></span><br><span class="line">walk &lt;- walkaddr &lt;- copyin</span><br><span class="line">                 &lt;- copyout</span><br><span class="line">                 &lt;- copyinstr</span><br><span class="line">                 &lt;- loadseg</span><br></pre></td></tr></table></figure>
+<p>可以发现我们传入的地址最后都传递给了<code>walkaddr</code>函数处理。</p>
+<p>我们现在就要修改<code>walk</code>或<code>walkaddr</code>函数，像<code>usertrap</code>中处理一样判断是否需要分配内存。</p>
+<p>这里我选择了修改<code>walkaddr</code>函数：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (pte == <span class="number">0</span> || (*pte &amp; PTE_V) == <span class="number">0</span>)</span><br><span class="line">&#123;</span><br><span class="line">  <span class="comment">// not allocated</span></span><br><span class="line">  <span class="keyword">if</span> (va &gt;= myproc()-&gt;sz || va &lt;= PGROUNDDOWN(myproc()-&gt;trapframe-&gt;sp))</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">char</span> *mem = kalloc();</span><br><span class="line">  <span class="keyword">if</span> (mem == <span class="number">0</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">  &#123;</span><br><span class="line">    <span class="built_in">memset</span>(mem, <span class="number">0</span>, PGSIZE);</span><br><span class="line">    va = PGROUNDDOWN(va);</span><br><span class="line">    <span class="keyword">if</span> (mappages(myproc()-&gt;pagetable, va, PGSIZE, (uint64)mem, PTE_W | PTE_X | PTE_R | PTE_U) != <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">      kfree(mem);</span><br><span class="line">      <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> (uint64)mem;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最后在<code>uvmunmap</code>和<code>uvmcopy</code>中剩下几个小问题：</p>
+<p>先是<code>uvmunmap</code>：我们需要注释掉几个<code>panic</code>，因为存在延迟分配，有些地址可能在真正被分配前就被显式的释放了，这里不算异常</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>((pte = walk(pagetable, a, <span class="number">0</span>)) == <span class="number">0</span>)</span><br><span class="line">  <span class="comment">//panic(&quot;uvmunmap: walk&quot;);</span></span><br><span class="line">  <span class="keyword">continue</span>;</span><br><span class="line"><span class="keyword">if</span> ((*pte &amp; PTE_V) == <span class="number">0</span>)</span><br><span class="line">&#123; <span class="comment">//panic(&quot;uvmunmap: not mapped&quot;);</span></span><br><span class="line">  *pte = <span class="number">0</span>; <span class="comment">// 这个是个坑，下面的continue跳过了最后的*pte=0，这里要手动执行一下</span></span><br><span class="line">  <span class="keyword">continue</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后是<code>uvmcopy</code>：在<code>fork</code>时原有的部分内存可能尚未被分配，在复制时不需要抛出异常，跳过即可</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>((pte = walk(old, i, <span class="number">0</span>)) == <span class="number">0</span>)</span><br><span class="line">  <span class="comment">//panic(&quot;uvmcopy: pte should exist&quot;);</span></span><br><span class="line">  <span class="keyword">continue</span>;</span><br><span class="line"><span class="keyword">if</span>((*pte &amp; PTE_V) == <span class="number">0</span>)</span><br><span class="line">  <span class="comment">//panic(&quot;uvmcopy: page not present&quot;);</span></span><br><span class="line">  <span class="keyword">continue</span>;</span><br></pre></td></tr></table></figure>
+<p>==To be Updated==</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/RISC-V/" rel="tag"># RISC-V</a>
+              <a href="/tags/6-S081/" rel="tag"># 6.S081</a>
+              <a href="/tags/Operating-System/" rel="tag"># Operating System</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/11/08/ustc-hack-lug2020/" rel="prev" title="Hackergame2020部分题解">
+                  <i class="fa fa-chevron-left"></i> Hackergame2020部分题解
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Paul</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">36k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">59 分钟</span>
+  </span>
+</div>
+  <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZw==">NexT.Gemini</span> 强力驱动
+  </div><script defer src="/lib/three.js"></script><script defer src="/lib/waves.js"></script>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '.page-configurations',
+    '.main-inner',
+    '.post-toc-wrap',
+    '.languages',
+    '.pjax'
+  ],
+  analytics: false,
+  cacheBust: false,
+  scrollRestoration: false,
+  scrollTo: !CONFIG.bookmark.enable
+});
+
+document.addEventListener('pjax:success', () => {
+  pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  const hasTOC = document.querySelector('.post-toc');
+  document.querySelector('.sidebar-inner').classList.toggle('sidebar-nav-active', hasTOC);
+  document.querySelector(hasTOC ? '.sidebar-nav-toc' : '.sidebar-nav-overview').click();
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+  
+
+
+
+
+
+  <script>
+    NProgress.configure({
+      showSpinner: true
+    });
+    NProgress.start();
+    document.addEventListener('readystatechange', () => {
+      if (document.readyState === 'interactive') {
+        NProgress.inc(0.8);
+      }
+      if (document.readyState === 'complete') {
+        NProgress.done();
+      }
+    });
+    document.addEventListener('pjax:send', () => {
+      NProgress.start();
+    });
+    document.addEventListener('pjax:success', () => {
+      NProgress.done();
+    });
+  </script>
+
+  
+
+  <div style="display: none;">
+    <script data-pjax src="//s95.cnzz.com/z_stat.php?id=1278724440&web_id=1278724440"></script>
+  </div>
+
+
+    <div class="pjax">
+
+  
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/disqusjs@1.3.0/dist/disqusjs.css">
+
+<script>
+NexT.utils.loadComments('#disqus_thread', () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/disqusjs@1.3.0/dist/disqus.js', () => {
+    window.dsqjs = new DisqusJS({
+      api       : 'https://disqus.skk.moe/disqus/' || 'https://disqus.com/api/',
+      apikey    : 'pwCicQgBQmc1ZEUP8fbsECJ1H1U5HWHEuUKbFFR0whF6VjLgL5CneiwMFOtQwwAv',
+      shortname : 'silent-world',
+      url       : "https://blog.ofortune.xyz/2021/02/04/mit-6-S081-lab/",
+      identifier: "2021/02/04/mit-6-S081-lab/",
+      title     : "MIT6.S081操作系统实验解答",
+    });
+  }, window.DisqusJS);
+});
+</script>
+
+    </div>
+</body>
+</html>
