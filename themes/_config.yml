@@ -80,15 +80,14 @@ creative_commons:
 # Value before `||` delimiter is the target link, value after `||` delimiter is the name of Font Awesome icon.
 # External url should start with http:// or https://
 menu:
-  home: / || fa fa-home
-  about: /about/ || fa fa-user
-  tags: /tags/ || fa fa-tags
+  #home: / || fa fa-home
+  #about: /about/ || fa fa-user
+  #tags: /tags/ || fa fa-tags
   #categories: /categories/ || fa fa-th
-  archives: /archives/ || fa fa-archive
+  #archives: /archives/ || fa fa-archive
   #schedule: /schedule/ || fa fa-calendar
   #sitemap: /sitemap.xml || fa fa-sitemap
   #commonweal: /404/ || fa fa-heartbeat
-  links: /links/ || fa fa-globe
 
 # Enable / Disable menu icons / item badges.
 menu_settings:
@@ -381,8 +380,11 @@ back2top:
 # Reading progress bar
 reading_progress:
   enable: true
+  # Available values: left | right
+  startAt: left
   # Available values: top | bottom
   position: top
+  reversed: false
   color: "#37c6c0"
   height: 3px
 
@@ -465,6 +467,8 @@ index_with_subtitle: false
 
 # Automatically add external URL with Base64 encrypt & decrypt.
 exturl: true
+# If true, an icon will be attached to each external URL
+exturl_icon: true
 
 # Google Webmaster tools verification.
 # See: https://developers.google.com/search
@@ -621,6 +625,8 @@ gitalk:
   client_secret: # GitHub Application Client Secret
   admin_user: # GitHub repo owner and collaborators, only these guys can initialize gitHub issues
   distraction_free_mode: true # Facebook-like distraction free mode
+  # When the official proxy is not available, you can change it to your own proxy address
+  proxy: https://cors-anywhere.herokuapp.com/https://github.com/login/oauth/access_token # This is official proxy adress
   # Gitalk's display language depends on user's browser or system environment
   # If you want everyone visiting your site to see a uniform language, you can set a force language value
   # Available values: en | es-ES | fr | ru | zh-CN | zh-TW
@@ -678,9 +684,6 @@ baidu_analytics: 838eea07a477dca863f82689af68d775
 # Growingio Analytics
 # See: https://www.growingio.com
 growingio_analytics: # <project_id>
-
-# CNZZ count
-cnzz_siteid: 1278724440
 
 # Cloudflare Web Analytics
 # See: https://www.cloudflare.com/web-analytics/
