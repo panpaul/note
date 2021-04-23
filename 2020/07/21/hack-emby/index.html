@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.3.0">
+<meta name="generator" content="Hexo 5.4.0">
 
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
@@ -16,14 +16,14 @@
 
 
 
-<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/css/all.min.css">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.css">
-  <script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.css">
+  <script src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.js"></script>
 
 <script class="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"blog.ofortune.xyz","root":"/","images":"/images","scheme":"Gemini","version":"8.2.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
+    var CONFIG = {"hostname":"blog.ofortune.xyz","root":"/","images":"/images","scheme":"Gemini","version":"8.3.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
   </script>
 <meta name="description" content="Emby 是一款开源的流媒体中心软件，用户只需要简单部署服务端，其它的客户端就能轻松访问服务端的所有媒体。">
 <meta property="og:type" content="article">
@@ -132,9 +132,6 @@
       <div class="header-inner"><div class="site-brand-container">
   <div class="site-nav-toggle">
     <div class="toggle" aria-label="切换导航栏" role="button">
-        <span class="toggle-line"></span>
-        <span class="toggle-line"></span>
-        <span class="toggle-line"></span>
     </div>
   </div>
 
@@ -156,15 +153,6 @@
 
 
 
-<nav class="site-nav">
-  <ul class="main-menu menu">
-        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
-        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
-        <li class="menu-item menu-item-links"><a href="/links/" rel="section"><i class="fa fa-globe fa-fw"></i>友情链接</a></li>
-  </ul>
-</nav>
 
 
 
@@ -205,15 +193,13 @@
 <div class="site-state-wrap site-overview-item animated">
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
-          <a href="/archives/">
-        
-          <span class="site-state-item-count">25</span>
+          <a href="/archives">
+          <span class="site-state-item-count">26</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-          
         <span class="site-state-item-count">45</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
@@ -232,7 +218,7 @@
     </header>
 
     
-  <div class="back-to-top" role="button">
+  <div class="back-to-top" role="button" aria-label="返回顶部">
     <i class="fa fa-arrow-up"></i>
     <span>0%</span>
   </div>
@@ -308,34 +294,34 @@
     
     <div class="post-body" itemprop="articleBody">
         <p>Emby 是一款<del>开源</del>的流媒体中心软件，用户只需要简单部署服务端，其它的客户端就能轻松访问服务端的所有媒体。</p>
-<a id="more"></a>
+<span id="more"></span>
 <p>首先，关于<code>Emby</code>的破解方式，网上普遍流传的方法是通过劫持<code>mb3admin</code>来实现破解。在客户端，官方允许使用自签名证书，所以比较容易实现破解；但是在服务端，由于<code>Emby</code>使用的是<code>dotnet</code>运行时，注入我们自签名的证书相对困难，所以我考虑使用暴力破解的方式处理服务端。</p>
 <ul>
 <li><h3 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h3><p>Emby是使用<code>C#</code>编写的跨平台应用，所以我们使用<code>dnSpy</code>来进行逆向破解。</p>
 </li>
 <li><h3 id="分析目标"><a href="#分析目标" class="headerlink" title="分析目标"></a>分析目标</h3><p>Emby的安装目录下有许多<code>dll</code>文件，我们先尝试筛选出目标文件。</p>
-<p><img data-src="//cdn.ofortune.xyz/ldcraft/images/emby_1.webp" alt="emby_directory"></p>
+<p><img data-src="/images/emby_1.webp" alt="emby_directory"></p>
 <p>根据网上流传的传统破解方式，我们将所有文件拖入<code>dnSpy</code>后直接搜索<code>mb3admin</code>快速定位目标。</p>
-<p><img data-src="//cdn.ofortune.xyz/ldcraft/images/emby_2.webp" alt="emby_dnSpy_search"></p>
+<p><img data-src="/images/emby_2.webp" alt="emby_dnSpy_search"></p>
 <p>可以看到，涉及验证授权的模块主要集中在<code>Emby.Server.Implementations.Security</code>和<code>Emby.Server.Implementations.Updates</code>中，我们接下来直接研究这两个类即可。</p>
 </li>
 <li><h3 id="修改代码"><a href="#修改代码" class="headerlink" title="修改代码"></a>修改代码</h3><p>我们先分析<code>Emby.Server.Implementations.Security</code></p>
 <p>定位到目标后发现代码没有反混淆措施，所以我们直接右键-编辑类</p>
-<p><img data-src="//cdn.ofortune.xyz/ldcraft/images/emby_3.webp" alt="emby_dnSpy_edit"></p>
+<p><img data-src="/images/emby_3.webp" alt="emby_dnSpy_edit"></p>
 <p>一路阅读代码，首先发现<code>RegisterAppStoreSale</code>方法，根据名字即内容猜测这个应该是向<code>emby store</code>注册，实现付费插件打折的功能？这里直接替换所有内容：</p>
-<p><img data-src="//cdn.ofortune.xyz/ldcraft/images/emby_4.webp" alt="emby_dnSpy_edit"></p>
+<p><img data-src="/images/emby_4.webp" alt="emby_dnSpy_edit"></p>
 <p>然后发现重要的函数：<code>IsFeatureAllowed</code>，这里根据<code>if</code>内<code>IsRegistered</code>可以猜测注册后应该返回<code>True</code>，所以直接更改代码为<code>return true;</code></p>
-<p><img data-src="//cdn.ofortune.xyz/ldcraft/images/emby_5.webp" alt="emby_dnSpy_edit"></p>
+<p><img data-src="/images/emby_5.webp" alt="emby_dnSpy_edit"></p>
 <p>接着发现两个相关的函数：<code>GetRegistrationStatus</code>和<code>GetRegistrationStatusInternal</code>，这里应该是用于向其它组件返回注册信息的，一样修改相应代码：</p>
-<p><img data-src="//cdn.ofortune.xyz/ldcraft/images/emby_6.webp" alt="emby_dnSpy_edit"></p>
+<p><img data-src="/images/emby_6.webp" alt="emby_dnSpy_edit"></p>
 <p>再者，是<code>UpdateRegistrationStatus</code>，顾名思义应该是更新注册信息，这里有与服务器交互的部分，直接注释替换掉：</p>
-<p><img data-src="//cdn.ofortune.xyz/ldcraft/images/emby_7.webp" alt="emby_dnSpy_edit"></p>
+<p><img data-src="/images/emby_7.webp" alt="emby_dnSpy_edit"></p>
 <p>最后修改一些反编译时产生的错误，编译即可。</p>
 <p>接下来分析<code>Emby.Server.Implementations.Updates</code></p>
 <p>通过阅读代码发现不用特意修改代码，直接略过即可。</p>
 </li>
 <li><h3 id="一些杂项"><a href="#一些杂项" class="headerlink" title="一些杂项"></a>一些杂项</h3><p>然后破解插件，方法同理。至此，我们的破解已经完成，直接替换修改过的文件就好了。</p>
-<p><img data-src="//cdn.ofortune.xyz/ldcraft/images/emby_8.webp" alt="emby_success"></p>
+<p><img data-src="/images/emby_8.webp" alt="emby_success"></p>
 </li>
 <li><h3 id="总结与思考"><a href="#总结与思考" class="headerlink" title="总结与思考"></a>总结与思考</h3><p>这里我们暴力修改代码是一种方案，但是仅限于服务端破解，对于客户端，一般常用自建服务器伪装<code>mb3admin</code>实现。所以，在破解服务端时我们不妨可以复用自建的服务器，换一种破解思路，将代码里的验证服务器地址修改为自建服务器的地址。</p>
 <p><strong>最后的最后，本文所述内容仅限用于学习和研究目的，请支持正版。</strong></p>
@@ -424,13 +410,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">36k</span>
+    <span title="站点总字数">40k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">59 分钟</span>
+    <span title="站点阅读时长">1:06</span>
   </span>
 </div>
   <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZw==">NexT.Gemini</span> 强力驱动
@@ -440,9 +426,9 @@
   </footer>
 
   
-  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js"></script>
 <script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script>
 var pjax = new Pjax({
   selectors: [
@@ -507,9 +493,6 @@ document.addEventListener('pjax:success', () => {
 
   
 
-  <div style="display: none;">
-    <script data-pjax src="//s95.cnzz.com/z_stat.php?id=1278724440&web_id=1278724440"></script>
-  </div>
 
 
     <div class="pjax">
@@ -517,11 +500,11 @@ document.addEventListener('pjax:success', () => {
   
 
 
-<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/disqusjs@1.3.0/dist/disqusjs.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/disqusjs@1.3.0/dist/disqusjs.css">
 
 <script>
 NexT.utils.loadComments('#disqus_thread', () => {
-  NexT.utils.getScript('//cdn.jsdelivr.net/npm/disqusjs@1.3.0/dist/disqus.js', () => {
+  NexT.utils.getScript('https://cdn.jsdelivr.net/npm/disqusjs@1.3.0/dist/disqus.js', () => {
     window.dsqjs = new DisqusJS({
       api       : 'https://disqus.skk.moe/disqus/' || 'https://disqus.com/api/',
       apikey    : 'pwCicQgBQmc1ZEUP8fbsECJ1H1U5HWHEuUKbFFR0whF6VjLgL5CneiwMFOtQwwAv',

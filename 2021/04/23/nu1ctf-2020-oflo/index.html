@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.css">
+  <script src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.js"></script>
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.ofortune.xyz","root":"/","images":"/images","scheme":"Gemini","version":"8.3.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
+  </script>
+<meta name="description" content="本来去年就应该写的东西，拖到了现在…">
+<meta property="og:type" content="article">
+<meta property="og:title" content="nu1ctf 2020 oflo writeup">
+<meta property="og:url" content="https://blog.ofortune.xyz/2021/04/23/nu1ctf-2020-oflo/index.html">
+<meta property="og:site_name" content="Silent World">
+<meta property="og:description" content="本来去年就应该写的东西，拖到了现在…">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.ofortune.xyz/2021/04/23/nu1ctf-2020-oflo/flower.png">
+<meta property="og:image" content="https://blog.ofortune.xyz/2021/04/23/nu1ctf-2020-oflo/after.png">
+<meta property="og:image" content="https://blog.ofortune.xyz/2021/04/23/nu1ctf-2020-oflo/image-20210423180401249.png">
+<meta property="og:image" content="https://blog.ofortune.xyz/2021/04/23/nu1ctf-2020-oflo/image-20210423180616334.png">
+<meta property="og:image" content="https://blog.ofortune.xyz/2021/04/23/nu1ctf-2020-oflo/image-20210423180837963.png">
+<meta property="og:image" content="https://blog.ofortune.xyz/2021/04/23/nu1ctf-2020-oflo/image-20210423181052717.png">
+<meta property="og:image" content="https://blog.ofortune.xyz/2021/04/23/nu1ctf-2020-oflo/image-20210423181909168.png">
+<meta property="og:image" content="https://blog.ofortune.xyz/2021/04/23/nu1ctf-2020-oflo/peekuser.png">
+<meta property="og:image" content="https://blog.ofortune.xyz/2021/04/23/nu1ctf-2020-oflo/image-20210423182935080.png">
+<meta property="og:image" content="https://blog.ofortune.xyz/2021/04/23/nu1ctf-2020-oflo/image-20210423183613895.png">
+<meta property="og:image" content="https://blog.ofortune.xyz/2021/04/23/nu1ctf-2020-oflo/image-20210423183810372.png">
+<meta property="og:image" content="https://blog.ofortune.xyz/2021/04/23/nu1ctf-2020-oflo/image-20210423184057594.png">
+<meta property="og:image" content="https://blog.ofortune.xyz/2021/04/23/nu1ctf-2020-oflo/image-20210423184137953.png">
+<meta property="og:image" content="https://blog.ofortune.xyz/2021/04/23/nu1ctf-2020-oflo/image-20210423184930312.png">
+<meta property="og:image" content="https://blog.ofortune.xyz/2021/04/23/nu1ctf-2020-oflo/image-20210423190057023.png">
+<meta property="og:image" content="https://blog.ofortune.xyz/2021/04/23/nu1ctf-2020-oflo/image-20210423192321366.png">
+<meta property="og:image" content="https://blog.ofortune.xyz/2021/04/23/nu1ctf-2020-oflo/image-20210423192435391.png">
+<meta property="og:image" content="https://blog.ofortune.xyz/2021/04/23/nu1ctf-2020-oflo/image-20210423193803510.png">
+<meta property="og:image" content="https://blog.ofortune.xyz/2021/04/23/nu1ctf-2020-oflo/image-20210423194141345.png">
+<meta property="og:image" content="https://blog.ofortune.xyz/2021/04/23/nu1ctf-2020-oflo/image-20210423194239541.png">
+<meta property="og:image" content="https://blog.ofortune.xyz/2021/04/23/nu1ctf-2020-oflo/image-20210423194707219.png">
+<meta property="og:image" content="https://blog.ofortune.xyz/2021/04/23/nu1ctf-2020-oflo/image-20210423194823465.png">
+<meta property="og:image" content="https://blog.ofortune.xyz/2021/04/23/nu1ctf-2020-oflo/image-20210423200914307.png">
+<meta property="og:image" content="https://blog.ofortune.xyz/2021/04/23/nu1ctf-2020-oflo/image-20210423201533915.png">
+<meta property="article:published_time" content="2021-04-23T12:22:14.000Z">
+<meta property="article:modified_time" content="2021-04-23T12:22:14.000Z">
+<meta property="article:author" content="Paul">
+<meta property="article:tag" content="ctf">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.ofortune.xyz/2021/04/23/nu1ctf-2020-oflo/flower.png">
+
+
+<link rel="canonical" href="https://blog.ofortune.xyz/2021/04/23/nu1ctf-2020-oflo/">
+
+
+<script data-pjax class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<title>nu1ctf 2020 oflo writeup | Silent World</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-91325067-5"></script>
+    <script data-pjax>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-91325067-5');
+      }
+    </script>
+
+  <script data-pjax>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?838eea07a477dca863f82689af68d775";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  <script data-pjax defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "a8cfd44c2b684f5390de3a2a73777608"}'></script>
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Silent World" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Silent World</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Paul's notes</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#nu1ctf-2020-oflo-writeup"><span class="nav-number">1.</span> <span class="nav-text">nu1ctf 2020 oflo writeup</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Paul</p>
+  <div class="site-description" itemprop="description">thoughts,stories,experiences</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">45</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.ofortune.xyz/2021/04/23/nu1ctf-2020-oflo/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Paul">
+      <meta itemprop="description" content="thoughts,stories,experiences">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Silent World">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          nu1ctf 2020 oflo writeup
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-04-23 20:22:14" itemprop="dateCreated datePublished" datetime="2021-04-23T20:22:14+08:00">2021-04-23</time>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.1k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>7 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>本来去年就应该写的东西，拖到了现在…</p>
+<span id="more"></span>
+<h1 id="nu1ctf-2020-oflo-writeup"><a href="#nu1ctf-2020-oflo-writeup" class="headerlink" title="nu1ctf 2020 oflo writeup"></a>nu1ctf 2020 oflo writeup</h1><p>使用<code>IDA</code>加载后发现<code>main</code>函数无法解析，但可以找到其基地址<code>0x400B54</code>，遂直接阅读汇编代码。</p>
+<p>程序显示按常规操作进行调用过程初始化，然后读取了一个段寄存器，偏移量<code>0x28</code></p>
+<p>这个固定偏移量的段寄存器有什么用？在<code>Linux</code>下，操作系统并不使用<code>FS</code>段寄存器。</p>
+<p>经过搜索后发现：</p>
+<p><span class="exturl" data-url="aHR0cHM6Ly9zdGFja292ZXJmbG93LmNvbS9xdWVzdGlvbnMvNjYxMTM0Ni9ob3ctYXJlLXRoZS1mcy1ncy1yZWdpc3RlcnMtdXNlZC1pbi1saW51eC1hbWQ2NA==">assembly - How are the fs/gs registers used in Linux AMD64? - Stack Overflow<i class="fa fa-external-link-alt"></i></span></p>
+<p><span class="exturl" data-url="aHR0cHM6Ly9zdGFja292ZXJmbG93LmNvbS9xdWVzdGlvbnMvMTAzMjU3MTMvd2h5LWRvZXMtdGhpcy1tZW1vcnktYWRkcmVzcy1mczB4MjgtZnMweDI4LWhhdmUtYS1yYW5kb20tdmFsdWU=">c - Why does this memory address %fs:0x28 have a random value? - Stack Overflow<i class="fa fa-external-link-alt"></i></span></p>
+<p><span class="exturl" data-url="aHR0cHM6Ly91bml4LnN0YWNrZXhjaGFuZ2UuY29tL3F1ZXN0aW9ucy80NTM3NDkvd2hhdC1zZXRzLWZzMHgyOC1zdGFjay1jYW5hcnk=">linux - What sets fs:0x28 (stack canary)? - Unix &amp; Linux Stack Exchange<i class="fa fa-external-link-alt"></i></span></p>
+<p><code>fs:0x28</code>被<code>glibc</code>用于存放金丝雀值</p>
+<p>接着继续读汇编，发现指令<code>rep stosq</code>，这一条指令常见于<code>memset</code>，其以<code>RCX</code>为重复次数，<code>RAX</code>为源内容，<code>RDX</code>为目标串，写入数据，相当于<code>memset(RDX, RAX, RCX)</code></p>
+<p>然后看见存在一条跳转指令<img data-src="flower.png" alt="flower"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jmp     short near ptr loc_400BB1+1</span><br></pre></td></tr></table></figure>
+<p>怀疑是进行了混淆，在<code>0x400BB1</code>处按<code>U</code>取消分析，然后在<code>0x400BB2</code>处按<code>C</code>重新分析代码</p>
+<p><img data-src="after.png" alt="after"></p>
+<p>然后可以把<code>0x400BB1</code>处的指令用<code>nop</code>替代掉</p>
+<p>下面的指令很有意思<code>xchg rax, rax</code>交换了<code>RAX</code>和<code>RAX</code>寄存器的内容，相当于什么都没有做，可以当成<code>nop</code>对待（另外，好像有一本书就叫做<code>xchg rax, rax</code>）</p>
+<p>接着一个<code>call</code>到<code>0x400BBF</code>处执行，这个<code>0x400BBF</code>用<del>很复杂</del>的手段干了很简单一件事：跳转到<code>0x400BBD</code>执行，所以<code>0x400BBC</code>处的是花指令了</p>
+<p>按照同样的方法处理以下，将没用的部分<code>NOP</code>注释掉，(其实可以直接将<code>0x400BB7</code>和<code>0x400BBF</code>到<code>0x400BD0</code>一起注释掉)</p>
+<p><img data-src="image-20210423180401249.png" alt="image-20210423180401249"></p>
+<p>接着看<code>0x400BD1</code>：</p>
+<p><img data-src="image-20210423180616334.png" alt="image-20210423180616334"></p>
+<p>这里调用了函数<code>sub_4008B9</code>，如果返回为<code>-1</code>则退出</p>
+<p>进入<code>sub_4008B9</code>研究，根据<code>x64</code>调用规则，<code>RDI</code>即<code>[RBP-210h]</code>为传入的第一个参数</p>
+<p><img data-src="image-20210423180837963.png" alt="image-20210423180837963"></p>
+<p>我们遇到了一个可以<code>F5</code>看代码的函数啦！</p>
+<p><img data-src="image-20210423181052717.png" alt="image-20210423181052717"></p>
+<p>这个函数是一个<code>fork and exec</code>的模式，但是在孩子进程中执行了<code>ptrace</code>怀疑是反调试（实际上也是这样）</p>
+<p>关于这个<code>ptrace</code>，查阅<code>man</code>文档后得知：</p>
+<blockquote>
+<p>A process can initiate a trace by calling fork(2) and having the<br>resulting child do a PTRACE_TRACEME, followed (typically) by an<br>execve(2).  Alternatively, one process may commence tracing<br>another process using PTRACE_ATTACH or PTRACE_SEIZE.</p>
+<p>While being traced, the tracee will stop each time a signal is<br>delivered, even if the signal is being ignored.  (An exception is<br>SIGKILL, which has its usual effect.)  The tracer will be<br>notified at its next call to waitpid(2) (or one of the related<br>“wait” system calls); that call will return a status value<br>containing information that indicates the cause of the stop in<br>the tracee.  While the tracee is stopped, the tracer can use<br>various ptrace requests to inspect and modify the tracee.  The<br>tracer then causes the tracee to continue, optionally ignoring<br>the delivered signal (or even delivering a different signal<br>instead).</p>
+</blockquote>
+<p><code>TRACEME</code>参数：</p>
+<blockquote>
+<p>PTRACE_TRACEME<br>Indicate that this process is to be traced by its parent.<br>A process probably shouldn’t make this request if its<br>parent isn’t expecting to trace it.  (pid, addr, and data<br>are ignored.)</p>
+<p>The PTRACE_TRACEME request is used only by the tracee; the<br>remaining requests are used only by the tracer.  In the<br>following requests, pid specifies the thread ID of the<br>tracee to be acted on.  For requests other than<br>PTRACE_ATTACH, PTRACE_SEIZE, PTRACE_INTERRUPT, and<br>PTRACE_KILL, the tracee must be stopped.</p>
+</blockquote>
+<p>这个相当于给父进程<code>trace</code>做准备</p>
+<p>子进程没什么好说的，准备好<code>ptrace</code>环境然后执行<code>cat /proc/version</code></p>
+<p>接着看父进程</p>
+<p><img data-src="image-20210423181909168.png" alt="image-20210423181909168"></p>
+<p>这里进入<code>while</code>循环后先指令了系统调用，查阅<code>man</code>手册获得以下信息：</p>
+<blockquote>
+<p>The wait() system call suspends execution of the calling thread<br>until one of its children terminates.  The call wait(&amp;wstatus) is<br>equivalent to:<br>waitpid(-1, &amp;wstatus, 0);</p>
+<p>The waitpid() system call suspends execution of the calling<br>thread until a child specified by pid argument has changed state.<br>By default, waitpid() waits only for terminated children, but<br>this behavior is modifiable via the options argument, as<br>described below.</p>
+<p>-1     meaning wait for any child process</p>
+</blockquote>
+<p>接着查阅<code>Linux</code><span class="exturl" data-url="aHR0cHM6Ly9lbGl4aXIuYm9vdGxpbi5jb20vbGludXgvdjUuNC43Mi9zb3VyY2UvdG9vbHMvaW5jbHVkZS9ub2xpYmMvbm9saWJjLmgjTDI3Mg==">源代码<i class="fa fa-external-link-alt"></i></span>找到了<code>0x7f</code>的定义：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> WIFEXITED(status) (((status) &amp; 0x7f) == 0)</span></span><br></pre></td></tr></table></figure>
+<p>这个<code>if</code>有点意思，在<code>wait4</code>执行时已经确保了子进程会退出，并且在动态调试的时候，程序执行到<code>wait4</code>时应该会直接退出(挂载了调试器)，如何才能触发退出条件？</p>
+<p>暂时先不管，继续看代码：</p>
+<p>循环内使用<code>ptrace</code>获取了用户寄存器的值并存入了传入的数组中，结构体的定义在<code>sys/user.h</code>中</p>
+<p><img data-src="peekuser.png" alt="peekuser"></p>
+<p><img data-src="image-20210423182935080.png" alt="image-20210423182935080"></p>
+<p>注意到里面调用了一个函数<code>sub_4007D1</code>，跟进分析一下：</p>
+<p><img data-src="image-20210423183613895.png" alt="image-20210423183613895"></p>
+<p>这个比较难分析，不清楚<code>RSI</code>，<code>RDX</code>对应的意思，所以考虑动态调试一下</p>
+<p>回到主函数，继续分析：</p>
+<p><img data-src="image-20210423183810372.png" alt="image-20210423183810372"></p>
+<p>实际执行程序时运行到了<code>read</code>处要求输入，所以<code>0x400BE3</code>处应该能正常进行跳转，所以直接当程序运行到输入时附加调试器上去运行，看一下<code>[rbp-210h]</code>处被写入了什么数据</p>
+<p><img data-src="image-20210423184057594.png" alt="image-20210423184057594"></p>
+<p>发现程序将<code>cat /proc/version</code>的数据拷贝到栈上了…</p>
+<p>至于<code>read</code>的结果，被写入到<code>RSI</code>(指向的地方)上了。(输入了<code>n1ctf&#123;aaaaa&#125;</code>)</p>
+<p><img data-src="image-20210423184137953.png" alt="image-20210423184137953"></p>
+<p>我们通过动态调试继续跟踪程序：</p>
+<p><img data-src="image-20210423184930312.png" alt="image-20210423184930312"></p>
+<p>这里执行了<code>mprotect</code>系统调用，其在<code>man</code>中的解释如下：</p>
+<blockquote>
+<p>mprotect, pkey_mprotect - set protection on a region of memory</p>
+<p>int mprotect(void *addr, size_t len, int prot);</p>
+</blockquote>
+<p>第一个是地址，第二个是长度，第三个是控制选项</p>
+<p>这里地址和长度都直接看出来了，但是控制选项比较烦，查阅<code>Linux</code><span class="exturl" data-url="aHR0cHM6Ly9lbGl4aXIuYm9vdGxpbi5jb20vbGludXgvdjUuNC43Mi9zb3VyY2UvaW5jbHVkZS91YXBpL2FzbS1nZW5lcmljL21tYW4tY29tbW9uLmgjTDEw">代码<i class="fa fa-external-link-alt"></i></span>得知：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PROT_READ	0x1		<span class="comment">/* page can be read */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PROT_WRITE	0x2		<span class="comment">/* page can be written */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PROT_EXEC	0x4		<span class="comment">/* page can be executed */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PROT_SEM	0x8		<span class="comment">/* page may be used for atomic ops */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PROT_NONE	0x0		<span class="comment">/* page can not be accessed */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PROT_GROWSDOWN	0x01000000	<span class="comment">/* mprotect flag: extend change to start of growsdown vma */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PROT_GROWSUP	0x02000000	<span class="comment">/* mprotect flag: extend change to end of growsup vma */</span></span></span><br></pre></td></tr></table></figure>
+<p>这里<code>prot</code>为<code>7</code>即<code>(111)b</code>即<code>PROT_READ | PROT_WRITE | PROT_EXEC</code></p>
+<p>也就是给<code>0x400000</code>到<code>0x400010</code>区间内的内存赋予了读、写、执行的权限。</p>
+<p>完成上述操作后，程序一个<code>jmp</code>跳转到了一个<code>cmp</code>处，怀疑这里是一个循环结构</p>
+<p><img data-src="image-20210423190057023.png" alt="image-20210423190057023"></p>
+<p>大致断定这里有一个<code>for(int i=0; i&lt;=9; i++)</code>的循环</p>
+<p>接着看循环体在做什么</p>
+<p>首先有一个不认识的汇编指令<code>CDQE</code>，查询文档得知：</p>
+<blockquote>
+<p>The <code>CDQE</code> instruction sign-extends a DWORD (32-bit value) in the <code>EAX</code> register to a QWORD (64-bit value) in the <code>RAX</code> register.</p>
+</blockquote>
+<p>这条指令用于对<code>EAX</code>寄存器中数据进行符号扩展</p>
+<p><img data-src="image-20210423192321366.png" alt="image-20210423192321366"></p>
+<p>然后这里进行了一系列奇奇怪怪的运算，不知道在做什么(<del>计算机系统基础还不够扎实</del>)，经过暴力枚举测试，怀疑是在进行模<code>5</code>运算</p>
+<p>测试代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdint.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">uint64_t</span> EAX, ECX, EDX;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= <span class="number">20</span>; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        ECX = i;</span><br><span class="line"></span><br><span class="line">        EDX = <span class="number">0x66666667</span>;</span><br><span class="line">        EAX = i;</span><br><span class="line"></span><br><span class="line">        EDX = ((EAX * EDX) &amp; (<span class="number">0xFFFFFFFF00000000</span>)) &gt;&gt; <span class="number">32</span>;</span><br><span class="line">        EAX = (EAX * EDX) &amp; (<span class="number">0xFFFFFFFF</span>);</span><br><span class="line"></span><br><span class="line">        EDX /= <span class="number">2</span>;</span><br><span class="line">        EAX = i;</span><br><span class="line"></span><br><span class="line">        EAX &gt;&gt;= <span class="number">0x1F</span>;</span><br><span class="line">        EDX -= EAX;</span><br><span class="line">        EAX = EDX;</span><br><span class="line">        EAX *= <span class="number">4</span>;</span><br><span class="line">        EAX += EDX;</span><br><span class="line">        ECX -= EAX;</span><br><span class="line">        EDX = ECX;</span><br><span class="line"></span><br><span class="line">        EAX = EDX;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;i: %d EAX:%d ECX:%d EDX:%d\n&quot;</span>, i, EAX, ECX, EDX);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对应的输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">EAX:0 ECX:0 EDX:0</span><br><span class="line">EAX:1 ECX:1 EDX:1</span><br><span class="line">EAX:2 ECX:2 EDX:2</span><br><span class="line">EAX:3 ECX:3 EDX:3</span><br><span class="line">EAX:4 ECX:4 EDX:4</span><br><span class="line">EAX:0 ECX:0 EDX:0</span><br><span class="line">EAX:1 ECX:1 EDX:1</span><br><span class="line">EAX:2 ECX:2 EDX:2</span><br><span class="line">EAX:3 ECX:3 EDX:3</span><br><span class="line">EAX:4 ECX:4 EDX:4</span><br><span class="line">EAX:0 ECX:0 EDX:0</span><br><span class="line">EAX:1 ECX:1 EDX:1</span><br><span class="line">EAX:2 ECX:2 EDX:2</span><br><span class="line">EAX:3 ECX:3 EDX:3</span><br><span class="line">EAX:4 ECX:4 EDX:4</span><br><span class="line">EAX:0 ECX:0 EDX:0</span><br><span class="line">EAX:1 ECX:1 EDX:1</span><br><span class="line">EAX:2 ECX:2 EDX:2</span><br><span class="line">EAX:3 ECX:3 EDX:3</span><br><span class="line">EAX:4 ECX:4 EDX:4</span><br><span class="line">EAX:0 ECX:0 EDX:0</span><br></pre></td></tr></table></figure>
+<p>实际上直接反汇编<code>x%5</code>也是这个结果(不知道<code>IDA</code>的<code>F5</code>能不能正常识别…)</p>
+<p><img data-src="image-20210423192435391.png" alt="image-20210423192435391"></p>
+<p>那么看到这里，这个<code>for</code>循环的内容大致研究清楚了：</p>
+<p><img data-src="image-20210423193803510.png" alt="image-20210423193803510"></p>
+<p>就是把<code>0x400A69</code>处前<code>10</code>个<code>byte</code>和输入的<code>flag</code>进行异或然后存储进去，伪代码大致如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span>* base = <span class="number">0x400A69</span>;</span><br><span class="line"><span class="keyword">char</span>* input = <span class="string">&quot;n1ctf&#123;xxxxx&#125;&quot;</span>;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;=<span class="number">9</span>; i++)</span><br><span class="line">    base[i] ^= input[i%<span class="number">5</span>];</span><br></pre></td></tr></table></figure>
+<p>完成处理后，又是熟悉的花指令：</p>
+<p><img data-src="image-20210423194141345.png" alt="image-20210423194141345"></p>
+<p>同样的方法处理一下，发现跳转到<code>0x400CCF</code>处</p>
+<p><img data-src="image-20210423194239541.png" alt="image-20210423194239541"></p>
+<p>继续分析，发现<code>0x400D04</code>处又有一处花指令</p>
+<p><img data-src="image-20210423194707219.png" alt="image-20210423194707219"></p>
+<p>处理一下：</p>
+<p><img data-src="image-20210423194823465.png" alt="image-20210423194823465"></p>
+<p>发现，如果<code>sub_400A69</code>函数处理后返回<code>true</code>那么输出<code>Cong</code>表示成功，反之直接退出，那么继续分析<code>sub_400A69</code>函数：</p>
+<p>这个函数就是一个简单的异或判断：</p>
+<p><img data-src="image-20210423200914307.png" alt="image-20210423200914307"></p>
+<p>循环时从<code>0</code>到<code>13</code>，而<code>/proc/version</code>前<code>14</code>个刚好是常量：<code>Linux version</code></p>
+<p>解密代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdint.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> CONST[] = &#123;<span class="number">0x35</span>, <span class="number">0x2d</span>, <span class="number">0x11</span>, <span class="number">0x1a</span>, <span class="number">0x49</span>, <span class="number">0x7d</span>, <span class="number">0x11</span>, <span class="number">0x14</span>, <span class="number">0x2b</span>, <span class="number">0x3b</span>, <span class="number">0x3e</span>, <span class="number">0x3d</span>, <span class="number">0x3c</span>, <span class="number">0x5f</span>&#125;;</span><br><span class="line">    <span class="keyword">char</span> *STR = <span class="string">&quot;Linux version &quot;</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= <span class="number">0xD</span>; i++)</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%c&quot;</span>, CONST[i] ^ (STR[i] + <span class="number">2</span>));</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出：<code>&#123;Fam3_is_NULL&#125;</code></p>
+<p>拼接上开头的<code>n1ctf</code>最后<code>flag</code>就是<code>n1ctf&#123;Fam3_is_NULL&#125;</code></p>
+<p><img data-src="image-20210423201533915.png" alt="image-20210423201533915"></p>
+<p>最后，关于整个程序，仍有一些疑问：为什么要修改<code>0x400000</code>到<code>0x400010</code> 处的属性？整个程序运行时（好像）并未访问这个地址……</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/ctf/" rel="tag"># ctf</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/02/04/mit-6-S081-lab/" rel="prev" title="MIT6.S081操作系统实验解答">
+                  <i class="fa fa-chevron-left"></i> MIT6.S081操作系统实验解答
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Paul</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">40k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">1:06</span>
+  </span>
+</div>
+  <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZw==">NexT.Gemini</span> 强力驱动
+  </div><script defer src="/lib/three.js"></script><script defer src="/lib/waves.js"></script>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '.page-configurations',
+    '.main-inner',
+    '.post-toc-wrap',
+    '.languages',
+    '.pjax'
+  ],
+  analytics: false,
+  cacheBust: false,
+  scrollRestoration: false,
+  scrollTo: !CONFIG.bookmark.enable
+});
+
+document.addEventListener('pjax:success', () => {
+  pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  const hasTOC = document.querySelector('.post-toc');
+  document.querySelector('.sidebar-inner').classList.toggle('sidebar-nav-active', hasTOC);
+  document.querySelector(hasTOC ? '.sidebar-nav-toc' : '.sidebar-nav-overview').click();
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+  
+
+
+
+
+
+  <script>
+    NProgress.configure({
+      showSpinner: true
+    });
+    NProgress.start();
+    document.addEventListener('readystatechange', () => {
+      if (document.readyState === 'interactive') {
+        NProgress.inc(0.8);
+      }
+      if (document.readyState === 'complete') {
+        NProgress.done();
+      }
+    });
+    document.addEventListener('pjax:send', () => {
+      NProgress.start();
+    });
+    document.addEventListener('pjax:success', () => {
+      NProgress.done();
+    });
+  </script>
+
+  
+
+
+
+    <div class="pjax">
+
+  
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/disqusjs@1.3.0/dist/disqusjs.css">
+
+<script>
+NexT.utils.loadComments('#disqus_thread', () => {
+  NexT.utils.getScript('https://cdn.jsdelivr.net/npm/disqusjs@1.3.0/dist/disqus.js', () => {
+    window.dsqjs = new DisqusJS({
+      api       : 'https://disqus.skk.moe/disqus/' || 'https://disqus.com/api/',
+      apikey    : 'pwCicQgBQmc1ZEUP8fbsECJ1H1U5HWHEuUKbFFR0whF6VjLgL5CneiwMFOtQwwAv',
+      shortname : 'silent-world',
+      url       : "https://blog.ofortune.xyz/2021/04/23/nu1ctf-2020-oflo/",
+      identifier: "2021/04/23/nu1ctf-2020-oflo/",
+      title     : "nu1ctf 2020 oflo writeup",
+    });
+  }, window.DisqusJS);
+});
+</script>
+
+    </div>
+</body>
+</html>

