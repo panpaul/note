@@ -219,7 +219,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-count">27</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -428,7 +428,7 @@
 <p>处理一下：</p>
 <p><img data-src="image-20210423194823465.png" alt="image-20210423194823465"></p>
 <p>发现，如果<code>sub_400A69</code>函数处理后返回<code>true</code>那么输出<code>Cong</code>表示成功，反之直接退出，那么继续分析<code>sub_400A69</code>函数：</p>
-<p>现在直到上面为什么要有一层循环写入<code>0x400A96</code>处的数据了，那里是为了还原这个函数的头部。所以<code>n1ctf</code>处理后恰好就是<code>push rbp</code>等过程调用约定的内容…(<del>歪大误中</del>)</p>
+<p>现在直到上面为什么要有一层循环写入<code>0x400A96</code>处的数据了，那里是为了还原这个函数的头部。所以<code>n1ctf</code>处理后恰好就是<code>push rbp</code>等过程调用约定的内容…(<del>歪打误中</del>)</p>
 <p>这个函数就是一个简单的异或判断：</p>
 <p><img data-src="image-20210423200914307.png" alt="image-20210423200914307"></p>
 <p>循环时从<code>0</code>到<code>13</code>，而<code>/proc/version</code>前<code>14</code>个刚好是常量：<code>Linux version</code></p>
@@ -458,6 +458,9 @@
                 </a>
             </div>
             <div class="post-nav-item">
+                <a href="/2021/04/30/re-exercise/" rel="next" title="RE练习">
+                  RE练习 <i class="fa fa-chevron-right"></i>
+                </a>
             </div>
           </div>
     </footer>
@@ -516,13 +519,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">40k</span>
+    <span title="站点总字数">42k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">1:06</span>
+    <span title="站点阅读时长">1:10</span>
   </span>
 </div>
   <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZw==">NexT.Gemini</span> 强力驱动
