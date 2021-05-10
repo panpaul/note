@@ -5,6 +5,9 @@ db.json
 node_modules/
 public/
 .deploy*/
+
+# Self Review
 Review-*
+
+# theme
 themes/next/
-_config.yml
