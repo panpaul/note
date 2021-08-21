@@ -181,15 +181,6 @@ toc:
   # Maximum heading depth of generated toc.
   max_depth: 6
 
-# A button to open designated chat widget in sidebar.
-# Firstly, you need enable the chat service you want to activate its sidebar button.
-chat:
-  enable: false
-  #service: chatra
-  #service: tidio
-  icon: fa fa-comment # Icon name in Font Awesome, set false to disable icon.
-  text: Chat # Button text, change it as you wish.
-
 
 # ---------------------------------------------------------------
 # Footer Settings
@@ -201,7 +192,7 @@ language_switcher: false
 
 footer:
   # Specify the year when the site was setup. If not defined, current year will be used.
-  #since: 2020
+  #since: 2021
 
   # Icon between year and copyright info.
   icon:
@@ -391,7 +382,7 @@ back2top:
 reading_progress:
   enable: true
   # Available values: left | right
-  startAt: left
+  start_at: left
   # Available values: top | bottom
   position: top
   reversed: false
@@ -563,11 +554,6 @@ quicklink:
   timeout: 3000
   # Default (true) will attempt to use the fetch() API if supported (rather than link[rel=prefetch]).
   priority: true
-
-  # For more flexibility you can add some patterns (RegExp, Function, or Array) to ignores.
-  # See: https://github.com/GoogleChromeLabs/quicklink#custom-ignore-patterns
-  # This option is deprecated. Use `CONFIG.quicklink.ignores` in your custom scripts instead.
-  ignores:
 
 
 # ---------------------------------------------------------------
@@ -766,6 +752,13 @@ local_search:
 # See: https://theme-next.js.org/docs/third-party-services/chat-services
 # ---------------------------------------------------------------
 
+# A button to open designated chat widget in sidebar.
+# Firstly, you need to enable and configure the chat service.
+chat:
+  enable: false
+  icon: fa fa-comment # Icon name in Font Awesome, set false to disable icon.
+  text: Chat # Button text, change it as you wish.
+
 # Chatra Support
 # For more information: https://chatra.com
 # Dashboard: https://app.chatra.io/settings/general
@@ -781,6 +774,12 @@ chatra:
 tidio:
   enable: false
   key: # Public Key, get it from dashboard. See: https://www.tidio.com/panel/settings/developer
+
+# Gitter Support
+# For more information: https://gitter.im
+gitter:
+  enable: false
+  room:
 
 
 # ---------------------------------------------------------------
