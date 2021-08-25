@@ -100,5 +100,4 @@ Git commits by month:
 2. 添加`TLBWR`指令：如果不做的话可以手动模拟`TLBWR`过程
 3. 增加特权级（`uCore`代码里面使用了`KSU`，但可以偷懒不做`Supervisor`，只做`UM`即可）：这个一定要实现，在处理`TLB REFILL`时会根据特权级进行不同的操作。~~最简单的“取巧做法”就是单让`UM`位可写，其它不管~~
 
-![pic3](uCore.png)
-
+<img src="uCore.png" alt="uCore" style="zoom:80%;" />
