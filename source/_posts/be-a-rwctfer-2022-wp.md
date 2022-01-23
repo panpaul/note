@@ -1,5 +1,5 @@
 ---
-title: Real World CTF 2022 体验赛部分题目 writeup
+title: Be a Real World CTFer 2022 体验赛部分题目 writeup
 date: 2022-01-23 13:37:33
 tags:
 - ctf
