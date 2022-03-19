@@ -72,6 +72,19 @@ creative_commons:
   # CC licenses are available in 39 languages, you can find the specific and correct abbreviation you need on https://creativecommons.org
   language:
 
+# Open graph settings
+# See: https://hexo.io/docs/helpers#open-graph
+open_graph:
+  enable: true
+  options:
+    #twitter_card: <twitter:card>
+    #twitter_id: <twitter:creator>
+    #twitter_site: <twitter:site>
+    #twitter_image: <twitter:image>
+    #google_plus: <g+:profile_link>
+    #fb_admins: <fb:admin_id>
+    #fb_app_id: <fb:app_id>
+
 
 # ---------------------------------------------------------------
 # Menu Settings
@@ -277,17 +290,11 @@ follow_me:
   #RSS: /atom.xml || fa fa-rss
 
 # Related popular posts
-# Dependencies: https://github.com/tea3/hexo-related-popular-posts
+# Dependencies: https://github.com/sergeyzwezdin/hexo-related-posts
 related_posts:
   enable: false
   title: # Custom header, leave empty to use the default one
   display_in_home: false
-  params:
-    maxCount: 5
-    #PPMixingRate: 0.0
-    #isDate: false
-    #isImage: false
-    #isExcerpt: false
 
 # Post edit
 # Easily browse and edit blog source code online.
@@ -363,7 +370,7 @@ codeblock:
   # All available themes: https://theme-next.js.org/highlight/
   theme:
     light: default
-    dark: tomorrow-night
+    dark: stackoverflow-dark
   prism:
     light: prism
     dark: prism-dark
@@ -635,7 +642,7 @@ gitalk:
 # For more information: https://utteranc.es
 utterances:
   enable: false
-  repo: # Github repository name
+  repo: user-name/repo-name # Github repository owner and name
   # Available values: pathname | url | title | og:title
   issue_term: pathname
   # Available values: github-light | github-dark | preferred-color-scheme | github-dark-orange | icy-dark | dark-blue | photon-dark | boxy-light
@@ -687,6 +694,10 @@ growingio_analytics: # <project_id>
 # Cloudflare Web Analytics
 # See: https://www.cloudflare.com/web-analytics/
 cloudflare_analytics: a8cfd44c2b684f5390de3a2a73777608
+
+# Microsoft Clarity Analytics
+# See: https://clarity.microsoft.com/
+clarity_analytics: b3ib6tvyb0
 
 # Show number of visitors of each article.
 # You can visit https://www.leancloud.cn to get AppID and AppKey.
@@ -889,6 +900,7 @@ vendors:
 
 # Assets
 # Accelerate delivery of static files using a CDN
+# The js option is only valid when vendors.internal is local.
 css: css
 js: js
 images: images
