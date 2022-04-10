@@ -11,6 +11,12 @@ tags:
 
 <!--more-->
 
+> 2022前来考古 :)
+>
+> 由于最近在复习操作系统，遂重新基于`2021 Fall`版实验重做了一遍，顺便补全原来`Lab Lazy`之后的内容
+>
+> 为了区分相关内容，我将`2021 Fall`不一样的实验标记出来了
+
 ## Lab Utilities
 
 第一个lab旨在让我了解一下`xv6`系统的框架和调用系统调用的方式。
@@ -444,6 +450,22 @@ void syscall(void)
 }
 ```
 
+接着，为了能够在`fork`时传递`trace_mask`标记，修改`kernel/proc.c`
+
+```c
+int
+fork(void)
+{
+// --snip--
+  acquire(&np->lock);
+  np->state = RUNNABLE;
+  np->trace_mask = p->trace_mask;
+  release(&np->lock);
+
+  return pid;
+}
+```
+
 最后一点细节，在`kernel/proc.c`中`freeproc`函数中添加一行：`p->trace_mask = 0;`
 
 ### Sysinfo
@@ -470,6 +492,7 @@ uint64 get_free_mem(void)
   release(&kmem.lock);
 
   return (pages << 12); // Book P29
+  // better one: return (pages << PGSHIFT);
 }
 ```
 
@@ -482,22 +505,27 @@ uint64 get_free_mem(void)
 接着关注`UNUSED`的进程，在`kernel/proc.c`中添加辅助函数`get_unused_proc`
 
 ```c
-uint64 unused_proc(void)
+uint64
+get_proc_num(void)
 {
   struct proc *p;
-  uint64 unused = 0;
+  uint64 cnt = 0;
 
-  for (p = proc; p < &proc[NPROC]; p++)
+  for (p = proc; p < &proc[NPROC]; p++) {
+    acquire(&p->lock);
     if (p->state != UNUSED)
-      unused++;
+      cnt++;
+    release(&p->lock);
+  }
 
-  return unused;
+  return cnt;
 }
 ```
 
 最后添加实际的系统调用函数
 
 ```c
+#include "sysinfo.h"
 uint64 sys_sysinfo(void)
 {
   uint64 addr;
@@ -508,7 +536,7 @@ uint64 sys_sysinfo(void)
   struct sysinfo info;
 
   info.freemem = get_free_mem();
-  info.nproc = get_unused_proc();
+  info.nproc = get_proc_num();
 
   if (copyout(p->pagetable, addr, (char *)&info, sizeof(info)) < 0) // 把内核空间的info拷贝到对应程序的虚拟地址空间上
     return -1;
@@ -518,9 +546,89 @@ uint64 sys_sysinfo(void)
 
 ## Lab Page Tables
 
+### [2021 Fall] Speed up system calls
+
+这里要求我们引入一个可以和内核共享的区域来提升用户空间和内核的信息交互
+
+按照提示，我们在进程创建时映射一个新的页`USYSCALL`并且将该页内容填充为`struct usyscall`
+
+首先修改`proc.h`，在进程结构中添加`usyscall`
+
+```c
+struct proc {
+  // --snip--
+  struct usyscall *usyscall;   // user syscall table
+};
+```
+
+然后在进程创建的时候填充这个字段
+
+```c
+static struct proc*
+allocproc(void)
+{
+  // --snip--
+  // Allocate usyscall struct
+  if((p->usyscall = (struct usyscall *)kalloc()) == 0){
+    freeproc(p);
+    release(&p->lock);
+    return 0;
+  }
+  p->usyscall->pid = p->pid;
+  // 在proc_pagetable之前分配，我们将在proc_pagetable中使用到p->usyscall的地址
+
+  // An empty user page table.
+  p->pagetable = proc_pagetable(p);
+  // --snip--
+}
+```
+
+接着修改`proc_pagetable`：
+
+```c
+pagetable_t
+proc_pagetable(struct proc *p)
+{
+  // --snip--
+  // map the USYSCALL page to speed up syscall.
+  if (mappages(pagetable, USYSCALL, PGSIZE,
+               (uint64)(p->usyscall), PTE_R | PTE_U) < 0){
+    uvmunmap(pagetable, TRAMPOLINE, 1, 0);
+    uvmunmap(pagetable, TRAPFRAME, 1, 0);
+    uvmfree(pagetable, 0);
+    return 0;
+  }
+
+  return 0;
+}
+```
+
+最后，有始有终，销毁进程的时候清理分配的空间：
+
+```c
+static void
+freeproc(struct proc *p)
+{
+  // --snip--
+  if(p->usyscall)
+    kfree((void *)p->usyscall);
+  // --snip--
+}
+
+void
+proc_freepagetable(pagetable_t pagetable, uint64 sz)
+{
+  // --snip--
+  uvmunmap(pagetable, USYSCALL, 1, 0);
+  uvmfree(pagetable, sz);
+}
+```
+
+
+
 ### Print a page table
 
-第一题是打印`pagetable`的信息，这里按照提示参考`freewalk`的代码。
+第二题是打印`pagetable`的信息，这里按照提示参考`freewalk`的代码。
 
 ```c
 // 写的比较丑......
@@ -558,6 +666,14 @@ void vmprint(pagetable_t pagetable)
 }
 
 ```
+
+### [2021 Fall] Detecting which pages have been accessed
+
+=== TODO ===
+
+
+
+
 
 ### A kernel page table per process
 
@@ -1169,5 +1285,5 @@ if((*pte & PTE_V) == 0)
 
 
 
-==To be Updated==
+> 接下来的内容是`2021 Fall`的
 
