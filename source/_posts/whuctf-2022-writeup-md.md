@@ -474,7 +474,7 @@ I want to sleep
 
 本题一样是求最短路，给定了一张很“大”的图（`1000000`点，`5000000`边），给出的程序使用`Floyd`求出了最短路。程序给定了一组目标点，由源点到目标点的最短路径即为`flag`中对应字符的`ASCII`
 
-考虑到图中点的数目有`1000000`，`Floyd`复杂度$O(n^3)$，故运算量为$10^{18}$。在出题者的电脑上运行点数目为`4000`的`Floyd`算法用时`42741ms`，故可估算该题使用`Floyd`算法运行需要时间为$\frac{10^{18}}{4000}\times4.2\text s\approx10^{15}\text s\approx\frac{10^{15}}{60\times60\times24\times365}\text{year}\approx32\times10^6\text{year}$
+考虑到图中点的数目有`1000000`，`Floyd`复杂度$O(n^3)$，故运算量为$10^{18}$。在出题者的电脑上运行点数目为`4000`的`Floyd`算法用时`42741ms`，故可估算该题使用`Floyd`算法运行需要时间为$\frac{10^{18}}{4000^3}\times4.2\text s\approx6\times10^{6}\text s\approx\frac{6\times10^{6}}{60\times60\times24\times365}\text{year}\approx2\text{year}$
 
 显然，我们没有这么长的时间去运算，所以本题核心在于读懂程序中的算法（`Floyd`最简单的三重循环，即便不借助`F5`应该也能读懂），并且使用其它算法完成最短路的运算（如`Dijkstra`）
 
