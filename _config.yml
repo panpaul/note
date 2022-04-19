@@ -114,3 +114,11 @@ symbols_count_time:
   awl: 2
   wpm: 300
   suffix: "mins."
+
+marked:
+  gfm: true
+  tables: true
+  breaks: true
+  external_link:
+    nofollow: true
+  postAsset: true

