@@ -1528,3 +1528,178 @@ copyout(pagetable_t pagetable, uint64 dstva, char *src, uint64 len)
 }
 ```
 
+
+
+## [2021 Fall] Lab Multithread
+
+### uthread
+
+这一步要求我们实现一个用户态的线程库
+
+首先，与内核中的`trapframe`类似的，我们编写一个结构体`threadframe`用来保存用户线程的上下文：
+
+```c
+struct threadframe {
+  uint64 ra;
+  uint64 sp;
+  uint64 tp;
+  uint64 s0;
+  uint64 s1;
+  uint64 s2;
+  uint64 s3;
+  uint64 s4;
+  uint64 s5;
+  uint64 s6;
+  uint64 s7;
+  uint64 s8;
+  uint64 s9;
+  uint64 s10;
+  uint64 s11;
+};
+```
+
+这里我们需要保存/恢复的是被调用者保存寄存器，因为在我们的轻量级线程中，线程切换用用户线程主动提出，`schedule`或`yield`前调用者已经准备好了栈结构，被调用者只需要保存好被调用者需要保存的寄存器然后切换给下一个进程即可
+
+```asm
+	.globl thread_switch
+thread_switch:
+		/* 保存当前线程上下文 */
+        sd ra, 0(a0)
+        sd sp, 8(a0)
+        sd tp, 16(a0)
+        sd s0, 24(a0)
+        sd s1, 32(a0)
+        sd s2, 40(a0)
+        sd s3, 48(a0)
+        sd s4, 56(a0)
+        sd s5, 64(a0)
+        sd s6, 72(a0)
+        sd s7, 80(a0)
+        sd s8, 88(a0)
+        sd s9, 96(a0)
+        sd s10, 104(a0)
+        sd s11, 112(a0)
+
+		/* 恢复下一个线程上下文 */
+        ld ra, 0(a1)
+        ld sp, 8(a1)
+        ld tp, 16(a1)
+        ld s0, 24(a1)
+        ld s1, 32(a1)
+        ld s2, 40(a1)
+        ld s3, 48(a1)
+        ld s4, 56(a1)
+        ld s5, 64(a1)
+        ld s6, 72(a1)
+        ld s7, 80(a1)
+        ld s8, 88(a1)
+        ld s9, 96(a1)
+        ld s10, 104(a1)
+        ld s11, 112(a1)
+
+        ret    /* return to ra */
+```
+
+接下来在`thread`结构体中增加上下文信息：
+
+```c
+struct thread {
+  char               stack[STACK_SIZE]; /* the thread's stack */
+  int                state;             /* FREE, RUNNING, RUNNABLE */
+  struct threadframe context;           /* context saved by switch_thread */
+};
+```
+
+在线程创建的时候，我们需要记录两个重要参数：线程的入口（通过`ra`跳转到目标），线程独有的栈地址`sp`
+
+```c
+void 
+thread_create(void (*func)())
+{
+  struct thread *t;
+
+  for (t = all_thread; t < all_thread + MAX_THREAD; t++) {
+    if (t->state == FREE) break;
+  }
+  t->state = RUNNABLE;
+  /* 设置入口点和栈 */
+  t->context.ra = (uint64)func;
+  t->context.sp = (uint64)&t->stack[STACK_SIZE-1]; /* stack grows down */
+}
+
+```
+
+在线程切换的时候，通过上述`thread_switch`切换上下文：
+
+```c
+void 
+thread_schedule(void)
+{
+  // --snip--
+  if (current_thread != next_thread) {         /* switch threads?  */
+    next_thread->state = RUNNING;
+    t = current_thread;
+    current_thread = next_thread;
+    thread_switch((uint64)&t->context, (uint64)&current_thread->context); // save and restore context
+  } else
+    next_thread = 0;
+}
+```
+
+### using threads
+
+这题要求我们解决并发时的临界问题，我们在`get`和`put`中对具体的哈希桶操作的时候加锁：
+
+```c
+pthread_mutex_t lock[NBUCKET]; // 每一个桶单独加锁
+
+static 
+void put(int key, int value)
+{
+  int i = key % NBUCKET;
+  // 在确定桶位置后对桶进行加锁
+  pthread_mutex_lock(&lock[i]);
+  // --snip--
+  pthread_mutex_unlock(&lock[i]);
+}
+
+// get 并不需要加锁，程序在 get 阶段时不会进行任何写入
+
+int
+main(int argc, char *argv[]) {
+  // --snip--
+  // 初始化锁
+  for (int i = 0; i < NBUCKET; i++) {
+    pthread_mutex_init(&lock[i], NULL);
+  }
+  // --snip--
+}
+```
+
+### Barrier
+
+这题要求我们使用`pthread_cond`实现线程同步：
+
+```c
+static void 
+barrier()
+{
+  //
+  // Block until all threads have called barrier() and
+  // then increment bstate.round.
+  //
+  pthread_mutex_lock(&bstate.barrier_mutex);
+  bstate.nthread++;
+  if(bstate.nthread < nthread){
+    // 继续等待
+    pthread_cond_wait(&bstate.barrier_cond, &bstate.barrier_mutex);
+  } else {
+    // 所有线程已经调用了 barrier()
+    bstate.nthread = 0;
+    bstate.round++;
+    pthread_cond_broadcast(&bstate.barrier_cond);
+  }
+  pthread_mutex_unlock(&bstate.barrier_mutex);
+}
+```
+
