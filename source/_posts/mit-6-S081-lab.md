@@ -1703,3 +1703,96 @@ barrier()
 }
 ```
 
+## [2021 Fall] Lab Networking
+
+这个`Lab`要求实现`E1000`网卡的发送和接收功能
+
+首先研究一下`xv6`中网卡的工作流程：
+
+1. 系统启动的时候调用`pci_init`扫描网卡驱动：`xv6`扫描了`bus 0`上的设备，如果发现`id`为`0x100e8086`的设备（`E1000`网卡的`Device ID`和`Vendor ID`）就调用`e1000_init`初始化设备
+2. 在`e1000_init`中
+   1. 关闭中断、重置网卡
+   2. 初始化发送队列，将发送队列中每一项设置为已经发送完毕
+   3. 初始化接收队列，分配接收`buffer`的内存
+   4. 配置网卡的`MAC`地址
+   5. 配置多播表（实际上全部为`0`）
+   6. 配置并开启网卡接收、发送功能
+   7. 启用中断
+3. 在用户需要发送数据的时候，最终通过待补全的`e1000_transmit`将已经组装后的网络层数据包交由网卡发送（中间经历了`net_tx_tcp` -> `net_tx_ip` -> `net_tx_eth`一步一步封装成帧）
+4. 在接收数据的时候，网卡每接收到一个数据包，将会触发一次中断，然后交由`e1000_intr`清中断，`e1000_recv`处理接收到的数据
+
+在具体的实现上，我们按照`Hints`一步步完成即可：
+
+```c
+int
+e1000_transmit(struct mbuf *m)
+{
+  acquire(&e1000_lock);
+
+  uint32 tail = regs[E1000_TDT];
+
+  // 检查队尾对应的数据是否发送完成
+  if (!(tx_ring[tail].status & E1000_TXD_STAT_DD))
+  {
+    // buffer overflow
+    release(&e1000_lock);
+    return -1;
+  }
+
+  // 释放之前的数据
+  if (tx_mbufs[tail])
+    mbuffree(tx_mbufs[tail]);
+
+  // 配置新的发送包
+  tx_ring[tail].addr = (uint64)m->head;
+  tx_ring[tail].length = m->len;
+  // 一次只能发送一个包 设置 End Of Packet 标识
+  // 同时告知硬件 FIFO 中有新数据
+  tx_ring[tail].cmd = E1000_TXD_CMD_EOP | E1000_TXD_CMD_RS;
+
+  tx_mbufs[tail] = m; // 保存标记用于释放内存
+
+  // 更新队尾
+  regs[E1000_TDT] = (tail + 1) % TX_RING_SIZE;
+
+  release(&e1000_lock);
+
+  return 0;
+}
+
+static void
+e1000_recv(void)
+{
+  // 由于这个函数是由网卡中断触发的，在处理完成前不会有下一个中断打断执行，故不需要加锁
+  // [HEAD, TAIL] 是被硬件保留的，我们需要从 TAIL + 1 开始读取数据，然后循环到 HEAD (-1)
+  uint32 tail = regs[E1000_RDT];
+  tail = (tail + 1) % RX_RING_SIZE;
+
+  while (rx_ring[tail].status & E1000_RXD_STAT_DD)
+  {
+    // 接受并交由上层处理数据包
+    rx_mbufs[tail]->len = rx_ring[tail].length;
+    net_rx(rx_mbufs[tail]);
+
+    // 创建一个新的 mbuf，和 e1000_init 中的一样
+    rx_mbufs[tail] = mbufalloc(0);
+    if (!rx_mbufs[tail])
+      panic("e1000");
+    rx_ring[tail].addr = (uint64)rx_mbufs[tail]->head;
+
+    // 清空状态
+    rx_ring[tail].status = 0;
+
+    // 更新队尾
+    regs[E1000_RDT] = tail;
+
+    // 处理下一个包
+    tail = (tail + 1) % RX_RING_SIZE;
+  }
+}
+```
+
+
+
+
+
