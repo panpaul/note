@@ -9,6 +9,8 @@ tags:
 
 <!-- more -->
 
+本文已经失效，目前最新版本(12)已经修复了相关问题
+
 我是用的是`Arch Linux`，其中在`AUR`中已经有了`cross-mips-elf-gcc`（默认大端法）和`cross-mipsel-linux-gnu-gcc`（默认小端法）工具链，但是在最新的环境下，这个软件会出现编译失败的情况
 
 错误在于`Arch`最新的工具链添加了编译选项标识，将`format-security`问题看作`warning`处理，目前已经有人报告了[问题](https://bugs.archlinux.org/task/70701)，但是看起来官方不认为这是问题

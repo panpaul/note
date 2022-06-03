@@ -229,13 +229,13 @@ http://api.bilibili.com/x/web-interface/archive/stat?aid=
 这里经过调试得出了需要满足的方程，最后的`flag`就是输入的数据。
 $$
 \begin{cases}
-x_5=5\\
-x_1+x_2+x_3=15\\
-x_1+x_4+x_7=15\\
-x_4+x_5+x_6=15\\
-x_2+x_5+9=15\\
-x_7+9+2=15\\
-x_3+x_6+2=15\\
+x_5=5\\\\
+x_1+x_2+x_3=15\\\\
+x_1+x_4+x_7=15\\\\
+x_4+x_5+x_6=15\\\\
+x_2+x_5+9=15\\\\
+x_7+9+2=15\\\\
+x_3+x_6+2=15\\\\
 \end{cases}
 $$
 熟悉的线代，这里考虑到题目`hint`中说明数字不重复加之$0\le x_i\le 9$最后枚举得到答案$8163574$，`flag`:`WHUCTF{8163574}`
@@ -337,9 +337,9 @@ int main()
 换句话说这题要解线性方程组，又是线代！
 $$
 \begin{cases}
-num1\times v_{16}+num2\times v_{17}+num3\times v_{18}=num4\\
-num5\times v_{16}+num6\times v_{17}+num7\times v_{18}=num8\\
-num9\times v_{16}+num10\times v_{17}+num11\times v_{18}=num12\\
+num1\times v_{16}+num2\times v_{17}+num3\times v_{18}=num4\\\\
+num5\times v_{16}+num6\times v_{17}+num7\times v_{18}=num8\\\\
+num9\times v_{16}+num10\times v_{17}+num11\times v_{18}=num12\\\\
 \end{cases}
 $$
 接下来困难的是写脚本的过程，这里我使用了`radare2`来操作
