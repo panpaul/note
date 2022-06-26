@@ -1,5 +1,5 @@
 ---
-title: CISCN 华中区域赛部分题目题解
+title: 2022 CISCN 华中区域赛部分题目题解
 date: 2022-06-25 23:17:44
 tags:
 - ctf
