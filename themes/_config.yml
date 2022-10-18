@@ -616,6 +616,8 @@ changyan:
   enable: false
   appid:
   appkey:
+  # Show comments count
+  count: true
 
 # LiveRe comments system
 # You can get your uid from https://livere.com/insight/myCode (General web site)
@@ -698,6 +700,13 @@ cloudflare_analytics: a8cfd44c2b684f5390de3a2a73777608
 # Microsoft Clarity Analytics
 # See: https://clarity.microsoft.com/
 clarity_analytics: b3ib6tvyb0
+
+# Matomo Analytics
+# See: https://matomo.org/
+matomo:
+  enable: false
+  server_url: # https://www.example.com/
+  site_id: # <your site id>
 
 # Show number of visitors of each article.
 # You can visit https://www.leancloud.cn to get AppID and AppKey.
