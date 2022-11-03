@@ -40,16 +40,16 @@ DISM /Online /Cleanup-image /Restorehealth
 Get-AppxPackage |? Status -NE "Ok" | select PackageFamilyName
 ```
 
-这个时候，我们通过一个第三方的网站：[store](store.rg-adguard.net) 搜索并下载`AppX`安装包
+这个时候，我们通过一个第三方的网站：[store](https://store.rg-adguard.net) 搜索并下载`AppX`安装包
 
 在搜索栏选中`PackageFamilyName`，并将上面命令输出的包名依次输入进去（有可能没有结果，过一段时间重试即可）
 
-下载对应于你架构的`AppX`文件，比如说我是`ARM64`的，那么我需要下载有`ARM`和`ARM64`字眼的两个安装包
+下载对应于你架构的`AppX`文件，比如说我是`ARM64`的，那么我需要下载有`ARM`和`ARM64`字眼的两个安装包。 如果你看到了重复的包名，可以删除最后的`select`命令，查看`PackageFullName`中的体系结构信息
 
 最后通过`Add-AppXPackage`安装：
 
 ```powershell
-Add-AppxPackage xxx.AppX
+Add-AppxPackage xxx
 ```
 
 
