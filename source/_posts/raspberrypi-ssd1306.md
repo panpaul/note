@@ -162,7 +162,7 @@ std::string statInfo()
     std::ostringstream info;
     info << "< Rasp Monitor >"; // 标题行
 
-    // 获取 IP 地址
+    // 获取日期
     std::string cmdGetDateTime;
     cmdGetDateTime = R"lit(date '+ %m-%d %H:%M:%S ' | awk '{printf(" %s %s ", $1, $2)}')lit";
     runCmd(cmdGetDateTime, info);
