@@ -173,7 +173,6 @@ social_icons:
 # Blog rolls
 links_settings:
   icon: fa fa-globe
-  title: Links
   # Available values: block | inline
   layout: block
 
@@ -238,7 +237,7 @@ footer:
 # See: https://theme-next.js.org/docs/theme-settings/posts
 # ---------------------------------------------------------------
 
-# Automatically excerpt description in homepage as preamble text.
+# Use `description` in front-matter to specify post excerpt.
 excerpt_description: true
 
 # Read more button
