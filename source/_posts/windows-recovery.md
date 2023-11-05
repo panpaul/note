@@ -12,7 +12,7 @@ tags:
 
 先看一下原来的分区：
 
-<img src="/images/recovery-1.webp" alt="disk partitions">
+<img src="recovery-1.webp" alt="disk partitions">
 
 我们要重建的是最后680M的那个恢复分区。
 
@@ -90,6 +90,6 @@ C:\Windows\System32\Reagentc /info
 
 输出结果：
 
-<img src="/images/recovery-3.webp" alt="reagentc info">
+<img src="recovery-3.webp" alt="reagentc info">
 
 参考：[微软官方文档](https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/deploy-windows-re)

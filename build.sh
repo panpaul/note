@@ -1,8 +1,8 @@
 set -x
-rm -rf themes/next
-git clone https://github.com/next-theme/hexo-theme-next --branch v8.15.1 themes/next
-cp themes/_config.yml themes/next/
-sed -i "/commonweal/ a\  links: 友情链接" themes/next/languages/zh-CN.yml
-sed -i "/commonweal/ a\  links: Links" themes/next/languages/en.yml
+rm -rf themes/cactus
+git clone https://github.com/probberechts/hexo-theme-cactus.git themes/cactus
+cp themes/_config.yml themes/cactus/
+cp themes/diff.patch themes/cactus/
+pushd themes/cactus && git apply diff.patch && popd
 npm install
 hexo generate

@@ -3,8 +3,7 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: "Silent World"
-subtitle: "Paul's notes"
+title: "Paul's Blog"
 description: "thoughts,stories,experiences"
 keywords:
 author: Paul
@@ -13,7 +12,7 @@ timezone: 'Asia/Shanghai'
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: https://blog.ofortune.xyz
+url: https://blog.xen.lol
 root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
@@ -93,7 +92,7 @@ ignore:
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: next
+theme: cactus
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
@@ -121,4 +120,11 @@ marked:
   breaks: true
   external_link:
     nofollow: true
+  prependRoot: true
   postAsset: true
+
+search:
+  path: search.xml
+  field: post
+  content: true
+

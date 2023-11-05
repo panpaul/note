@@ -144,11 +144,11 @@ Hello World
 
 首先是运行任务，启动`qemu`：
 
-<img src="/images/riscv_vscode_1.webp" alt="first step">
+<img src="riscv_vscode_1.webp" alt="first step">
 
 然后按照常规操作启动调试：
 
-<img src="/images/riscv_vscode_2.webp" alt="debugging">
+<img src="riscv_vscode_2.webp" alt="debugging">
 
 其中在上图中，首先确定`1`处选用的是`RISC-V`配置，然后在`2`处确定选择的是`Run Qemu ...`，与被调试程序的交互在这里（`3`处）完成。
 

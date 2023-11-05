@@ -16,7 +16,7 @@ tags:
 
 直接`F12`开发者工具定位到滑动条，将`step`调整为`0.5`然后拖动到`1`得到`flag`
 
-<img src="/images/hackergame2020-1.png" alt="checkin">
+<img src="hackergame2020-1.png" alt="checkin">
 
 # 猫咪问答++
 
@@ -47,7 +47,7 @@ tags:
 
 直接`F12`审计代码
 
-<img src="/images/hackergame2020-2.png" alt="2048">
+<img src="hackergame2020-2.png" alt="2048">
 
 发现`html_actuator.js`中有关键内容`"/getflxg?my_favorite_fruit=" + ('b'+'a'+ +'a'+'a').toLowerCase();`，丢到下方的`console`中计算得到网址，发送请求后得到`flag`
 
@@ -153,7 +153,7 @@ r='r=%r;import hashlib;s=hashlib.sha256();s.update((r%%r).encode("ascii"));print
 
 执行命令：` docker run --rm -it -v /var/run/docker.sock:/var/run/docker.sock wagoodman/dive:latest 8b8d3c8324c7/stringtool`
 
-<img src="/images/hackergame2020-3.png" alt="dive">
+<img src="hackergame2020-3.png" alt="dive">
 
 发现`image`构建过程中在有一步是删除了`flag.txt`
 
@@ -190,7 +190,7 @@ plt.show()
 
 运行后得到结果
 
-<img src="/images/hackergame2020-4.png" alt="fft">
+<img src="hackergame2020-4.png" alt="fft">
 
 稍微平移拼接一下得到了`flag`
 
@@ -222,7 +222,7 @@ void main()
 
 然后借助画图工具翻转一下看到`flag`为`flag{glGraphicsHappy(233);}`
 
-<img src="/images/hackergame2020-5.png" alt="opengl">
+<img src="hackergame2020-5.png" alt="opengl">
 
 # 生活在博弈树上
 
@@ -232,13 +232,13 @@ void main()
 
 直接`IDA`一把梭打开程序
 
-<img src="/images/hackergame2020-6.1.png" alt="love">
+<img src="hackergame2020-6.1.png" alt="love">
 
 我们发现`gets`读取数据并存放于`v12`，最后判断输赢的变量存放于`v15`
 
 而它们具体在哪里？
 
-<img src="/images/hackergame2020-6.2.png" alt="love">
+<img src="hackergame2020-6.2.png" alt="love">
 
 向上翻可以看到`v12`存放于`rbp-90h`处，`v15`存放于`rbp-1h`处，所以我们可以直接构造一个超长字符串使得`rbp-1h`被覆盖为`0x1`
 
@@ -362,7 +362,7 @@ target.interactive()
 
 最后执行效果：
 
-<img src="/images/hackergame2020-6.3.png" alt="pwn">
+<img src="hackergame2020-6.3.png" alt="pwn">
 
 # 超安全的代理服务器
 
@@ -372,11 +372,11 @@ target.interactive()
 
 使用谷歌浏览器自带的`net-export`功能
 
-<img src="/images/hackergame2020-7.png" alt="net-export">
+<img src="hackergame2020-7.png" alt="net-export">
 
 开启记录后我们用[这个工具](https://netlog-viewer.appspot.com/)查看一下我们的访问记录
 
-<img src="/images/hackergame2020-7.1.png" alt="net-log">
+<img src="hackergame2020-7.1.png" alt="net-log">
 
 发现了一个神秘地址，拼接后访问可以看到
 

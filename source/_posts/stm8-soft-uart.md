@@ -223,4 +223,4 @@ __interrupt void TIM2_Handler(void)
 
 最后附上一张效果图：
 
-<img src="/images/stm8_softuart_1.webp" width="50%" alt="soft_uart">
+<img src="stm8_softuart_1.webp" width="50%" alt="soft_uart">

@@ -20,11 +20,11 @@ mathjax: true
 
 题目是一个`Git`仓库，先看一下`remote`
 
-![checkin-1](/images/whuctf2020-1.webp)
+![checkin-1](whuctf2020-1.webp)
 
 然后找到了`flag`
 
-![checkin-2](/images/whuctf2020-2.webp)
+![checkin-2](whuctf2020-2.webp)
 
 ## ezphp
 
@@ -110,7 +110,7 @@ for i in range(1,999999999):
             print("found md5("+str(i)+")="+j)
 ```
 
-![ezphp-1](/images/whuctf2020-3.webp)
+![ezphp-1](whuctf2020-3.webp)
 
 这里随便挑两个就可以了。第二个`payload`:`str1=11230178&str2=113619666`
 
@@ -175,7 +175,7 @@ ca\t$IFS$1`ls|he\ad$IFS$1-n1`
 http://218.197.154.9:10016/?ip=127.0.0.1|ca\t$IFS$1`ls|he\ad$IFS$1-n1`
 ```
 
-![ezcmd-1](/images/whuctf2020-4.webp)
+![ezcmd-1](whuctf2020-4.webp)
 
 ## bivibivi
 
@@ -192,27 +192,27 @@ http://api.bilibili.com/x/web-interface/archive/stat?aid=
 
 先通过`string`快速定位代码：
 
-![RE1-1](/images/whuctf2020-5.webp)
+![RE1-1](whuctf2020-5.webp)
 
 然后可以确定输入格式：7位字符串
 
-![RE1-2](/images/whuctf2020-6.webp)
+![RE1-2](whuctf2020-6.webp)
 
 然后下个断点，动态调试：
 
-![RE1-3](/images/whuctf2020-7.webp)
+![RE1-3](whuctf2020-7.webp)
 
 随便输入一个:`1234567`
 
-![RE1-4](/images/whuctf2020-8.webp)
+![RE1-4](whuctf2020-8.webp)
 
 先一个循环把输入的数据都丢到栈里：
 
-![RE1-5](/images/whuctf2020-9.webp)
+![RE1-5](whuctf2020-9.webp)
 
 然后判断第5个数是否是`5`
 
-![RE1-6](/images/whuctf2020-10.webp)
+![RE1-6](whuctf2020-10.webp)
 
 这里先把输入的数设为$x_1x_2x_3x_4x_5x_6x_7$
 
@@ -220,11 +220,11 @@ http://api.bilibili.com/x/web-interface/archive/stat?aid=
 
 然后是一个循环计算$x_p+x_q+x_r$并判断是否等于$15$
 
-![RE1-7](/images/whuctf2020-11.webp)
+![RE1-7](whuctf2020-11.webp)
 
 其中有两个特殊的数
 
-![RE1-8](/images/whuctf2020-12.webp)
+![RE1-8](whuctf2020-12.webp)
 
 这里经过调试得出了需要满足的方程，最后的`flag`就是输入的数据。
 $$
@@ -261,21 +261,21 @@ Please give me your answer
 
 第一个程序：
 
-![RE4-1](/images/whuctf2020-13.webp)
+![RE4-1](whuctf2020-13.webp)
 
-![RE4-2](/images/whuctf2020-14.webp)
+![RE4-2](whuctf2020-14.webp)
 
 F5大法好，第一题提取两个数字然后计算`v1`就好了
 
 第二个程序：
 
-![RE4-3](/images/whuctf2020-15.webp)
+![RE4-3](whuctf2020-15.webp)
 
 又是熟悉的线代
 
 第三个程序：
 
-![RE4-4](/images/whuctf2020-16.webp)
+![RE4-4](whuctf2020-16.webp)
 
 emm，这个不太便于人类阅读，稍微整理一下：
 
@@ -485,15 +485,15 @@ Emm，在`flag`里告诉我要用`Angr`或`Unicorn`？其实`radare2`也不差�
 
 这个题给了一个`binary`，谷歌搜索后发现是`DLINK`的路由器固件，然而加密了。
 
-![decrypt-1](/images/whuctf2020-17.webp)
+![decrypt-1](whuctf2020-17.webp)
 
 从官网上下载`DIR878A1_FW1.12B01.bin`
 
-![decrypt-2](/images/whuctf2020-18.webp)
+![decrypt-2](whuctf2020-18.webp)
 
 经过校验确认官网上的文件和题目给的文件相同
 
-![decrypt-3](/images/whuctf2020-19.webp)
+![decrypt-3](whuctf2020-19.webp)
 
 按照题目提示：`解密时所用到的密钥就是flag内容，需要求出密钥`，我们要找的就是解密这个`bin`文件的密钥
 
@@ -501,18 +501,18 @@ Emm，在`flag`里告诉我要用`Angr`或`Unicorn`？其实`radare2`也不差�
 
 所以把那个页面上所列的文件都下下来挨个`binwalk`发现`DIR878A1_FW104B05_Middleware.bin`可以直接解包（它的名字也特别另类）
 
-![decrypt-4](/images/whuctf2020-20.webp)
+![decrypt-4](whuctf2020-20.webp)
 
 这里多次解包后得到了根文档
 
-![decrypt-5](/images/whuctf2020-21.webp)
+![decrypt-5](whuctf2020-21.webp)
 
 经过查找发现`bin`目录下存在可疑文件`imgdecrypt`，发现是一个`MIPS`架构的文件
 
-![decrypt-6](/images/whuctf2020-22.webp)
+![decrypt-6](whuctf2020-22.webp)
 
 这里用`qemu`运行一下：
 
-![decrypt-7](/images/whuctf2020-23.webp)
+![decrypt-7](whuctf2020-23.webp)
 
 发现直接输出了`key`，就不用逆向了，得到`flag`：`flag{C05FBF1936C99429CE2A0781F08D6AD8}`

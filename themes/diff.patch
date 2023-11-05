@@ -1,0 +1,28 @@
+diff --git a/layout/_partial/scripts.ejs b/layout/_partial/scripts.ejs
+index 2670529..49485dd 100644
+--- a/layout/_partial/scripts.ejs
++++ b/layout/_partial/scripts.ejs
+@@ -96,6 +96,16 @@
+ <% if (theme.cloudflare_analytics.enabled && theme.cloudflare_analytics.id){ %>
+   <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "<%= theme.cloudflare_analytics.id %>"}'></script>
+ <% } %>
++<!-- Microsoft Clarity -->
++<% if (theme.microsoft_clarity.enabled && theme.microsoft_clarity.id){ %>
++  <script type="text/javascript">
++      (function(c,l,a,r,i,t,y){
++          c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
++          t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
++          y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
++      })(window, document, "clarity", "script", "<%= theme.microsoft_clarity.id %>">
++  </script>
++<% } %>
+ <!-- Disqus Comments -->
+ <% if (page.comments && theme.disqus.enabled && theme.disqus.shortname){ %>
+     <script type="text/javascript">
+@@ -131,4 +141,4 @@
+           (document.getElementById('utterances_thread')).appendChild(script);
+       }());
+   </script>
+-<% } %>
+\ No newline at end of file
++<% } %>

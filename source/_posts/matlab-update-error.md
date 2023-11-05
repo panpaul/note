@@ -16,7 +16,9 @@ mathjax: false
 
 这是什么错误？
 
-所以马上想到找日志文件，其文件路径应该为`%USERPROFILE%\AppData\Local\Temp\mathworks_YOURNAME.log`
+所以马上想到找日志文件，其文件路径应该为：
+
+`%USERPROFILE%\AppData\Local\Temp\mathworks_YOURNAME.log`
 
 在日志文件里有相对详细的错误信息，比如说我遇到的错误是：
 

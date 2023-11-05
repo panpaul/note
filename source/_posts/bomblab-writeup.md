@@ -17,7 +17,7 @@ tags:
 
   首先，出题者给我们提供了bomb的原型，通过`bomb.c`，大致可以了解这个`bomb`的执行流程：从键盘读入一行，然后执行`phase_(x)`然后解除炸弹。总共有`6`？个`phase`等待我们取解开。
 
-  <img src="/images/bomb_3.webp" alt="bomblab_bomb.c">
+  <img src="bomb_3.webp" alt="bomblab_bomb.c">
 
 - ### 环境准备
 
@@ -25,17 +25,17 @@ tags:
 
   首先，执行`r2 -A bomb`加载二进制文件并执行分析。
 
-  <img src="/images/bomb_1.webp" alt="bomblab_prepare">
+  <img src="bomb_1.webp" alt="bomblab_prepare">
 
   然后，执行`afl`看一下函数列表，我们发现了几个包含`phase`的函数，也就是我们要重点关注的东西了。同时也注意到列表里包含`sym.secret_phase`，估计这是个`bonus`。
 
-  <img src="/images/bomb_2.webp" alt="bomblab_functions">
+  <img src="bomb_2.webp" alt="bomblab_functions">
 
 - ### Phase_1
 
   先执行`s sym.phase_1`跳转到`phase_1`，然后执行`pdf`查看反汇编代码。
 
-  <img src="/images/bomb_4.webp" alt="bomblab_phase1">
+  <img src="bomb_4.webp" alt="bomblab_phase1">
 
   `phase_1`的汇编代码比较简洁。
 
@@ -47,7 +47,7 @@ tags:
 
   一样的跳转到`phase_2`然后查看反汇编代码。
 
-  <img src="/images/bomb_5.webp" alt="bomblab_phase2">
+  <img src="bomb_5.webp" alt="bomblab_phase2">
 
   可以看到，在`phase_2`中程序读入了6个数字，然后判断第一个数字是否为1，不为1则爆炸。
 
@@ -63,7 +63,7 @@ tags:
 
   同样的，跳转到`phase_3`然后查看反汇编代码。
 
-  <img src="/images/bomb_6.webp" alt="bomblab_phase3">
+  <img src="bomb_6.webp" alt="bomblab_phase3">
 
   这里先调用`sscanf`读取读取两个数（`"%d %d"`），然后判断返回值是否大于1。查阅资料后得知`sscanf`的返回值的含义应该是：
 
@@ -75,7 +75,7 @@ tags:
 
   然后进入了一个`switch-case`语句。首先是`jmp qword [rax*8 + 0x402470]`，这里可以想到应该是通过`switch-case`的跳转表确定结果。由于前面已经推出第一个数只可能是0到7共8个值，故执行`px/8xg 0x402470`查看那8个`case`的跳转表。
 
-  <img src="/images/bomb_7.webp" alt="bomblab_phase3">
+  <img src="bomb_7.webp" alt="bomblab_phase3">
 
   所以设第一个数为`x`，那么`x`的跳转表如下：
 
@@ -113,13 +113,13 @@ tags:
 
   `phase_4`和`phase_3`开头很像，同样是读入了两个数（设为`x`和`y`）。
 
-  <img src="/images/bomb_8.webp" alt="bomblab_phase4">
+  <img src="bomb_8.webp" alt="bomblab_phase4">
 
   完成输入后，在`0x0040102e`对`x`进行比较，其中`x<=14`。
 
   接着将`edx`赋值为14，将`esi`赋值为0，`edi`赋值为x，再进入`fun4`。
 
-  <img src="/images/bomb_9.webp" alt="bomblab_phase4">
+  <img src="bomb_9.webp" alt="bomblab_phase4">
 
   这里是一个递归调用，我们尝试逆向出C语言代码：
 
@@ -203,7 +203,7 @@ tags:
 
   同样的，跳转到`phase_5`然后查看反汇编代码。
 
-  <img src="/images/bomb_10.webp" alt="bomblab_phase5">
+  <img src="bomb_10.webp" alt="bomblab_phase5">
 
   ~~其实这段汇编有些内容我还不清楚，但是不影响解题。~~
 
@@ -244,19 +244,19 @@ tags:
 
   同样的，跳转到`phase_6`然后查看反汇编代码。
 
-  <img src="/images/bomb_11.webp" alt="bomblab_phase6">
+  <img src="bomb_11.webp" alt="bomblab_phase6">
 
   这一题汇编代码比较长。一开始就分配了20个4字的栈空间。
 
   这道题静态分析不好整（~~我太菜了~~），所以使用`IDA`进行动态调试。
 
-  <img src="/images/bomb_11_3.webp" alt="bomblab_phase6">
+  <img src="bomb_11_3.webp" alt="bomblab_phase6">
 
   首先定位到`phase_6`
 
   其中左半边的比较好研究，先看左半边。
 
-  <img src="/images/bomb_11_4.webp" alt="bomblab_phase6">
+  <img src="bomb_11_4.webp" alt="bomblab_phase6">
 
   左半边有两重循环，其中左半边的逻辑大至如下：
 
@@ -270,19 +270,19 @@ tags:
 
   执行完以上步骤之后又是一个循环：
 
-  <img src="/images/bomb_11_5.webp" alt="bomblab_phase6">
+  <img src="bomb_11_5.webp" alt="bomblab_phase6">
 
   在这个循环内，用7减去输入的每个数字。
 
   接着，到了最为复杂的部分。
 
-  <img src="/images/bomb_11_6.webp" alt="bomblab_phase6">
+  <img src="bomb_11_6.webp" alt="bomblab_phase6">
 
   首先是一个神秘常数`node1`（应该是`IDA`自动命名的）。因为一些神神秘秘的原因，我无法直接获取它的值，所以我在动态调试时使用`python`脚本来获取。
 
-  <img src="/images/bomb_11_1.webp" alt="bomblab_phase6">
+  <img src="bomb_11_1.webp" alt="bomblab_phase6">
 
-  <img src="/images/bomb_11_2.webp" alt="bomblab_phase6">
+  <img src="bomb_11_2.webp" alt="bomblab_phase6">
 
   最后我们拿到了六个数所对应的神秘数值：
 
@@ -299,7 +299,7 @@ tags:
 
   接着程序按照我们输入的值将`node`的值对应按顺序存入`RBX`中，最后检查`RBX`中的值是否是递减的。
 
-  <img src="/images/bomb_11_7.webp" alt="bomblab_phase6">
+  <img src="bomb_11_7.webp" alt="bomblab_phase6">
 
   所以我们手动给这几个数排序，也就是`924>691>477>443>332>168`对应成我们要输入的数就是`4 3 2 1 6 5`
 
@@ -317,7 +317,7 @@ tags:
 
   开启`secret_phase`的机关在`phase_defused`中：
 
-  <img src="/images/bomb_s_2.webp" alt="bomblab_secret_phase">
+  <img src="bomb_s_2.webp" alt="bomblab_secret_phase">
 
   在这个函数里，先判断是否完成了六次输入，如果完成了就会判断是否触发隐藏关。
 
@@ -327,7 +327,7 @@ tags:
 
   下面就来看`secret_phase`：
 
-  <img src="/images/bomb_s_1.webp" alt="bomblab_secret_phase">
+  <img src="bomb_s_1.webp" alt="bomblab_secret_phase">
 
   在`secret_phase`中首先读入了一个十进制的数字字符串，然后通过`strtol`函数把它转化为整数。
 
@@ -337,7 +337,7 @@ tags:
 
   接着分析`fun7`：
 
-  <img src="/images/bomb_s_3.webp" alt="bomblab_secret_phase">
+  <img src="bomb_s_3.webp" alt="bomblab_secret_phase">
 
   这里尝试还原成C语言代码：
 
@@ -386,7 +386,7 @@ tags:
 
   然后回到最初传入的那个地址，执行`px/8xg 0x6030f0`查看一下存放的值：
 
-  <img src="/images/bomb_s_4.webp" alt="bomblab_secret_phase">
+  <img src="bomb_s_4.webp" alt="bomblab_secret_phase">
 
   然后再反向推这个`fun7`，得到结果`2`的步骤应该是`0->2*0+1->2*(2*0+1)`。
 
@@ -402,7 +402,7 @@ tags:
   
   我们不妨认为`x+1`就是左子树，`x+2`就是右子树，`x`对应的就是当前节点的值，可以画出以可二叉树：
   
-  <img src="/images/bomb_tree.webp" alt="bomblab_secret_phase">
+  <img src="bomb_tree.webp" alt="bomblab_secret_phase">
   
   关于另一个答案`20`，可以这样推出：我们知道，最后找到相等时返回的是`0`，所以在找到`0`的上一层可以嵌套多个`*x>y`(`0*2`还是`0`)。那么按照上面画的二叉树来判断就是在`22`的左子树上也就是`20`(比`22`的多遍历一次)
   

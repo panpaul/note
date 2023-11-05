@@ -28,7 +28,7 @@ tags:
 
 `Arduino`、`HC-05`、`MPU6050`的接线如图3.1.1所示：
 
-<img src="/images/abm_board.webp" alt="board">
+<img src="abm_board.webp" alt="board">
 
 在这张图里，`Arduino`左上角紫色、蓝色接线对应的端口没有标记引脚类型，其实际上分别为`SCL`和`SDA`接口。考虑到不同型号的`Arduino`以及国产`Arduino`的一些定制，实际上不同板子的`SCL`和`SDA`接口对应的引脚不同，需要查询厂商提供的接口参数表。
 
@@ -134,7 +134,7 @@ Wire.endTransmission(true);
 
 具体的文档如下：
 
-<img src="/images/abm_426.webp" alt="4.2.6">
+<img src="abm_426.webp" alt="4.2.6">
 
 然后是读取数据：
 
@@ -164,11 +164,11 @@ void ReadData()
 
 在文档中从`0x3B`开始是存放传感器获得的数据的寄存器：
 
-<img src="/images/abm_417.webp" alt="4.1.7">
+<img src="abm_417.webp" alt="4.1.7">
 
-<img src="/images/abm_418.webp" alt="4.1.8">
+<img src="abm_418.webp" alt="4.1.8">
 
-<img src="/images/abm_419.webp" alt="4.1.9">
+<img src="abm_419.webp" alt="4.1.9">
 
 更多详细的参数可以参见官方文档
 

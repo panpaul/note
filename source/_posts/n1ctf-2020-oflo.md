@@ -29,7 +29,9 @@ tags:
 
 接着继续读汇编，发现指令`rep stosq`，这一条指令常见于`memset`，其以`RCX`为重复次数，`RAX`为源内容，`RDX`为目标串，写入数据，相当于`memset(RDX, RAX, RCX)`
 
-然后看见存在一条跳转指令![flower](flower.png)
+然后看见存在一条跳转指令
+
+![flower](flower.png)
 
 ```asm
 jmp     short near ptr loc_400BB1+1
